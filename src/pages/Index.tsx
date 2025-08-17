@@ -1,14 +1,29 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import { useState } from 'react';
+import LandingHero from '@/components/LandingHero';
+import InvoiceCreator from '@/components/InvoiceCreator';
+import { InvoiceProvider } from '@/contexts/InvoiceContext';
 
 const Index = () => {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
-  );
+  const [showCreator, setShowCreator] = useState(false);
+
+  const handleGetStarted = () => {
+    setShowCreator(true);
+  };
+
+  const handleBackToHome = () => {
+    setShowCreator(false);
+  };
+
+  if (showCreator) {
+    return (
+      <InvoiceProvider>
+        <InvoiceCreator onBack={handleBackToHome} />
+      </InvoiceProvider>
+    );
+  }
+
+  return <LandingHero onGetStarted={handleGetStarted} />;
 };
 
 export default Index;
