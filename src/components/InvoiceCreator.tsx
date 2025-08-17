@@ -4,7 +4,10 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Download, Eye, EyeOff } from "lucide-react";
 import InvoiceForm from './InvoiceForm';
 import InvoicePreview from './InvoicePreview';
+import UpgradeModal from './UpgradeModal';
 import { useInvoice } from '@/contexts/InvoiceContext';
+import { useUsageTracking } from '@/hooks/useUsageTracking';
+import { generateInvoicePDF } from '@/utils/pdfGenerator';
 
 interface InvoiceCreatorProps {
   onBack: () => void;
@@ -12,12 +15,24 @@ interface InvoiceCreatorProps {
 
 const InvoiceCreator = ({ onBack }: InvoiceCreatorProps) => {
   const [showPreview, setShowPreview] = useState(false);
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const { invoice } = useInvoice();
+  const { remainingDownloads, showUpgradeModal, incrementDownloadCount, closeUpgradeModal } = useUsageTracking();
 
-  const handleDownloadPDF = () => {
-    // PDF generation will be implemented
-    console.log('Downloading PDF...', invoice);
-    alert('PDF download coming soon! For now, check the browser console to see the invoice data.');
+  const handleDownloadPDF = async () => {
+    if (!incrementDownloadCount()) {
+      return; // Usage limit reached, modal will show
+    }
+
+    setIsGeneratingPDF(true);
+    try {
+      await generateInvoicePDF(invoice);
+    } catch (error) {
+      console.error('PDF generation failed:', error);
+      alert('Failed to generate PDF. Please try again.');
+    } finally {
+      setIsGeneratingPDF(false);
+    }
   };
 
   return (
@@ -49,10 +64,11 @@ const InvoiceCreator = ({ onBack }: InvoiceCreatorProps) => {
             <Button
               size="sm"
               onClick={handleDownloadPDF}
+              disabled={isGeneratingPDF}
               className="bg-gradient-primary text-background hover:shadow-lg hover:shadow-primary/25 transition-all duration-300"
             >
               <Download className="w-4 h-4 mr-2" />
-              PDF
+              {isGeneratingPDF ? 'Generating...' : 'PDF'}
             </Button>
           </div>
         </div>
@@ -75,13 +91,22 @@ const InvoiceCreator = ({ onBack }: InvoiceCreatorProps) => {
               <h1 className="text-lg font-semibold">Invoice Creator</h1>
             </div>
             
-            <Button
-              onClick={handleDownloadPDF}
-              className="bg-gradient-primary text-background hover:shadow-lg hover:shadow-primary/25 transition-all duration-300"
-            >
-              <Download className="w-4 h-4 mr-2" />
-              Download PDF
-            </Button>
+            <div className="flex items-center space-x-4">
+              {remainingDownloads > 0 && (
+                <div className="text-sm text-muted-foreground">
+                  {remainingDownloads} download{remainingDownloads !== 1 ? 's' : ''} remaining
+                </div>
+              )}
+              
+              <Button
+                onClick={handleDownloadPDF}
+                disabled={isGeneratingPDF}
+                className="bg-gradient-primary text-background hover:shadow-lg hover:shadow-primary/25 transition-all duration-300"
+              >
+                <Download className="w-4 h-4 mr-2" />
+                {isGeneratingPDF ? 'Generating PDF...' : 'Download PDF'}
+              </Button>
+            </div>
           </div>
         </div>
       </div>
@@ -102,6 +127,9 @@ const InvoiceCreator = ({ onBack }: InvoiceCreatorProps) => {
           </div>
         </div>
       </div>
+
+      {/* Upgrade Modal */}
+      <UpgradeModal isOpen={showUpgradeModal} onClose={closeUpgradeModal} />
     </div>
   );
 };
