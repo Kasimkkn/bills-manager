@@ -1,6 +1,10 @@
+
 import { useTemplate } from '@/contexts/TemplateContext';
 import FreelancerTemplate from './templates/FreelancerTemplate';
 import ModernTemplate from './templates/ModernTemplate';
+import ServiceTemplate from './templates/ServiceTemplate';
+import HospitalityTemplate from './templates/HospitalityTemplate';
+import RetailTemplate from './templates/RetailTemplate';
 
 const InvoicePreview = () => {
   const { currentTemplate } = useTemplate();
@@ -9,14 +13,11 @@ const InvoicePreview = () => {
     case 'freelancer':
       return <FreelancerTemplate />;
     case 'retail':
-      // Return retail template component when created
-      return <ModernTemplate />;
+      return <RetailTemplate />;
     case 'service':
-      // Return service template component when created  
-      return <ModernTemplate />;
+      return <ServiceTemplate />;
     case 'hospitality':
-      // Return hospitality template component when created
-      return <ModernTemplate />;
+      return <HospitalityTemplate />;
     case 'modern':
     default:
       return <ModernTemplate />;
