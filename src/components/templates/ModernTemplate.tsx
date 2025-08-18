@@ -8,7 +8,7 @@ const ModernTemplate = () => {
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'USD',
+      currency: invoice.currency || 'USD',
     }).format(amount);
   };
 

@@ -9,19 +9,27 @@ import RetailTemplate from './templates/RetailTemplate';
 const InvoicePreview = () => {
   const { currentTemplate } = useTemplate();
 
-  switch (currentTemplate) {
-    case 'freelancer':
-      return <FreelancerTemplate />;
-    case 'retail':
-      return <RetailTemplate />;
-    case 'service':
-      return <ServiceTemplate />;
-    case 'hospitality':
-      return <HospitalityTemplate />;
-    case 'modern':
-    default:
-      return <ModernTemplate />;
-  }
+  const renderTemplate = () => {
+    switch (currentTemplate) {
+      case 'freelancer':
+        return <FreelancerTemplate />;
+      case 'retail':
+        return <RetailTemplate />;
+      case 'service':
+        return <ServiceTemplate />;
+      case 'hospitality':
+        return <HospitalityTemplate />;
+      case 'modern':
+      default:
+        return <ModernTemplate />;
+    }
+  };
+
+  return (
+    <div className="invoice-preview-container">
+      {renderTemplate()}
+    </div>
+  );
 };
 
 export default InvoicePreview;

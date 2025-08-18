@@ -9,44 +9,77 @@ export const generateInvoicePDF = async (
   templateType: TemplateType = 'modern',
   templateData: Record<string, any> = {}
 ): Promise<void> => {
-  // Create a temporary HTML element with the invoice content
+  // Get the actual preview element to ensure 100% identical rendering
+  const previewElement = document.querySelector('.invoice-preview-container');
+  
+  if (previewElement) {
+    // Use the existing preview for PDF generation to ensure 100% match
+    try {
+      const canvas = await html2canvas(previewElement as HTMLElement, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#ffffff',
+        width: 794,
+        height: 1123,
+        logging: false
+      });
+
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const imgData = canvas.toDataURL('image/png', 1.0);
+      
+      const pdfWidth = 210;
+      const pdfHeight = 297;
+      
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save(`invoice-${invoice.invoiceNumber}.pdf`);
+    } catch (error) {
+      console.error('PDF generation from preview failed:', error);
+      // Fallback to HTML generation
+      await generateFromHTML(invoice, templateType, templateData);
+    }
+  } else {
+    // Fallback to HTML generation
+    await generateFromHTML(invoice, templateType, templateData);
+  }
+};
+
+const generateFromHTML = async (
+  invoice: InvoiceData, 
+  templateType: TemplateType,
+  templateData: Record<string, any>
+): Promise<void> => {
   const invoiceHTML = createInvoiceHTML(invoice, templateType, templateData);
   
-  // Create a temporary container
   const container = document.createElement('div');
   container.innerHTML = invoiceHTML;
   container.style.position = 'absolute';
   container.style.left = '-9999px';
   container.style.top = '0';
-  container.style.width = '794px'; // A4 width in pixels at 96 DPI
+  container.style.width = '794px';
   container.style.backgroundColor = 'white';
   container.style.fontFamily = 'Inter, system-ui, sans-serif';
   document.body.appendChild(container);
 
   try {
-    // Generate canvas from HTML
     const canvas = await html2canvas(container, {
       scale: 2,
       useCORS: true,
+      allowTaint: true,
       backgroundColor: '#ffffff',
       width: 794,
-      height: 1123, // A4 height
+      height: 1123,
     });
 
-    // Create PDF
     const pdf = new jsPDF('p', 'mm', 'a4');
     const imgData = canvas.toDataURL('image/png');
     
-    // Calculate dimensions for A4
-    const pdfWidth = 210; // A4 width in mm
-    const pdfHeight = 297; // A4 height in mm
+    const pdfWidth = 210;
+    const pdfHeight = 297;
     
     pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-    
-    // Download the PDF
     pdf.save(`invoice-${invoice.invoiceNumber}.pdf`);
   } finally {
-    // Clean up
     document.body.removeChild(container);
   }
 };
@@ -91,7 +124,7 @@ const createInvoiceHTML = (invoice: InvoiceData, templateType: TemplateType, tem
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'USD',
+      currency: invoice.currency || 'USD',
     }).format(amount);
   };
 
@@ -105,8 +138,59 @@ const createInvoiceHTML = (invoice: InvoiceData, templateType: TemplateType, tem
 
   const colors = getTemplateColors(templateType);
 
+  // Template-specific headers and styling
+  const getTemplateHeader = () => {
+    switch (templateType) {
+      case 'retail':
+        return 'SALES INVOICE';
+      case 'freelancer':
+        return 'PROJECT INVOICE';
+      case 'service':
+        return 'SERVICE INVOICE';
+      case 'hospitality':
+        return 'HOSPITALITY INVOICE';
+      default:
+        return 'INVOICE';
+    }
+  };
+
+  const renderLogo = () => {
+    if (invoice.businessInfo.logo) {
+      return `<img src="${invoice.businessInfo.logo}" alt="Logo" style="width: 80px; height: 80px; object-fit: contain; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);" />`;
+    } else {
+      return `<div style="width: 80px; height: 80px; background: linear-gradient(135deg, ${colors.primary} 0%, ${colors.secondary} 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);">
+        <span style="color: white; font-weight: bold; font-size: 32px;">${invoice.businessInfo.name.charAt(0) || 'B'}</span>
+      </div>`;
+    }
+  };
+
   const renderTemplateSpecificData = () => {
     let html = '';
+    
+    // Retail template specific data
+    if (templateType === 'retail') {
+      if (templateData.storeLocation || templateData.returnPolicy) {
+        html += `
+          <div style="margin-bottom: 32px; padding: 24px; background: linear-gradient(to right, ${colors.primary}15, ${colors.secondary}15); border-radius: 12px;">
+            <h3 style="font-size: 18px; font-weight: bold; color: ${colors.accent}; margin-bottom: 16px;">Store Information</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              ${templateData.storeLocation ? `
+                <div>
+                  <p style="font-size: 14px; font-weight: 500; color: #666; margin-bottom: 4px;">Store Location</p>
+                  <p style="font-size: 16px; font-weight: 600; color: ${colors.primary};">📍 ${templateData.storeLocation}</p>
+                </div>
+              ` : ''}
+              ${templateData.returnPolicy ? `
+                <div>
+                  <p style="font-size: 14px; font-weight: 500; color: #666; margin-bottom: 4px;">Return Policy</p>
+                  <p style="font-size: 14px; color: ${colors.secondary};">${templateData.returnPolicy}</p>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+        `;
+      }
+    }
     
     // Freelancer template specific data
     if (templateType === 'freelancer' && (templateData.projectName || templateData.projectDescription)) {
@@ -131,7 +215,7 @@ const createInvoiceHTML = (invoice: InvoiceData, templateType: TemplateType, tem
       `;
     }
     
-    // Hotel template specific data
+    // Hospitality template specific data
     if (templateType === 'hospitality' && (templateData.roomNumber || templateData.checkIn || templateData.checkOut)) {
       html += `
         <div style="margin-bottom: 32px; padding: 24px; background: ${colors.primary}08; border-radius: 12px; border-left: 4px solid ${colors.primary};">
@@ -139,17 +223,6 @@ const createInvoiceHTML = (invoice: InvoiceData, templateType: TemplateType, tem
           ${templateData.roomNumber ? `<p style="margin-bottom: 8px;"><strong>Room:</strong> ${templateData.roomNumber}</p>` : ''}
           ${templateData.checkIn ? `<p style="margin-bottom: 8px;"><strong>Check-in:</strong> ${formatDate(templateData.checkIn)}</p>` : ''}
           ${templateData.checkOut ? `<p style="margin-bottom: 8px;"><strong>Check-out:</strong> ${formatDate(templateData.checkOut)}</p>` : ''}
-        </div>
-      `;
-    }
-    
-    // Retail template specific data
-    if (templateType === 'retail' && (templateData.storeLocation || templateData.returnPolicy)) {
-      html += `
-        <div style="margin-bottom: 32px; padding: 24px; background: ${colors.primary}08; border-radius: 12px; border-left: 4px solid ${colors.primary};">
-          <h3 style="font-size: 16px; font-weight: bold; color: ${colors.accent}; margin-bottom: 12px;">Store Information</h3>
-          ${templateData.storeLocation ? `<p style="margin-bottom: 8px;"><strong>Location:</strong> ${templateData.storeLocation}</p>` : ''}
-          ${templateData.returnPolicy ? `<p style="margin-bottom: 8px;"><strong>Return Policy:</strong> ${templateData.returnPolicy}</p>` : ''}
         </div>
       `;
     }
@@ -162,16 +235,14 @@ const createInvoiceHTML = (invoice: InvoiceData, templateType: TemplateType, tem
       <!-- Header -->
       <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 48px;">
         <div>
-          <h1 style="font-size: 48px; font-weight: bold; color: #111827; margin: 0 0 8px 0;">INVOICE</h1>
+          <h1 style="font-size: 48px; font-weight: bold; color: #111827; margin: 0 0 8px 0;">${getTemplateHeader()}</h1>
           <div style="color: #6B7280; margin: 0;">
             <p style="margin: 4px 0; font-weight: 500;">#${invoice.invoiceNumber}</p>
             <p style="margin: 4px 0;">Date: ${formatDate(invoice.invoiceDate)}</p>
             <p style="margin: 4px 0;">Due: ${formatDate(invoice.dueDate)}</p>
           </div>
         </div>
-        <div style="width: 80px; height: 80px; background: linear-gradient(135deg, ${colors.primary} 0%, ${colors.secondary} 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);">
-          <span style="color: white; font-weight: bold; font-size: 32px;">${invoice.businessInfo.name.charAt(0) || 'B'}</span>
-        </div>
+        ${renderLogo()}
       </div>
 
       ${renderTemplateSpecificData()}
@@ -180,9 +251,10 @@ const createInvoiceHTML = (invoice: InvoiceData, templateType: TemplateType, tem
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-bottom: 48px;">
         <!-- From -->
         <div>
-          <h3 style="font-size: 12px; font-weight: bold; color: #111827; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; border-bottom: 2px solid ${colors.primary}; padding-bottom: 8px;">From</h3>
+          <h3 style="font-size: 12px; font-weight: bold; color: #111827; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; border-bottom: 2px solid ${colors.primary}; padding-bottom: 8px;">${templateType === 'retail' ? 'Sold By' : 'From'}</h3>
           <div style="color: #374151;">
             <p style="font-weight: 600; font-size: 18px; margin: 0 0 4px 0;">${invoice.businessInfo.name || 'Your Business Name'}</p>
+            ${templateType === 'retail' && templateData.storeLocation ? `<p style="font-size: 14px; color: ${colors.primary}; margin: 0 0 4px 0;">📍 ${templateData.storeLocation}</p>` : ''}
             ${invoice.businessInfo.address ? `<p style="margin: 0 0 4px 0;">${invoice.businessInfo.address}</p>` : ''}
             ${(invoice.businessInfo.city || invoice.businessInfo.state || invoice.businessInfo.zipCode) ? `<p style="margin: 0 0 4px 0;">${[invoice.businessInfo.city, invoice.businessInfo.state, invoice.businessInfo.zipCode].filter(Boolean).join(', ')}</p>` : ''}
             ${invoice.businessInfo.phone ? `<p style="margin: 0 0 4px 0;">Phone: ${invoice.businessInfo.phone}</p>` : ''}
@@ -205,12 +277,12 @@ const createInvoiceHTML = (invoice: InvoiceData, templateType: TemplateType, tem
 
       <!-- Line Items Table -->
       <div style="margin-bottom: 32px;">
-        <div style="background: #f9fafb; border-radius: 8px 8px 0 0; padding: 16px 24px; border-bottom: 2px solid ${colors.primary};">
-          <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 16px; font-size: 12px; font-weight: bold; color: #111827; text-transform: uppercase; letter-spacing: 0.05em;">
-            <div>Description</div>
+        <div style="background: linear-gradient(to right, ${colors.primary}, ${colors.secondary}); border-radius: 8px 8px 0 0; padding: 16px 24px;">
+          <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 16px; font-size: 12px; font-weight: bold; color: white; text-transform: uppercase; letter-spacing: 0.05em;">
+            <div>${templateType === 'retail' ? 'Product Description' : 'Description'}</div>
             <div style="text-align: center;">Qty</div>
-            <div style="text-align: center;">Rate</div>
-            <div style="text-align: right;">Amount</div>
+            <div style="text-align: center;">${templateType === 'retail' ? 'Unit Price' : 'Rate'}</div>
+            <div style="text-align: right;">${templateType === 'retail' ? 'Total' : 'Amount'}</div>
           </div>
         </div>
         
@@ -241,7 +313,7 @@ const createInvoiceHTML = (invoice: InvoiceData, templateType: TemplateType, tem
             
             ${invoice.taxRate > 0 ? `
               <div style="display: flex; justify-content: space-between; color: #374151; margin-bottom: 12px;">
-                <span>Tax (${invoice.taxRate}%):</span>
+                <span>${templateType === 'retail' ? 'Sales Tax' : 'Tax'} (${invoice.taxRate}%):</span>
                 <span style="font-weight: 500;">${formatCurrency(invoice.taxAmount)}</span>
               </div>
             ` : ''}
@@ -256,25 +328,34 @@ const createInvoiceHTML = (invoice: InvoiceData, templateType: TemplateType, tem
         </div>
       </div>
 
+      <!-- Return Policy for Retail -->
+      ${templateType === 'retail' && templateData.returnPolicy ? `
+        <div style="margin-bottom: 32px;">
+          <h3 style="font-size: 12px; font-weight: bold; color: #111827; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px;">Return Policy</h3>
+          <p style="color: #374151; background: ${colors.secondary}20; padding: 16px; border-radius: 8px; border-left: 4px solid ${colors.secondary}; margin: 0;">${templateData.returnPolicy}</p>
+        </div>
+      ` : ''}
+
       <!-- Notes -->
       ${invoice.notes ? `
         <div style="margin-bottom: 32px;">
-          <h3 style="font-size: 12px; font-weight: bold; color: #111827; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px;">Notes</h3>
-          <p style="color: #374151; background: #f9fafb; padding: 16px; border-radius: 8px; margin: 0;">${invoice.notes}</p>
+          <h3 style="font-size: 12px; font-weight: bold; color: #111827; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px;">${templateType === 'retail' ? 'Additional Notes' : 'Notes'}</h3>
+          <p style="color: #374151; background: ${colors.primary}20; padding: 16px; border-radius: 8px; border-left: 4px solid ${colors.primary}; margin: 0;">${invoice.notes}</p>
         </div>
       ` : ''}
 
       <!-- Terms -->
       ${invoice.terms ? `
         <div style="margin-bottom: 32px;">
-          <h3 style="font-size: 12px; font-weight: bold; color: #111827; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px;">Payment Terms</h3>
-          <p style="color: #374151; background: #fef3c7; padding: 16px; border-radius: 8px; border-left: 4px solid ${colors.primary}; margin: 0;">${invoice.terms}</p>
+          <h3 style="font-size: 12px; font-weight: bold; color: #111827; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px;">${templateType === 'retail' ? 'Terms & Conditions' : 'Payment Terms'}</h3>
+          <p style="color: #374151; background: #fef3c7; padding: 16px; border-radius: 8px; border-left: 4px solid ${colors.secondary}; margin: 0;">${invoice.terms}</p>
         </div>
       ` : ''}
 
       <!-- Footer -->
       <div style="text-align: center; padding-top: 32px; border-top: 1px solid #e5e7eb;">
-        <p style="color: #9ca3af; font-size: 14px; margin: 0;">Thank you for your business!</p>
+        <p style="color: #9ca3af; font-size: 14px; margin: 0;">${templateType === 'retail' ? 'Thank you for shopping with us!' : 'Thank you for your business!'}</p>
+        ${templateType === 'retail' ? '<p style="color: #9ca3af; font-size: 12px; margin: 4px 0 0 0;">We appreciate your business and look forward to serving you again</p>' : ''}
       </div>
     </div>
   `;

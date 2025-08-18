@@ -43,6 +43,7 @@ export interface InvoiceData {
   taxRate: number;
   taxAmount: number;
   total: number;
+  currency: string;
 }
 
 type InvoiceAction =
@@ -55,6 +56,7 @@ type InvoiceAction =
   | { type: 'UPDATE_NOTES'; payload: string }
   | { type: 'UPDATE_TERMS'; payload: string }
   | { type: 'UPDATE_TAX_RATE'; payload: number }
+  | { type: 'UPDATE_CURRENCY'; payload: string }
   | { type: 'CALCULATE_TOTALS' }
   | { type: 'LOAD_DATA'; payload: InvoiceData };
 
@@ -96,6 +98,7 @@ const initialState: InvoiceData = {
   taxRate: 0,
   taxAmount: 0,
   total: 0,
+  currency: 'USD',
 };
 
 function invoiceReducer(state: InvoiceData, action: InvoiceAction): InvoiceData {
@@ -162,6 +165,9 @@ function invoiceReducer(state: InvoiceData, action: InvoiceAction): InvoiceData 
     case 'UPDATE_TAX_RATE':
       return { ...state, taxRate: action.payload };
     
+    case 'UPDATE_CURRENCY':
+      return { ...state, currency: action.payload };
+    
     case 'CALCULATE_TOTALS':
       const subtotal = state.lineItems.reduce((sum, item) => sum + item.amount, 0);
       const taxAmount = subtotal * (state.taxRate / 100);
@@ -194,6 +200,7 @@ interface InvoiceContextType {
   updateNotes: (notes: string) => void;
   updateTerms: (terms: string) => void;
   updateTaxRate: (rate: number) => void;
+  updateCurrency: (currency: string) => void;
 }
 
 const InvoiceContext = createContext<InvoiceContextType | undefined>(undefined);
@@ -260,6 +267,10 @@ export const InvoiceProvider: React.FC<{ children: React.ReactNode }> = ({ child
     dispatch({ type: 'UPDATE_TAX_RATE', payload: rate });
   };
 
+  const updateCurrency = (currency: string) => {
+    dispatch({ type: 'UPDATE_CURRENCY', payload: currency });
+  };
+
   const value = {
     invoice,
     dispatch,
@@ -272,6 +283,7 @@ export const InvoiceProvider: React.FC<{ children: React.ReactNode }> = ({ child
     updateNotes,
     updateTerms,
     updateTaxRate,
+    updateCurrency,
   };
 
   return (
