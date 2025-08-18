@@ -1,40 +1,45 @@
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import {
   ArrowRight,
-  Award,
-  BarChart3,
-  Building,
-  CheckCircle,
-  ChevronDown,
-  CreditCard,
-  DollarSign,
-  FileCheck,
   FileText,
-  Globe,
-  Lock,
-  Mail,
-  MapPin,
-  Palette,
-  Phone,
-  Printer,
-  Quote,
-  Save,
-  Send,
+  Zap,
   Smartphone,
+  Shield,
   Star,
-  TrendingUp,
   Users,
-  Zap
+  Download,
+  Clock,
+  CheckCircle,
+  DollarSign,
+  Building,
+  Globe,
+  Mail,
+  Phone,
+  MapPin,
+  ChevronDown,
+  ChevronUp,
+  Quote,
+  Award,
+  TrendingUp,
+  BarChart3,
+  CreditCard,
+  Save,
+  Palette,
+  FileCheck,
+  Printer,
+  Send,
+  Lock
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 
 interface LandingHeroProps {
-  onGetStarted?: () => void;
+  onCreateInvoice: () => void;
+  onViewDashboard: () => void
 }
 
-const ProfessionalLandingPage = ({ onGetStarted = () => { } }: LandingHeroProps) => {
+const ProfessionalLandingPage = ({ onCreateInvoice, onViewDashboard }: LandingHeroProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
@@ -181,10 +186,11 @@ const ProfessionalLandingPage = ({ onGetStarted = () => { } }: LandingHeroProps)
               <a href="#templates" className="text-slate-600 hover:text-teal-600 transition-colors">Templates</a>
               <a href="#pricing" className="text-slate-600 hover:text-teal-600 transition-colors">Pricing</a>
               <a href="#testimonials" className="text-slate-600 hover:text-teal-600 transition-colors">Reviews</a>
+              {onViewDashboard && <a href="/dashboard" className="text-slate-600 hover:text-teal-600 transition-colors">Dashboard</a>}
             </div>
 
             <Button
-              onClick={onGetStarted}
+              onClick={onCreateInvoice}
               className="bg-gradient-to-r from-teal-500 to-sky-500 hover:from-teal-600 hover:to-sky-600 text-white"
             >
               Get Started Free
@@ -222,7 +228,7 @@ const ProfessionalLandingPage = ({ onGetStarted = () => { } }: LandingHeroProps)
               <div className="space-y-4">
                 <Button
                   size="lg"
-                  onClick={onGetStarted}
+                  onClick={onCreateInvoice}
                   className="bg-gradient-to-r from-teal-500 to-sky-500 hover:from-teal-600 hover:to-sky-600 text-white text-lg px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
                 >
                   Start Creating Free Invoices
@@ -786,7 +792,7 @@ const ProfessionalLandingPage = ({ onGetStarted = () => { } }: LandingHeroProps)
             <div className="space-y-4">
               <Button
                 size="lg"
-                onClick={onGetStarted}
+                onClick={onCreateInvoice}
                 className="bg-white text-teal-600 hover:bg-slate-50 text-xl px-12 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 Start Creating Free Invoices
