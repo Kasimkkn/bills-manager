@@ -35,14 +35,14 @@ const TemplateGallery = ({ isOpen, onClose, onTemplateSelect }: TemplateGalleryP
   };
 
   return (
-    <div className="fixed inset-0 bg-background/80 backdrop-blur-lg z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 bg-transparent backdrop-blur-sm z-50 flex items-center justify-center p-4">
       {/* Desktop Modal */}
-      <div 
+      <div
         className="hidden md:flex items-center justify-center w-full h-full"
         onClick={handleBackdropClick}
       >
-        <div className="bg-surface-elevated rounded-2xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto">
-          <div className="p-6 border-b border-border/50">
+        <div className="bg-white rounded-2xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="p-2 border-b border-border/50">
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-2xl font-bold text-foreground">Choose Your Template</h2>
@@ -64,11 +64,10 @@ const TemplateGallery = ({ isOpen, onClose, onTemplateSelect }: TemplateGalleryP
               {TEMPLATES.map((template) => (
                 <Card
                   key={template.id}
-                  className={`cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg border-2 ${
-                    currentTemplate === template.id
-                      ? 'border-primary shadow-lg shadow-primary/25'
-                      : 'border-border/50 hover:border-primary/50'
-                  }`}
+                  className={`cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg border-2 ${currentTemplate === template.id
+                    ? 'border-primary shadow-lg shadow-primary/25'
+                    : 'border-border/50 hover:border-primary/50'
+                    }`}
                   onMouseEnter={() => setHoveredTemplate(template.id)}
                   onMouseLeave={() => setHoveredTemplate(null)}
                   onClick={() => handleTemplateSelect(template.id)}
@@ -76,7 +75,7 @@ const TemplateGallery = ({ isOpen, onClose, onTemplateSelect }: TemplateGalleryP
                   <CardContent className="p-0">
                     {/* Template Preview */}
                     <div className="relative h-48 bg-gradient-to-br from-surface to-surface-elevated rounded-t-lg overflow-hidden">
-                      <div 
+                      <div
                         className="absolute inset-0 opacity-20"
                         style={{
                           background: `linear-gradient(135deg, ${template.colorScheme.primary}20, ${template.colorScheme.accent}20)`
@@ -84,7 +83,7 @@ const TemplateGallery = ({ isOpen, onClose, onTemplateSelect }: TemplateGalleryP
                       />
                       <div className="absolute inset-0 flex items-center justify-center">
                         <div className="text-center">
-                          <Palette 
+                          <Palette
                             className="w-12 h-12 mx-auto mb-4 opacity-60"
                             style={{ color: template.colorScheme.primary }}
                           />
@@ -92,7 +91,7 @@ const TemplateGallery = ({ isOpen, onClose, onTemplateSelect }: TemplateGalleryP
                           <div className="text-xs text-muted-foreground">{template.category}</div>
                         </div>
                       </div>
-                      
+
                       {/* Selection Indicator */}
                       {currentTemplate === template.id && (
                         <div className="absolute top-3 right-3 bg-primary text-background rounded-full p-1">
@@ -117,15 +116,15 @@ const TemplateGallery = ({ isOpen, onClose, onTemplateSelect }: TemplateGalleryP
 
                       <div className="flex items-center space-x-2">
                         <div className="flex space-x-1">
-                          <div 
+                          <div
                             className="w-3 h-3 rounded-full"
                             style={{ backgroundColor: template.colorScheme.primary }}
                           />
-                          <div 
+                          <div
                             className="w-3 h-3 rounded-full"
                             style={{ backgroundColor: template.colorScheme.secondary }}
                           />
-                          <div 
+                          <div
                             className="w-3 h-3 rounded-full"
                             style={{ backgroundColor: template.colorScheme.accent }}
                           />
@@ -154,7 +153,7 @@ const TemplateGallery = ({ isOpen, onClose, onTemplateSelect }: TemplateGalleryP
 
       {/* Mobile Bottom Sheet */}
       <div className="md:hidden fixed inset-0 z-50">
-        <div 
+        <div
           className="absolute inset-0 bg-background/80 backdrop-blur-lg"
           onClick={onClose}
         />
@@ -163,7 +162,7 @@ const TemplateGallery = ({ isOpen, onClose, onTemplateSelect }: TemplateGalleryP
           <div className="flex justify-center pt-3 pb-2">
             <div className="w-12 h-1 bg-border rounded-full" />
           </div>
-          
+
           {/* Header */}
           <div className="px-6 py-4 border-b border-border/50">
             <div className="flex items-center justify-between">
@@ -188,27 +187,26 @@ const TemplateGallery = ({ isOpen, onClose, onTemplateSelect }: TemplateGalleryP
               {TEMPLATES.map((template) => (
                 <Card
                   key={template.id}
-                  className={`cursor-pointer transition-all duration-300 border-2 ${
-                    currentTemplate === template.id
-                      ? 'border-primary shadow-lg shadow-primary/25'
-                      : 'border-border/50'
-                  }`}
+                  className={`cursor-pointer transition-all duration-300 border-2 ${currentTemplate === template.id
+                    ? 'border-primary shadow-lg shadow-primary/25'
+                    : 'border-border/50'
+                    }`}
                   onClick={() => handleTemplateSelect(template.id)}
                 >
                   <CardContent className="p-4">
                     <div className="flex items-center space-x-4">
-                      <div 
+                      <div
                         className="w-16 h-16 rounded-xl flex items-center justify-center"
                         style={{
                           background: `linear-gradient(135deg, ${template.colorScheme.primary}20, ${template.colorScheme.accent}20)`
                         }}
                       >
-                        <Palette 
+                        <Palette
                           className="w-8 h-8 opacity-60"
                           style={{ color: template.colorScheme.primary }}
                         />
                       </div>
-                      
+
                       <div className="flex-1">
                         <div className="flex items-center justify-between mb-1">
                           <h3 className="font-semibold text-foreground">{template.name}</h3>
@@ -241,7 +239,7 @@ const TemplateGallery = ({ isOpen, onClose, onTemplateSelect }: TemplateGalleryP
 
           {/* Footer */}
           <div className="p-4 border-t border-border/50 bg-surface/50">
-            <Button 
+            <Button
               onClick={() => handleTemplateSelect(currentTemplate)}
               className="w-full"
             >
