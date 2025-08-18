@@ -1,29 +1,38 @@
-
-import InvoiceCreator from '@/components/InvoiceCreator';
-import ProfessionalLandingPage from '@/components/ProfessionalLandingPage';
-import { InvoiceProvider } from '@/contexts/InvoiceContext';
-import { useState } from 'react';
+import ProfessionalLandingPage from "@/components/ProfessionalLandingPage";
+import TemplateGallery from "@/components/TemplateGallery";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
-  const [showCreator, setShowCreator] = useState(false);
+  const [showTemplateGallery, setShowTemplateGallery] = useState(false);
+  const navigate = useNavigate();
 
-  const handleGetStarted = () => {
-    setShowCreator(true);
+  const handleCreateInvoice = () => {
+    setShowTemplateGallery(true);
   };
 
-  const handleBackToHome = () => {
-    setShowCreator(false);
+  const handleTemplateSelected = () => {
+    setShowTemplateGallery(false);
+    navigate('/editor');
   };
 
-  if (showCreator) {
-    return (
-      <InvoiceProvider>
-        <InvoiceCreator onBack={handleBackToHome} />
-      </InvoiceProvider>
-    );
-  }
+  const handleViewDashboard = () => {
+    navigate('/dashboard');
+  };
 
-  return <ProfessionalLandingPage onGetStarted={handleGetStarted} />;
+  return (
+    <>
+      <ProfessionalLandingPage
+        onCreateInvoice={handleCreateInvoice}
+        onViewDashboard={handleViewDashboard}
+      />
+      <TemplateGallery
+        isOpen={showTemplateGallery}
+        onClose={() => setShowTemplateGallery(false)}
+        onTemplateSelect={handleTemplateSelected}
+      />
+    </>
+  );
 };
 
 export default Index;

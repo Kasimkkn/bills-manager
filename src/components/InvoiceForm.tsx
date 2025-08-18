@@ -1,14 +1,20 @@
-
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { Plus, Minus, Building, User, FileText, Calculator } from "lucide-react";
+import { Plus, Minus, Building, User, FileText, Calculator, Palette } from "lucide-react";
 import { useInvoice } from '@/contexts/InvoiceContext';
+import { useTemplate } from '@/contexts/TemplateContext';
+import { TEMPLATE_FIELDS, TEMPLATES } from '@/types/templates';
+import LogoUpload from './LogoUpload';
+import TemplateGallery from './TemplateGallery';
+import { useState } from 'react';
 
 const InvoiceForm = () => {
+  const [showTemplateGallery, setShowTemplateGallery] = useState(false);
   const { 
     invoice, 
     updateBusinessInfo, 
@@ -21,9 +27,102 @@ const InvoiceForm = () => {
     updateTerms,
     updateTaxRate
   } = useInvoice();
+  
+  const { currentTemplate, templateData, updateTemplateData } = useTemplate();
+
+  const currentTemplateInfo = TEMPLATES.find(t => t.id === currentTemplate);
+  const templateFields = TEMPLATE_FIELDS[currentTemplate] || [];
+
+  const renderTemplateField = (field: any) => {
+    const value = templateData[field.id] || '';
+    
+    if (field.type === 'select') {
+      return (
+        <div key={field.id}>
+          <Label className="text-sm font-medium text-foreground">
+            {field.label}
+          </Label>
+          <Select value={value} onValueChange={(val) => updateTemplateData(field.id, val)}>
+            <SelectTrigger className="mt-1 bg-input border-border/50 focus:border-primary/50">
+              <SelectValue placeholder={field.placeholder || `Select ${field.label}`} />
+            </SelectTrigger>
+            <SelectContent>
+              {field.options?.map((option: string) => (
+                <SelectItem key={option} value={option}>{option}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      );
+    }
+
+    if (field.type === 'textarea') {
+      return (
+        <div key={field.id}>
+          <Label className="text-sm font-medium text-foreground">
+            {field.label}
+          </Label>
+          <Textarea
+            value={value}
+            onChange={(e) => updateTemplateData(field.id, e.target.value)}
+            className="mt-1 bg-input border-border/50 focus:border-primary/50 focus-ring resize-none"
+            placeholder={field.placeholder}
+            rows={3}
+          />
+        </div>
+      );
+    }
+
+    return (
+      <div key={field.id}>
+        <Label className="text-sm font-medium text-foreground">
+          {field.label}
+        </Label>
+        <Input
+          type={field.type}
+          value={value}
+          onChange={(e) => updateTemplateData(field.id, e.target.value)}
+          className="mt-1 bg-input border-border/50 focus:border-primary/50 focus-ring"
+          placeholder={field.placeholder}
+          required={field.required}
+        />
+      </div>
+    );
+  };
 
   return (
     <div className="p-4 lg:p-6 space-y-6 animate-fade-in">
+      {/* Template Selection */}
+      <Card className="surface border-border/50">
+        <CardHeader className="pb-4">
+          <CardTitle className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <Palette className="w-5 h-5 text-primary" />
+              <span>Template</span>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowTemplateGallery(true)}
+            >
+              Change Template
+            </Button>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center space-x-4">
+            <div 
+              className="w-4 h-4 rounded-full"
+              style={{ backgroundColor: currentTemplateInfo?.colorScheme.primary }}
+            />
+            <div>
+              <p className="font-medium text-foreground">{currentTemplateInfo?.name}</p>
+              <p className="text-sm text-muted-foreground">{currentTemplateInfo?.description}</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Invoice Details */}
       <Card className="surface border-border/50">
         <CardHeader className="pb-4">
@@ -71,6 +170,15 @@ const InvoiceForm = () => {
               />
             </div>
           </div>
+
+          {/* Template-specific invoice fields */}
+          {templateFields.filter(f => f.category === 'invoice').length > 0 && (
+            <div className="space-y-4 pt-4 border-t border-border/50">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {templateFields.filter(f => f.category === 'invoice').map(renderTemplateField)}
+              </div>
+            </div>
+          )}
         </CardContent>
       </Card>
 
@@ -83,6 +191,9 @@ const InvoiceForm = () => {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
+          {/* Logo Upload */}
+          <LogoUpload />
+          
           <div>
             <Label htmlFor="businessName" className="text-sm font-medium text-foreground">
               Business Name
@@ -176,6 +287,13 @@ const InvoiceForm = () => {
               />
             </div>
           </div>
+
+          {/* Template-specific business fields */}
+          {templateFields.filter(f => f.category === 'business').length > 0 && (
+            <div className="space-y-4 pt-4 border-t border-border/50">
+              {templateFields.filter(f => f.category === 'business').map(renderTemplateField)}
+            </div>
+          )}
         </CardContent>
       </Card>
 
@@ -281,6 +399,13 @@ const InvoiceForm = () => {
               />
             </div>
           </div>
+
+          {/* Template-specific client fields */}
+          {templateFields.filter(f => f.category === 'client').length > 0 && (
+            <div className="space-y-4 pt-4 border-t border-border/50">
+              {templateFields.filter(f => f.category === 'client').map(renderTemplateField)}
+            </div>
+          )}
         </CardContent>
       </Card>
 
@@ -430,6 +555,25 @@ const InvoiceForm = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Additional Template Fields */}
+      {templateFields.filter(f => f.category === 'additional').length > 0 && (
+        <Card className="surface border-border/50">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-lg">
+              {currentTemplateInfo?.name} Specific Fields
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {templateFields.filter(f => f.category === 'additional').map(renderTemplateField)}
+          </CardContent>
+        </Card>
+      )}
+
+      <TemplateGallery 
+        isOpen={showTemplateGallery} 
+        onClose={() => setShowTemplateGallery(false)} 
+      />
     </div>
   );
 };

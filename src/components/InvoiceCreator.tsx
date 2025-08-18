@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Download, Eye, EyeOff } from "lucide-react";
@@ -6,6 +5,7 @@ import InvoiceForm from './InvoiceForm';
 import InvoicePreview from './InvoicePreview';
 import UpgradeModal from './UpgradeModal';
 import { useInvoice } from '@/contexts/InvoiceContext';
+import { useTemplate } from '@/contexts/TemplateContext';
 import { useUsageTracking } from '@/hooks/useUsageTracking';
 import { generateInvoicePDF } from '@/utils/pdfGenerator';
 
@@ -17,6 +17,7 @@ const InvoiceCreator = ({ onBack }: InvoiceCreatorProps) => {
   const [showPreview, setShowPreview] = useState(false);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const { invoice } = useInvoice();
+  const { currentTemplate, templateData } = useTemplate();
   const { remainingDownloads, showUpgradeModal, incrementDownloadCount, closeUpgradeModal } = useUsageTracking();
 
   const handleDownloadPDF = async () => {
@@ -26,7 +27,7 @@ const InvoiceCreator = ({ onBack }: InvoiceCreatorProps) => {
 
     setIsGeneratingPDF(true);
     try {
-      await generateInvoicePDF(invoice);
+      await generateInvoicePDF(invoice, currentTemplate, templateData);
     } catch (error) {
       console.error('PDF generation failed:', error);
       alert('Failed to generate PDF. Please try again.');
