@@ -1,16 +1,19 @@
+// components/InvoiceForm.tsx - Updated to work with flexible template system
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Plus, Minus, Building, User, FileText, Calculator, Palette } from "lucide-react";
 import { useInvoice } from '@/contexts/InvoiceContext';
 import { useTemplate } from '@/contexts/TemplateContext';
-import { TEMPLATE_FIELDS, TEMPLATES } from '@/types/templates';
+import { FormField } from '@/types/core';
 import LogoUpload from './LogoUpload';
 import TemplateGallery from './TemplateGallery';
+import CurrencySelector from './CurrencySelector';
 import { useState } from 'react';
 
 const InvoiceForm = () => {
@@ -20,90 +23,185 @@ const InvoiceForm = () => {
     updateBusinessInfo,
     updateClientInfo,
     updateInvoiceMeta,
+    updateTemplateData,
     addLineItem,
     updateLineItem,
     removeLineItem,
     updateNotes,
     updateTerms,
-    updateTaxRate
+    updateTaxRate,
+    setTemplate
   } = useInvoice();
 
-  const { currentTemplate, templateData, updateTemplateData } = useTemplate();
+  const { currentTemplate, templateData } = useTemplate();
 
-  const currentTemplateInfo = TEMPLATES.find(t => t.id === currentTemplate);
-  const templateFields = TEMPLATE_FIELDS[currentTemplate] || [];
-
-  const renderTemplateField = (field: any) => {
+  // 🔥 DYNAMIC FIELD RENDERER - Works with any field type!
+  const renderField = (field: FormField) => {
     const value = templateData[field.id] || '';
 
-    if (field.type === 'select') {
-      return (
-        <div key={field.id}>
-          <Label className="text-sm font-medium text-foreground">
-            {field.label}
-          </Label>
-          <Select value={value} onValueChange={(val) => updateTemplateData(field.id, val)}>
-            <SelectTrigger className="mt-1 bg-input border-border/50 focus:border-primary/50">
-              <SelectValue placeholder={field.placeholder || `Select ${field.label}`} />
-            </SelectTrigger>
-            <SelectContent>
-              {field.options?.map((option: string) => (
-                <SelectItem key={option} value={option}>{option}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      );
-    }
+    const baseProps = {
+      id: field.id,
+      value,
+      onChange: (e: any) => updateTemplateData(field.id, e.target?.value || e),
+      className: "mt-1 bg-input border-border/50",
+      placeholder: field.placeholder,
+      required: field.required
+    };
 
-    if (field.type === 'textarea') {
-      return (
-        <div key={field.id}>
-          <Label className="text-sm font-medium text-foreground">
-            {field.label}
-          </Label>
-          <Textarea
-            value={value}
-            onChange={(e) => updateTemplateData(field.id, e.target.value)}
-            className="mt-1 bg-input border-border/50 resize-none"
-            placeholder={field.placeholder}
-            rows={3}
-          />
-        </div>
-      );
-    }
+    switch (field.type) {
+      case 'select':
+        return (
+          <div key={field.id}>
+            <Label className="text-sm font-medium text-foreground">
+              {field.label}
+              {field.required && <span className="text-red-500 ml-1">*</span>}
+            </Label>
+            <Select value={value} onValueChange={(val) => updateTemplateData(field.id, val)}>
+              <SelectTrigger className="mt-1 bg-input border-border/50">
+                <SelectValue placeholder={field.placeholder || `Select ${field.label}`} />
+              </SelectTrigger>
+              <SelectContent>
+                {field.options?.map((option) => {
+                  const optionValue = typeof option === 'string' ? option : option.value;
+                  const optionLabel = typeof option === 'string' ? option : option.label;
+                  return (
+                    <SelectItem key={optionValue} value={optionValue}>
+                      {optionLabel}
+                    </SelectItem>
+                  );
+                })}
+              </SelectContent>
+            </Select>
+            {field.helpText && (
+              <p className="text-xs text-muted-foreground mt-1">{field.helpText}</p>
+            )}
+          </div>
+        );
 
-    return (
-      <div key={field.id}>
-        <Label className="text-sm font-medium text-foreground">
-          {field.label}
-        </Label>
-        <Input
-          type={field.type}
-          value={value}
-          onChange={(e) => updateTemplateData(field.id, e.target.value)}
-          className="mt-1 bg-input border-border/50"
-          placeholder={field.placeholder}
-          required={field.required}
-        />
-      </div>
-    );
+      case 'textarea':
+        return (
+          <div key={field.id}>
+            <Label className="text-sm font-medium text-foreground">
+              {field.label}
+              {field.required && <span className="text-red-500 ml-1">*</span>}
+            </Label>
+            <Textarea
+              {...baseProps}
+              rows={3}
+              className="mt-1 bg-input border-border/50 resize-none"
+            />
+            {field.helpText && (
+              <p className="text-xs text-muted-foreground mt-1">{field.helpText}</p>
+            )}
+          </div>
+        );
+
+      case 'checkbox':
+        return (
+          <div key={field.id} className="flex items-center space-x-2">
+            <Checkbox
+              id={field.id}
+              checked={!!value}
+              onCheckedChange={(checked) => updateTemplateData(field.id, checked)}
+            />
+            <Label htmlFor={field.id} className="text-sm font-medium text-foreground">
+              {field.label}
+            </Label>
+            {field.helpText && (
+              <p className="text-xs text-muted-foreground">{field.helpText}</p>
+            )}
+          </div>
+        );
+
+      case 'number':
+        return (
+          <div key={field.id}>
+            <Label className="text-sm font-medium text-foreground">
+              {field.label}
+              {field.required && <span className="text-red-500 ml-1">*</span>}
+            </Label>
+            <Input
+              {...baseProps}
+              type="number"
+              min={field.validation?.min}
+              max={field.validation?.max}
+              step="0.01"
+            />
+            {field.helpText && (
+              <p className="text-xs text-muted-foreground mt-1">{field.helpText}</p>
+            )}
+          </div>
+        );
+
+      case 'date':
+        return (
+          <div key={field.id}>
+            <Label className="text-sm font-medium text-foreground">
+              {field.label}
+              {field.required && <span className="text-red-500 ml-1">*</span>}
+            </Label>
+            <Input {...baseProps} type="date" />
+            {field.helpText && (
+              <p className="text-xs text-muted-foreground mt-1">{field.helpText}</p>
+            )}
+          </div>
+        );
+
+      default: // text, email, tel
+        return (
+          <div key={field.id}>
+            <Label className="text-sm font-medium text-foreground">
+              {field.label}
+              {field.required && <span className="text-red-500 ml-1">*</span>}
+            </Label>
+            <Input {...baseProps} type={field.type} />
+            {field.helpText && (
+              <p className="text-xs text-muted-foreground mt-1">{field.helpText}</p>
+            )}
+          </div>
+        );
+    }
+  };
+
+  // Group fields by category and group
+  const getFieldsByCategory = (category: string) => {
+    if (!currentTemplate) return [];
+    return currentTemplate.fields.filter(field => field.category === category);
+  };
+
+  const groupFieldsByGroup = (fields: FormField[]) => {
+    const grouped: { [key: string]: FormField[] } = {};
+    fields.forEach(field => {
+      const group = field.group || 'default';
+      if (!grouped[group]) grouped[group] = [];
+      grouped[group].push(field);
+    });
+    return grouped;
+  };
+
+  const handleTemplateChange = () => {
+    setShowTemplateGallery(true);
+  };
+
+  const handleTemplateSelected = (templateId: string) => {
+    setTemplate(templateId);
+    setShowTemplateGallery(false);
   };
 
   return (
     <div className="p-3 lg:p-6 space-y-6 animate-fade-in">
       {/* Template Selection */}
       <Card className="surface border-border/50">
-        <CardHeader className="">
+        <CardHeader>
           <CardTitle className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <Palette className="w-5 h-5 text-white" />
-              <span>Template</span>
+              <span>Template: {currentTemplate?.name || 'None Selected'}</span>
             </div>
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setShowTemplateGallery(true)}
+              onClick={handleTemplateChange}
             >
               Change Template
             </Button>
@@ -120,7 +218,7 @@ const InvoiceForm = () => {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
               <Label htmlFor="invoiceNumber" className="text-sm font-medium text-foreground">
                 Invoice Number
@@ -157,16 +255,25 @@ const InvoiceForm = () => {
                 className="mt-1 bg-input border-border/50"
               />
             </div>
+            <div>
+              <CurrencySelector />
+            </div>
           </div>
 
-          {/* Template-specific invoice fields */}
-          {templateFields.filter(f => f.category === 'invoice').length > 0 && (
-            <div className="space-y-4 pt-4 border-t border-border/50">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {templateFields.filter(f => f.category === 'invoice').map(renderTemplateField)}
+          {/* 🔥 DYNAMIC INVOICE-SPECIFIC FIELDS */}
+          {(() => {
+            const invoiceFields = getFieldsByCategory('invoice');
+            if (invoiceFields.length === 0) return null;
+
+            return (
+              <div className="space-y-4 pt-4 border-t border-border/50">
+                <h4 className="text-sm font-medium text-foreground">Additional Invoice Information</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {invoiceFields.map(renderField)}
+                </div>
               </div>
-            </div>
-          )}
+            );
+          })()}
         </CardContent>
       </Card>
 
@@ -179,7 +286,6 @@ const InvoiceForm = () => {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          {/* Logo Upload */}
           <LogoUpload />
 
           <div>
@@ -276,12 +382,30 @@ const InvoiceForm = () => {
             </div>
           </div>
 
-          {/* Template-specific business fields */}
-          {templateFields.filter(f => f.category === 'business').length > 0 && (
-            <div className="space-y-4 pt-4 border-t border-border/50">
-              {templateFields.filter(f => f.category === 'business').map(renderTemplateField)}
-            </div>
-          )}
+          {/* 🔥 DYNAMIC BUSINESS-SPECIFIC FIELDS */}
+          {(() => {
+            const businessFields = getFieldsByCategory('business');
+            if (businessFields.length === 0) return null;
+
+            const groupedFields = groupFieldsByGroup(businessFields);
+
+            return (
+              <div className="space-y-4 pt-4 border-t border-border/50">
+                {Object.entries(groupedFields).map(([groupName, fields]) => (
+                  <div key={groupName}>
+                    {groupName !== 'default' && (
+                      <h4 className="text-sm font-medium text-foreground mb-3 capitalize">
+                        {groupName} Information
+                      </h4>
+                    )}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {fields.map(renderField)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            );
+          })()}
         </CardContent>
       </Card>
 
@@ -388,16 +512,24 @@ const InvoiceForm = () => {
             </div>
           </div>
 
-          {/* Template-specific client fields */}
-          {templateFields.filter(f => f.category === 'client').length > 0 && (
-            <div className="space-y-4 pt-4 border-t border-border/50">
-              {templateFields.filter(f => f.category === 'client').map(renderTemplateField)}
-            </div>
-          )}
+          {/* 🔥 DYNAMIC CLIENT-SPECIFIC FIELDS */}
+          {(() => {
+            const clientFields = getFieldsByCategory('client');
+            if (clientFields.length === 0) return null;
+
+            return (
+              <div className="space-y-4 pt-4 border-t border-border/50">
+                <h4 className="text-sm font-medium text-foreground">Additional Client Information</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {clientFields.map(renderField)}
+                </div>
+              </div>
+            );
+          })()}
         </CardContent>
       </Card>
 
-      {/* Line Items */}
+      {/* Line Items - Same as before */}
       <Card className="surface border-border/50">
         <CardHeader className="pb-4">
           <CardTitle className="flex items-center justify-between">
@@ -463,7 +595,7 @@ const InvoiceForm = () => {
                   </div>
                   <div>
                     <Label className="text-sm font-medium text-foreground">
-                      Rate ($)
+                      Rate
                     </Label>
                     <Input
                       type="number"
@@ -476,7 +608,7 @@ const InvoiceForm = () => {
                   </div>
                   <div>
                     <Label className="text-sm font-medium text-foreground">
-                      Amount ($)
+                      Amount
                     </Label>
                     <Input
                       value={item.amount.toFixed(2)}
@@ -488,80 +620,8 @@ const InvoiceForm = () => {
               </div>
             ))}
           </div>
-
-          <Separator className="my-6" />
-
-          {/* Tax Rate */}
-          <div className="flex items-center justify-between">
-            <Label className="text-sm font-medium text-foreground">
-              Tax Rate (%)
-            </Label>
-            <div className="w-24">
-              <Input
-                type="number"
-                min="0"
-                max="100"
-                step="0.01"
-                value={invoice.taxRate}
-                onChange={(e) => updateTaxRate(parseFloat(e.target.value) || 0)}
-                className="bg-input border-border/50 focus:border-primary/50 focus-ring text-center"
-              />
-            </div>
-          </div>
         </CardContent>
       </Card>
-
-      {/* Notes & Terms */}
-      <Card className="surface border-border/50">
-        <CardContent className="pt-6 space-y-4">
-          <div>
-            <Label htmlFor="notes" className="text-sm font-medium text-foreground">
-              Notes
-            </Label>
-            <Textarea
-              id="notes"
-              value={invoice.notes}
-              onChange={(e) => updateNotes(e.target.value)}
-              className="mt-1 bg-input border-border/50 resize-none"
-              placeholder="Additional notes for your client..."
-              rows={3}
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="terms" className="text-sm font-medium text-foreground">
-              Payment Terms
-            </Label>
-            <Textarea
-              id="terms"
-              value={invoice.terms}
-              onChange={(e) => updateTerms(e.target.value)}
-              className="mt-1 bg-input border-border/50 resize-none"
-              placeholder="Payment terms and conditions..."
-              rows={3}
-            />
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Additional Template Fields */}
-      {templateFields.filter(f => f.category === 'additional').length > 0 && (
-        <Card className="surface border-border/50">
-          <CardHeader className="pb-4">
-            <CardTitle className="text-lg">
-              {currentTemplateInfo?.name} Specific Fields
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {templateFields.filter(f => f.category === 'additional').map(renderTemplateField)}
-          </CardContent>
-        </Card>
-      )}
-
-      <TemplateGallery
-        isOpen={showTemplateGallery}
-        onClose={() => setShowTemplateGallery(false)}
-      />
     </div>
   );
 };

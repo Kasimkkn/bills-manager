@@ -1,10 +1,10 @@
+// components/TemplateGallery.tsx - Updated for new flexible template system
 
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Check, Palette, X } from "lucide-react";
-import { TEMPLATES, TemplateType } from '@/types/templates';
 import { useTemplate } from '@/contexts/TemplateContext';
 
 interface TemplateGalleryProps {
@@ -14,12 +14,12 @@ interface TemplateGalleryProps {
 }
 
 const TemplateGallery = ({ isOpen, onClose, onTemplateSelect }: TemplateGalleryProps) => {
-  const { currentTemplate, setCurrentTemplate } = useTemplate();
-  const [hoveredTemplate, setHoveredTemplate] = useState<TemplateType | null>(null);
+  const { currentTemplate, setCurrentTemplate, availableTemplates } = useTemplate();
+  const [hoveredTemplate, setHoveredTemplate] = useState<string | null>(null);
 
   if (!isOpen) return null;
 
-  const handleTemplateSelect = (templateId: TemplateType) => {
+  const handleTemplateSelect = (templateId: string) => {
     setCurrentTemplate(templateId);
     if (onTemplateSelect) {
       onTemplateSelect();
@@ -61,12 +61,12 @@ const TemplateGallery = ({ isOpen, onClose, onTemplateSelect }: TemplateGalleryP
 
           <div className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {TEMPLATES.map((template) => (
+              {availableTemplates.map((template) => (
                 <Card
                   key={template.id}
-                  className={`cursor-pointer bg-surface/20 transition-all duration-300 hover:scale-105 hover:shadow-lg border-2 ${currentTemplate === template.id
-                    ? 'border-black/40 shadow-lg shadow-black/25'
-                    : 'border-border/20 hover:border-black/40'
+                  className={`cursor-pointer bg-surface/20 transition-all duration-300 hover:scale-105 hover:shadow-lg border-2 ${currentTemplate?.id === template.id
+                      ? 'border-black/40 shadow-lg shadow-black/25'
+                      : 'border-border/20 hover:border-black/40'
                     }`}
                   onMouseEnter={() => setHoveredTemplate(template.id)}
                   onMouseLeave={() => setHoveredTemplate(null)}
@@ -93,7 +93,7 @@ const TemplateGallery = ({ isOpen, onClose, onTemplateSelect }: TemplateGalleryP
                       </div>
 
                       {/* Selection Indicator */}
-                      {currentTemplate === template.id && (
+                      {currentTemplate?.id === template.id && (
                         <div className="absolute top-3 right-3 bg-primary text-background rounded-full p-1">
                           <Check className="w-4 h-4" />
                         </div>
@@ -143,8 +143,11 @@ const TemplateGallery = ({ isOpen, onClose, onTemplateSelect }: TemplateGalleryP
               <p className="text-sm text-black/80">
                 You can switch templates anytime without losing your data
               </p>
-              <Button className='bg-black text-white' onClick={() => handleTemplateSelect(currentTemplate)}>
-                Continue with {TEMPLATES.find(t => t.id === currentTemplate)?.name}
+              <Button
+                className="bg-black text-white"
+                onClick={() => currentTemplate && handleTemplateSelect(currentTemplate.id)}
+              >
+                Continue with {currentTemplate?.name || 'Selected Template'}
               </Button>
             </div>
           </div>
@@ -184,12 +187,12 @@ const TemplateGallery = ({ isOpen, onClose, onTemplateSelect }: TemplateGalleryP
           {/* Templates Grid */}
           <div className="p-4 overflow-y-auto max-h-[60vh]">
             <div className="grid grid-cols-1 gap-4">
-              {TEMPLATES.map((template) => (
+              {availableTemplates.map((template) => (
                 <Card
                   key={template.id}
-                  className={`cursor-pointer bg-surface/20 transition-all duration-300 border-2 ${currentTemplate === template.id
-                    ? 'border-black/30 shadow-lg shadow-black/25'
-                    : 'border-border/10'
+                  className={`cursor-pointer bg-surface/20 transition-all duration-300 border-2 ${currentTemplate?.id === template.id
+                      ? 'border-black/30 shadow-lg shadow-black/25'
+                      : 'border-border/10'
                     }`}
                   onClick={() => handleTemplateSelect(template.id)}
                 >
@@ -210,7 +213,7 @@ const TemplateGallery = ({ isOpen, onClose, onTemplateSelect }: TemplateGalleryP
                       <div className="flex-1">
                         <div className="flex items-center justify-between mb-1">
                           <h3 className="font-semibold text-black">{template.name}</h3>
-                          {currentTemplate === template.id && (
+                          {currentTemplate?.id === template.id && (
                             <div className="bg-primary text-background rounded-full p-1">
                               <Check className="w-3 h-3" />
                             </div>
@@ -240,10 +243,10 @@ const TemplateGallery = ({ isOpen, onClose, onTemplateSelect }: TemplateGalleryP
           {/* Footer */}
           <div className="p-4 border-t border-border/50">
             <Button
-              onClick={() => handleTemplateSelect(currentTemplate)}
+              onClick={() => currentTemplate && handleTemplateSelect(currentTemplate.id)}
               className="w-full bg-black text-white"
             >
-              Continue with {TEMPLATES.find(t => t.id === currentTemplate)?.name}
+              Continue with {currentTemplate?.name || 'Selected Template'}
             </Button>
           </div>
         </div>
