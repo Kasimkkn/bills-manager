@@ -1,32 +1,39 @@
 
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import LandingHero from '@/components/LandingHero';
-import InvoiceCreator from '@/components/InvoiceCreator';
-import { InvoiceProvider } from '@/contexts/InvoiceContext';
-import { TemplateProvider } from '@/contexts/TemplateContext';
+import TemplateGallery from '@/components/TemplateGallery';
 
 const Index = () => {
-  const [showCreator, setShowCreator] = useState(false);
+  const [showTemplateGallery, setShowTemplateGallery] = useState(false);
+  const navigate = useNavigate();
 
-  const handleGetStarted = () => {
-    setShowCreator(true);
+  const handleCreateInvoice = () => {
+    setShowTemplateGallery(true);
   };
 
-  const handleBackToHome = () => {
-    setShowCreator(false);
+  const handleTemplateSelected = () => {
+    setShowTemplateGallery(false);
+    navigate('/editor');
   };
 
-  if (showCreator) {
-    return (
-      <TemplateProvider>
-        <InvoiceProvider>
-          <InvoiceCreator onBack={handleBackToHome} />
-        </InvoiceProvider>
-      </TemplateProvider>
-    );
-  }
+  const handleViewDashboard = () => {
+    navigate('/dashboard');
+  };
 
-  return <LandingHero onGetStarted={handleGetStarted} />;
+  return (
+    <>
+      <LandingHero 
+        onCreateInvoice={handleCreateInvoice}
+        onViewDashboard={handleViewDashboard}
+      />
+      <TemplateGallery 
+        isOpen={showTemplateGallery} 
+        onClose={() => setShowTemplateGallery(false)}
+        onTemplateSelect={handleTemplateSelected}
+      />
+    </>
+  );
 };
 
 export default Index;

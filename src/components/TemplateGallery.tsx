@@ -10,9 +10,10 @@ import { useTemplate } from '@/contexts/TemplateContext';
 interface TemplateGalleryProps {
   isOpen: boolean;
   onClose: () => void;
+  onTemplateSelect?: () => void;
 }
 
-const TemplateGallery = ({ isOpen, onClose }: TemplateGalleryProps) => {
+const TemplateGallery = ({ isOpen, onClose, onTemplateSelect }: TemplateGalleryProps) => {
   const { currentTemplate, setCurrentTemplate } = useTemplate();
   const [hoveredTemplate, setHoveredTemplate] = useState<TemplateType | null>(null);
 
@@ -20,7 +21,11 @@ const TemplateGallery = ({ isOpen, onClose }: TemplateGalleryProps) => {
 
   const handleTemplateSelect = (templateId: TemplateType) => {
     setCurrentTemplate(templateId);
-    onClose();
+    if (onTemplateSelect) {
+      onTemplateSelect();
+    } else {
+      onClose();
+    }
   };
 
   return (
@@ -128,7 +133,7 @@ const TemplateGallery = ({ isOpen, onClose }: TemplateGalleryProps) => {
             <p className="text-sm text-muted-foreground">
               You can switch templates anytime without losing your data
             </p>
-            <Button onClick={onClose}>
+            <Button onClick={() => handleTemplateSelect(currentTemplate)}>
               Continue with {TEMPLATES.find(t => t.id === currentTemplate)?.name}
             </Button>
           </div>

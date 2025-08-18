@@ -18,8 +18,18 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   // Load saved template from localStorage
   useEffect(() => {
     const savedTemplate = localStorage.getItem('selected-template');
+    const savedData = localStorage.getItem('template-data');
+    
     if (savedTemplate && TEMPLATES.find(t => t.id === savedTemplate)) {
       setCurrentTemplate(savedTemplate as TemplateType);
+    }
+    
+    if (savedData) {
+      try {
+        setTemplateData(JSON.parse(savedData));
+      } catch (error) {
+        console.log('No saved template data found');
+      }
     }
   }, []);
 
