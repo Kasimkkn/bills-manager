@@ -1,8 +1,8 @@
 
-import { useState } from 'react';
-import LandingHero from '@/components/LandingHero';
 import InvoiceCreator from '@/components/InvoiceCreator';
+import ProfessionalLandingPage from '@/components/ProfessionalLandingPage';
 import { InvoiceProvider } from '@/contexts/InvoiceContext';
+import { useState } from 'react';
 
 const Index = () => {
   const [showCreator, setShowCreator] = useState(false);
@@ -23,7 +23,7 @@ const Index = () => {
     );
   }
 
-  return <LandingHero onGetStarted={handleGetStarted} />;
+  return <ProfessionalLandingPage onGetStarted={handleGetStarted} />;
 };
 
 export default Index;

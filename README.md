@@ -1,73 +1,37 @@
-# Welcome to your Lovable project
+## Critical Issues That Must Be Fixed:
 
-## Project info
+### Issue 1: Template-Specific Form Data Not Showing in Invoice Preview (CRITICAL)
+Problem: Form fields adapt correctly, but the values don't appear in the invoice preview or PDF.
 
-**URL**: https://lovable.dev/projects/7a45d24d-6d0f-4ecf-835a-a344f58ca51e
+Example: Service Provider template has "Service Category" and "Service Warranty" fields, but these values don't show anywhere in the invoice preview.
 
-## How can I edit this code?
+Required Fix:
+1. Map template-specific fields to invoice preview:
+   - Service Category → Should appear in invoice as a field
+   - Service Warranty → Should appear in payment terms or additional info section
+   - Project fields (freelancer) → Should show in invoice description area
+   - Hotel fields (room numbers, dates) → Should appear in line items or special section
 
-There are several ways of editing your application.
+2. Update invoice preview template to display ALL form fields
+  
+### Issue 2: PDF Shows Wrong Template Design (CRITICAL)
+Problem: User selects different template (like freelancer with colorful design), but PDF generates with default template styling.
 
-**Use Lovable**
+Required Fix:
+1. Pass selected template to PDF generation function
+2. Apply template-specific styling in PDF:
+   - Freelancer template → Colorful purple/blue design in PDF
+   - Service template → Different color scheme in PDF  
+   - Hotel template → Elegant styling in PDF
+3. Ensure PDF matches the preview exactly
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/7a45d24d-6d0f-4ecf-835a-a344f58ca51e) and start prompting.
+### Issue 3: Template Selection Modal Not Mobile Responsive (HIGH PRIORITY)
+Problem: Modal doesn't adapt to mobile (bottom drawer style missing).
 
-Changes made via Lovable will be committed automatically to this repo.
+Required Fix:
+1. Desktop: Center modal with overlay
+2. Mobile: Bottom sheet that slides up from bottom
+3. Responsive breakpoint: Automatically switch at mobile screen sizes
+4. Touch gestures: Swipe down to close on mobile
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/7a45d24d-6d0f-4ecf-835a-a344f58ca51e) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+Focus on these 3 issues only. Don't add new features until these work perfectly.
