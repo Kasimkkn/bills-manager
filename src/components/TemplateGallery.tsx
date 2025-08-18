@@ -41,18 +41,18 @@ const TemplateGallery = ({ isOpen, onClose, onTemplateSelect }: TemplateGalleryP
         className="hidden md:flex items-center justify-center w-full h-full"
         onClick={handleBackdropClick}
       >
-        <div className="bg-white rounded-2xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="bg-white p-4 rounded-2xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto">
           <div className="p-2 border-b border-border/50">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-2xl font-bold text-foreground">Choose Your Template</h2>
-                <p className="text-muted-foreground mt-1">Select a template that matches your business needs</p>
+                <h2 className="text-2xl font-bold text-black">Choose Your Template</h2>
+                <p className="text-black/80 mt-1">Select a template that matches your business needs</p>
               </div>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={onClose}
-                className="text-muted-foreground hover:text-foreground"
+                className="text-black/80 hover:text-black"
               >
                 <X className="w-5 h-5" />
               </Button>
@@ -64,9 +64,9 @@ const TemplateGallery = ({ isOpen, onClose, onTemplateSelect }: TemplateGalleryP
               {TEMPLATES.map((template) => (
                 <Card
                   key={template.id}
-                  className={`cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg border-2 ${currentTemplate === template.id
-                    ? 'border-primary shadow-lg shadow-primary/25'
-                    : 'border-border/50 hover:border-primary/50'
+                  className={`cursor-pointer bg-surface/20 transition-all duration-300 hover:scale-105 hover:shadow-lg border-2 ${currentTemplate === template.id
+                    ? 'border-black/40 shadow-lg shadow-black/25'
+                    : 'border-border/20 hover:border-black/40'
                     }`}
                   onMouseEnter={() => setHoveredTemplate(template.id)}
                   onMouseLeave={() => setHoveredTemplate(null)}
@@ -74,7 +74,7 @@ const TemplateGallery = ({ isOpen, onClose, onTemplateSelect }: TemplateGalleryP
                 >
                   <CardContent className="p-0">
                     {/* Template Preview */}
-                    <div className="relative h-48 bg-gradient-to-br from-surface to-surface-elevated rounded-t-lg overflow-hidden">
+                    <div className="relative h-48 bg-gradient-to-br from-surface/10 to-white rounded-t-lg overflow-hidden">
                       <div
                         className="absolute inset-0 opacity-20"
                         style={{
@@ -87,8 +87,8 @@ const TemplateGallery = ({ isOpen, onClose, onTemplateSelect }: TemplateGalleryP
                             className="w-12 h-12 mx-auto mb-4 opacity-60"
                             style={{ color: template.colorScheme.primary }}
                           />
-                          <div className="text-sm font-medium text-foreground">{template.name}</div>
-                          <div className="text-xs text-muted-foreground">{template.category}</div>
+                          <div className="text-sm font-medium text-black">{template.name}</div>
+                          <div className="text-xs text-black/80">{template.category}</div>
                         </div>
                       </div>
 
@@ -102,8 +102,8 @@ const TemplateGallery = ({ isOpen, onClose, onTemplateSelect }: TemplateGalleryP
 
                     <div className="p-4">
                       <div className="mb-3">
-                        <h3 className="font-semibold text-foreground">{template.name}</h3>
-                        <p className="text-sm text-muted-foreground mt-1">{template.description}</p>
+                        <h3 className="font-semibold text-black">{template.name}</h3>
+                        <p className="text-sm text-black/80 mt-1">{template.description}</p>
                       </div>
 
                       <div className="flex flex-wrap gap-1 mb-3">
@@ -129,7 +129,7 @@ const TemplateGallery = ({ isOpen, onClose, onTemplateSelect }: TemplateGalleryP
                             style={{ backgroundColor: template.colorScheme.accent }}
                           />
                         </div>
-                        <span className="text-xs text-muted-foreground">Color Scheme</span>
+                        <span className="text-xs text-black/80">Color Scheme</span>
                       </div>
                     </div>
                   </CardContent>
@@ -138,12 +138,12 @@ const TemplateGallery = ({ isOpen, onClose, onTemplateSelect }: TemplateGalleryP
             </div>
           </div>
 
-          <div className="p-6 border-t border-border/50 bg-surface/50">
+          <div className="p-6 border-t border-border/50">
             <div className="flex justify-between items-center">
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-black/80">
                 You can switch templates anytime without losing your data
               </p>
-              <Button onClick={() => handleTemplateSelect(currentTemplate)}>
+              <Button className='bg-black text-white' onClick={() => handleTemplateSelect(currentTemplate)}>
                 Continue with {TEMPLATES.find(t => t.id === currentTemplate)?.name}
               </Button>
             </div>
@@ -157,7 +157,7 @@ const TemplateGallery = ({ isOpen, onClose, onTemplateSelect }: TemplateGalleryP
           className="absolute inset-0 bg-background/80 backdrop-blur-lg"
           onClick={onClose}
         />
-        <div className="absolute bottom-0 left-0 right-0 bg-surface-elevated rounded-t-3xl max-h-[85vh] overflow-hidden animate-slide-in-right">
+        <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl max-h-[85vh] overflow-hidden animate-slide-in-right">
           {/* Handle */}
           <div className="flex justify-center pt-3 pb-2">
             <div className="w-12 h-1 bg-border rounded-full" />
@@ -167,14 +167,14 @@ const TemplateGallery = ({ isOpen, onClose, onTemplateSelect }: TemplateGalleryP
           <div className="px-6 py-4 border-b border-border/50">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-xl font-bold text-foreground">Choose Template</h2>
-                <p className="text-sm text-muted-foreground">Select your invoice style</p>
+                <h2 className="text-xl font-bold text-black">Choose Template</h2>
+                <p className="text-sm text-black/80">Select your invoice style</p>
               </div>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={onClose}
-                className="text-muted-foreground hover:text-foreground"
+                className="text-black/80 hover:text-black"
               >
                 <X className="w-5 h-5" />
               </Button>
@@ -187,9 +187,9 @@ const TemplateGallery = ({ isOpen, onClose, onTemplateSelect }: TemplateGalleryP
               {TEMPLATES.map((template) => (
                 <Card
                   key={template.id}
-                  className={`cursor-pointer transition-all duration-300 border-2 ${currentTemplate === template.id
-                    ? 'border-primary shadow-lg shadow-primary/25'
-                    : 'border-border/50'
+                  className={`cursor-pointer bg-surface/20 transition-all duration-300 border-2 ${currentTemplate === template.id
+                    ? 'border-black/30 shadow-lg shadow-black/25'
+                    : 'border-border/10'
                     }`}
                   onClick={() => handleTemplateSelect(template.id)}
                 >
@@ -209,14 +209,14 @@ const TemplateGallery = ({ isOpen, onClose, onTemplateSelect }: TemplateGalleryP
 
                       <div className="flex-1">
                         <div className="flex items-center justify-between mb-1">
-                          <h3 className="font-semibold text-foreground">{template.name}</h3>
+                          <h3 className="font-semibold text-black">{template.name}</h3>
                           {currentTemplate === template.id && (
                             <div className="bg-primary text-background rounded-full p-1">
                               <Check className="w-3 h-3" />
                             </div>
                           )}
                         </div>
-                        <p className="text-sm text-muted-foreground mb-2">{template.description}</p>
+                        <p className="text-sm text-black/80 mb-2">{template.description}</p>
                         <div className="flex flex-wrap gap-1">
                           {template.features.slice(0, 2).map((feature) => (
                             <Badge key={feature} variant="secondary" className="text-xs">
@@ -238,10 +238,10 @@ const TemplateGallery = ({ isOpen, onClose, onTemplateSelect }: TemplateGalleryP
           </div>
 
           {/* Footer */}
-          <div className="p-4 border-t border-border/50 bg-surface/50">
+          <div className="p-4 border-t border-border/50">
             <Button
               onClick={() => handleTemplateSelect(currentTemplate)}
-              className="w-full"
+              className="w-full bg-black text-white"
             >
               Continue with {TEMPLATES.find(t => t.id === currentTemplate)?.name}
             </Button>
