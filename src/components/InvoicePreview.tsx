@@ -1,6 +1,7 @@
 import { useInvoice } from '@/contexts/InvoiceContext';
 import { useTemplate } from '@/contexts/TemplateContext';
 import { Separator } from "@/components/ui/separator";
+import FreelancerTemplate from './templates/FreelancerTemplate';
 
 const ModernTemplate = () => {
   const { invoice } = useInvoice();
