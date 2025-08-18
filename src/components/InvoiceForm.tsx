@@ -15,10 +15,10 @@ import { useState } from 'react';
 
 const InvoiceForm = () => {
   const [showTemplateGallery, setShowTemplateGallery] = useState(false);
-  const { 
-    invoice, 
-    updateBusinessInfo, 
-    updateClientInfo, 
+  const {
+    invoice,
+    updateBusinessInfo,
+    updateClientInfo,
     updateInvoiceMeta,
     addLineItem,
     updateLineItem,
@@ -27,7 +27,7 @@ const InvoiceForm = () => {
     updateTerms,
     updateTaxRate
   } = useInvoice();
-  
+
   const { currentTemplate, templateData, updateTemplateData } = useTemplate();
 
   const currentTemplateInfo = TEMPLATES.find(t => t.id === currentTemplate);
@@ -35,7 +35,7 @@ const InvoiceForm = () => {
 
   const renderTemplateField = (field: any) => {
     const value = templateData[field.id] || '';
-    
+
     if (field.type === 'select') {
       return (
         <div key={field.id}>
@@ -65,7 +65,7 @@ const InvoiceForm = () => {
           <Textarea
             value={value}
             onChange={(e) => updateTemplateData(field.id, e.target.value)}
-            className="mt-1 bg-input border-border/50 focus:border-primary/50 focus-ring resize-none"
+            className="mt-1 bg-input border-border/50 resize-none"
             placeholder={field.placeholder}
             rows={3}
           />
@@ -82,7 +82,7 @@ const InvoiceForm = () => {
           type={field.type}
           value={value}
           onChange={(e) => updateTemplateData(field.id, e.target.value)}
-          className="mt-1 bg-input border-border/50 focus:border-primary/50 focus-ring"
+          className="mt-1 bg-input border-border/50"
           placeholder={field.placeholder}
           required={field.required}
         />
@@ -91,13 +91,13 @@ const InvoiceForm = () => {
   };
 
   return (
-    <div className="p-4 lg:p-6 space-y-6 animate-fade-in">
+    <div className="p-3 lg:p-6 space-y-6 animate-fade-in">
       {/* Template Selection */}
       <Card className="surface border-border/50">
-        <CardHeader className="pb-4">
+        <CardHeader className="">
           <CardTitle className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <Palette className="w-5 h-5 text-primary" />
+              <Palette className="w-5 h-5 text-white" />
               <span>Template</span>
             </div>
             <Button
@@ -109,25 +109,13 @@ const InvoiceForm = () => {
             </Button>
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="flex items-center space-x-4">
-            <div 
-              className="w-4 h-4 rounded-full"
-              style={{ backgroundColor: currentTemplateInfo?.colorScheme.primary }}
-            />
-            <div>
-              <p className="font-medium text-foreground">{currentTemplateInfo?.name}</p>
-              <p className="text-sm text-muted-foreground">{currentTemplateInfo?.description}</p>
-            </div>
-          </div>
-        </CardContent>
       </Card>
 
       {/* Invoice Details */}
       <Card className="surface border-border/50">
         <CardHeader className="pb-4">
           <CardTitle className="flex items-center space-x-2 text-lg">
-            <FileText className="w-5 h-5 text-primary" />
+            <FileText className="w-5 h-5 text-white" />
             <span>Invoice Details</span>
           </CardTitle>
         </CardHeader>
@@ -141,7 +129,7 @@ const InvoiceForm = () => {
                 id="invoiceNumber"
                 value={invoice.invoiceNumber}
                 onChange={(e) => updateInvoiceMeta('invoiceNumber', e.target.value)}
-                className="mt-1 bg-input border-border/50 focus:border-primary/50 focus-ring"
+                className="mt-1 bg-input border-border/50"
                 placeholder="INV-001"
               />
             </div>
@@ -154,7 +142,7 @@ const InvoiceForm = () => {
                 type="date"
                 value={invoice.invoiceDate}
                 onChange={(e) => updateInvoiceMeta('invoiceDate', e.target.value)}
-                className="mt-1 bg-input border-border/50 focus:border-primary/50 focus-ring"
+                className="mt-1 bg-input border-border/50"
               />
             </div>
             <div>
@@ -166,7 +154,7 @@ const InvoiceForm = () => {
                 type="date"
                 value={invoice.dueDate}
                 onChange={(e) => updateInvoiceMeta('dueDate', e.target.value)}
-                className="mt-1 bg-input border-border/50 focus:border-primary/50 focus-ring"
+                className="mt-1 bg-input border-border/50"
               />
             </div>
           </div>
@@ -186,14 +174,14 @@ const InvoiceForm = () => {
       <Card className="surface border-border/50">
         <CardHeader className="pb-4">
           <CardTitle className="flex items-center space-x-2 text-lg">
-            <Building className="w-5 h-5 text-primary" />
+            <Building className="w-5 h-5 text-white" />
             <span>Your Business</span>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Logo Upload */}
           <LogoUpload />
-          
+
           <div>
             <Label htmlFor="businessName" className="text-sm font-medium text-foreground">
               Business Name
@@ -202,11 +190,11 @@ const InvoiceForm = () => {
               id="businessName"
               value={invoice.businessInfo.name}
               onChange={(e) => updateBusinessInfo({ name: e.target.value })}
-              className="mt-1 bg-input border-border/50 focus:border-primary/50 focus-ring"
+              className="mt-1 bg-input border-border/50"
               placeholder="Your Business Name"
             />
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="businessEmail" className="text-sm font-medium text-foreground">
@@ -217,7 +205,7 @@ const InvoiceForm = () => {
                 type="email"
                 value={invoice.businessInfo.email}
                 onChange={(e) => updateBusinessInfo({ email: e.target.value })}
-                className="mt-1 bg-input border-border/50 focus:border-primary/50 focus-ring"
+                className="mt-1 bg-input border-border/50"
                 placeholder="business@example.com"
               />
             </div>
@@ -230,7 +218,7 @@ const InvoiceForm = () => {
                 type="tel"
                 value={invoice.businessInfo.phone}
                 onChange={(e) => updateBusinessInfo({ phone: e.target.value })}
-                className="mt-1 bg-input border-border/50 focus:border-primary/50 focus-ring"
+                className="mt-1 bg-input border-border/50"
                 placeholder="+1 (555) 123-4567"
               />
             </div>
@@ -244,7 +232,7 @@ const InvoiceForm = () => {
               id="businessAddress"
               value={invoice.businessInfo.address}
               onChange={(e) => updateBusinessInfo({ address: e.target.value })}
-              className="mt-1 bg-input border-border/50 focus:border-primary/50 focus-ring"
+              className="mt-1 bg-input border-border/50"
               placeholder="123 Business St"
             />
           </div>
@@ -258,7 +246,7 @@ const InvoiceForm = () => {
                 id="businessCity"
                 value={invoice.businessInfo.city}
                 onChange={(e) => updateBusinessInfo({ city: e.target.value })}
-                className="mt-1 bg-input border-border/50 focus:border-primary/50 focus-ring"
+                className="mt-1 bg-input border-border/50"
                 placeholder="City"
               />
             </div>
@@ -270,7 +258,7 @@ const InvoiceForm = () => {
                 id="businessState"
                 value={invoice.businessInfo.state}
                 onChange={(e) => updateBusinessInfo({ state: e.target.value })}
-                className="mt-1 bg-input border-border/50 focus:border-primary/50 focus-ring"
+                className="mt-1 bg-input border-border/50"
                 placeholder="State"
               />
             </div>
@@ -282,7 +270,7 @@ const InvoiceForm = () => {
                 id="businessZip"
                 value={invoice.businessInfo.zipCode}
                 onChange={(e) => updateBusinessInfo({ zipCode: e.target.value })}
-                className="mt-1 bg-input border-border/50 focus:border-primary/50 focus-ring"
+                className="mt-1 bg-input border-border/50"
                 placeholder="12345"
               />
             </div>
@@ -301,7 +289,7 @@ const InvoiceForm = () => {
       <Card className="surface border-border/50">
         <CardHeader className="pb-4">
           <CardTitle className="flex items-center space-x-2 text-lg">
-            <User className="w-5 h-5 text-primary" />
+            <User className="w-5 h-5 text-white" />
             <span>Bill To</span>
           </CardTitle>
         </CardHeader>
@@ -314,11 +302,11 @@ const InvoiceForm = () => {
               id="clientName"
               value={invoice.clientInfo.name}
               onChange={(e) => updateClientInfo({ name: e.target.value })}
-              className="mt-1 bg-input border-border/50 focus:border-primary/50 focus-ring"
+              className="mt-1 bg-input border-border/50"
               placeholder="Client Name"
             />
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="clientEmail" className="text-sm font-medium text-foreground">
@@ -329,7 +317,7 @@ const InvoiceForm = () => {
                 type="email"
                 value={invoice.clientInfo.email}
                 onChange={(e) => updateClientInfo({ email: e.target.value })}
-                className="mt-1 bg-input border-border/50 focus:border-primary/50 focus-ring"
+                className="mt-1 bg-input border-border/50"
                 placeholder="client@example.com"
               />
             </div>
@@ -342,7 +330,7 @@ const InvoiceForm = () => {
                 type="tel"
                 value={invoice.clientInfo.phone}
                 onChange={(e) => updateClientInfo({ phone: e.target.value })}
-                className="mt-1 bg-input border-border/50 focus:border-primary/50 focus-ring"
+                className="mt-1 bg-input border-border/50"
                 placeholder="+1 (555) 123-4567"
               />
             </div>
@@ -356,7 +344,7 @@ const InvoiceForm = () => {
               id="clientAddress"
               value={invoice.clientInfo.address}
               onChange={(e) => updateClientInfo({ address: e.target.value })}
-              className="mt-1 bg-input border-border/50 focus:border-primary/50 focus-ring"
+              className="mt-1 bg-input border-border/50"
               placeholder="123 Client St"
             />
           </div>
@@ -370,7 +358,7 @@ const InvoiceForm = () => {
                 id="clientCity"
                 value={invoice.clientInfo.city}
                 onChange={(e) => updateClientInfo({ city: e.target.value })}
-                className="mt-1 bg-input border-border/50 focus:border-primary/50 focus-ring"
+                className="mt-1 bg-input border-border/50"
                 placeholder="City"
               />
             </div>
@@ -382,7 +370,7 @@ const InvoiceForm = () => {
                 id="clientState"
                 value={invoice.clientInfo.state}
                 onChange={(e) => updateClientInfo({ state: e.target.value })}
-                className="mt-1 bg-input border-border/50 focus:border-primary/50 focus-ring"
+                className="mt-1 bg-input border-border/50"
                 placeholder="State"
               />
             </div>
@@ -394,7 +382,7 @@ const InvoiceForm = () => {
                 id="clientZip"
                 value={invoice.clientInfo.zipCode}
                 onChange={(e) => updateClientInfo({ zipCode: e.target.value })}
-                className="mt-1 bg-input border-border/50 focus:border-primary/50 focus-ring"
+                className="mt-1 bg-input border-border/50"
                 placeholder="12345"
               />
             </div>
@@ -414,13 +402,13 @@ const InvoiceForm = () => {
         <CardHeader className="pb-4">
           <CardTitle className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <Calculator className="w-5 h-5 text-primary" />
+              <Calculator className="w-5 h-5 text-white" />
               <span>Items & Services</span>
             </div>
             <Button
               onClick={addLineItem}
               size="sm"
-              className="bg-primary/10 hover:bg-primary/20 text-primary border-primary/20 hover:border-primary/30"
+              className="bg-black text-white"
             >
               <Plus className="w-4 h-4 mr-2" />
               Add Item
@@ -446,7 +434,7 @@ const InvoiceForm = () => {
                     </Button>
                   )}
                 </div>
-                
+
                 <div>
                   <Label className="text-sm font-medium text-foreground">
                     Description
@@ -454,11 +442,11 @@ const InvoiceForm = () => {
                   <Input
                     value={item.description}
                     onChange={(e) => updateLineItem(item.id, 'description', e.target.value)}
-                    className="mt-1 bg-input border-border/50 focus:border-primary/50 focus-ring"
+                    className="mt-1 bg-input border-border/50"
                     placeholder="Item or service description"
                   />
                 </div>
-                
+
                 <div className="grid grid-cols-3 gap-3">
                   <div>
                     <Label className="text-sm font-medium text-foreground">
@@ -470,7 +458,7 @@ const InvoiceForm = () => {
                       step="0.01"
                       value={item.quantity}
                       onChange={(e) => updateLineItem(item.id, 'quantity', parseFloat(e.target.value) || 0)}
-                      className="mt-1 bg-input border-border/50 focus:border-primary/50 focus-ring"
+                      className="mt-1 bg-input border-border/50"
                     />
                   </div>
                   <div>
@@ -483,7 +471,7 @@ const InvoiceForm = () => {
                       step="0.01"
                       value={item.rate}
                       onChange={(e) => updateLineItem(item.id, 'rate', parseFloat(e.target.value) || 0)}
-                      className="mt-1 bg-input border-border/50 focus:border-primary/50 focus-ring"
+                      className="mt-1 bg-input border-border/50"
                     />
                   </div>
                   <div>
@@ -534,12 +522,12 @@ const InvoiceForm = () => {
               id="notes"
               value={invoice.notes}
               onChange={(e) => updateNotes(e.target.value)}
-              className="mt-1 bg-input border-border/50 focus:border-primary/50 focus-ring resize-none"
+              className="mt-1 bg-input border-border/50 resize-none"
               placeholder="Additional notes for your client..."
               rows={3}
             />
           </div>
-          
+
           <div>
             <Label htmlFor="terms" className="text-sm font-medium text-foreground">
               Payment Terms
@@ -548,7 +536,7 @@ const InvoiceForm = () => {
               id="terms"
               value={invoice.terms}
               onChange={(e) => updateTerms(e.target.value)}
-              className="mt-1 bg-input border-border/50 focus:border-primary/50 focus-ring resize-none"
+              className="mt-1 bg-input border-border/50 resize-none"
               placeholder="Payment terms and conditions..."
               rows={3}
             />
@@ -570,9 +558,9 @@ const InvoiceForm = () => {
         </Card>
       )}
 
-      <TemplateGallery 
-        isOpen={showTemplateGallery} 
-        onClose={() => setShowTemplateGallery(false)} 
+      <TemplateGallery
+        isOpen={showTemplateGallery}
+        onClose={() => setShowTemplateGallery(false)}
       />
     </div>
   );

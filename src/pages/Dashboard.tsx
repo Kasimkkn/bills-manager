@@ -43,10 +43,10 @@ const Dashboard = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'paid': return 'bg-green-100 text-green-800';
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'overdue': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'paid': return 'bg-green-100 text-green-800 hover:bg-green-200';
+      case 'pending': return 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200';
+      case 'overdue': return 'bg-red-100 text-red-800 hover:bg-red-200';
+      default: return 'bg-gray-100 text-gray-800 hover:bg-gray-200';
     }
   };
 
@@ -68,17 +68,17 @@ const Dashboard = () => {
               <div className="h-6 w-px bg-border" />
               <h1 className="text-xl font-semibold">Dashboard</h1>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               {remainingDownloads > 0 && (
                 <div className="text-sm text-muted-foreground">
                   {remainingDownloads} download{remainingDownloads !== 1 ? 's' : ''} remaining
                 </div>
               )}
-              
+
               <Button
                 onClick={handleCreateInvoice}
-                className="bg-gradient-primary text-background hover:shadow-lg hover:shadow-primary/25 transition-all duration-300"
+                className="bg-black text-white"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Create Invoice
@@ -149,7 +149,7 @@ const Dashboard = () => {
                 onClick={handleCreateInvoice}
                 size="sm"
                 variant="outline"
-                className="border-primary/20 text-primary hover:bg-primary/10"
+                className="border-black/20 text-white hover:bg-black/10"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 New Invoice
@@ -161,25 +161,25 @@ const Dashboard = () => {
               {recentInvoices.map((invoice) => (
                 <div key={invoice.id} className="flex items-center justify-between p-4 glass rounded-lg">
                   <div className="flex items-center space-x-4">
-                    <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center">
-                      <FileText className="w-5 h-5 text-background" />
+                    <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+                      <FileText className="w-5 h-5 text-black" />
                     </div>
                     <div>
                       <p className="font-medium text-foreground">{invoice.id}</p>
                       <p className="text-sm text-muted-foreground">{invoice.client}</p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center space-x-4">
                     <div className="text-right">
                       <p className="font-medium text-foreground">${invoice.amount.toLocaleString()}</p>
                       <p className="text-sm text-muted-foreground">{invoice.date}</p>
                     </div>
-                    
+
                     <Badge className={getStatusColor(invoice.status)}>
                       {invoice.status}
                     </Badge>
-                    
+
                     <div className="flex space-x-2">
                       <Button size="sm" variant="ghost" className="text-muted-foreground hover:text-foreground">
                         <Edit className="w-4 h-4" />
@@ -197,8 +197,8 @@ const Dashboard = () => {
       </div>
 
       {/* Template Gallery Modal */}
-      <TemplateGallery 
-        isOpen={showTemplateGallery} 
+      <TemplateGallery
+        isOpen={showTemplateGallery}
         onClose={() => setShowTemplateGallery(false)}
         onTemplateSelect={handleTemplateSelected}
       />

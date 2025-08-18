@@ -50,7 +50,7 @@ const InvoiceCreator = ({ onBack }: InvoiceCreatorProps) => {
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back
           </Button>
-          
+
           <div className="flex items-center space-x-2">
             <Button
               variant="ghost"
@@ -59,14 +59,13 @@ const InvoiceCreator = ({ onBack }: InvoiceCreatorProps) => {
               className="text-muted-foreground hover:text-foreground"
             >
               {showPreview ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              <span className="ml-2">{showPreview ? 'Edit' : 'Preview'}</span>
             </Button>
-            
+
             <Button
               size="sm"
               onClick={handleDownloadPDF}
               disabled={isGeneratingPDF}
-              className="bg-gradient-primary text-background hover:shadow-lg hover:shadow-primary/25 transition-all duration-300"
+              className="bg-black text-white"
             >
               <Download className="w-4 h-4 mr-2" />
               {isGeneratingPDF ? 'Generating...' : 'PDF'}
@@ -77,7 +76,7 @@ const InvoiceCreator = ({ onBack }: InvoiceCreatorProps) => {
 
       {/* Desktop Header */}
       <div className="hidden lg:block sticky top-0 z-40 bg-surface-elevated/95 backdrop-blur-lg border-b border-border/50">
-        <div className="container mx-auto px-6 py-4">
+        <div className="px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <Button
@@ -91,18 +90,18 @@ const InvoiceCreator = ({ onBack }: InvoiceCreatorProps) => {
               <div className="h-6 w-px bg-border" />
               <h1 className="text-lg font-semibold">Invoice Creator</h1>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               {remainingDownloads > 0 && (
                 <div className="text-sm text-muted-foreground">
                   {remainingDownloads} download{remainingDownloads !== 1 ? 's' : ''} remaining
                 </div>
               )}
-              
+
               <Button
                 onClick={handleDownloadPDF}
                 disabled={isGeneratingPDF}
-                className="bg-gradient-primary text-background hover:shadow-lg hover:shadow-primary/25 transition-all duration-300"
+                className="bg-black text-white"
               >
                 <Download className="w-4 h-4 mr-2" />
                 {isGeneratingPDF ? 'Generating PDF...' : 'Download PDF'}
