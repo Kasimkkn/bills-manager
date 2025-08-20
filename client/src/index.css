@@ -91,11 +91,13 @@
 
   /* Enhanced Glass Morphism Effects */
   .glass {
-    @apply bg-glass backdrop-blur-xl border border-border/50 shadow-lg;
+    background-color: hsl(var(--glass));
+    @apply backdrop-blur-xl border border-border/50 shadow-lg;
   }
 
   .glass-elevated {
-    @apply bg-surface-elevated/80 backdrop-blur-2xl border border-border/30 shadow-2xl;
+    background-color: hsl(var(--surface-elevated) / 0.8);
+    @apply backdrop-blur-2xl border border-border/30 shadow-2xl;
     box-shadow:
       0 25px 50px -12px rgba(0, 0, 0, 0.25),
       0 0 0 1px rgba(255, 255, 255, 0.05),
@@ -104,11 +106,13 @@
 
   /* Surface Variants */
   .surface {
-    @apply bg-surface border border-border/50;
+    background-color: hsl(var(--surface));
+    @apply border border-border/50;
   }
 
   .surface-elevated {
-    @apply bg-surface-elevated border border-border/30 shadow-xl;
+    background-color: hsl(var(--surface-elevated));
+    @apply border border-border/30 shadow-xl;
   }
 
   /* Professional Invoice Styling */
@@ -169,11 +173,33 @@
 
   /* Enhanced Animation Classes */
   .animate-in {
-    @apply animate-fade-in;
+    animation: fadeIn 0.5s ease-in-out;
   }
 
   .animate-slide {
-    @apply animate-slide-in;
+    animation: slideIn 0.3s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
   }
 
   /* Professional Shadows */
