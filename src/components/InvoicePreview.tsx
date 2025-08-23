@@ -26,8 +26,10 @@ const InvoicePreview = () => {
   };
 
   return (
-    <div className="invoice-preview-container">
-      {renderTemplate()}
+    <div className="invoice-preview-container w-full">
+      <div className="w-full max-w-4xl mx-auto">
+        {renderTemplate()}
+      </div>
     </div>
   );
 };
