@@ -2,6 +2,7 @@ import ProfessionalLandingPage from "@/components/ProfessionalLandingPage";
 import TemplateGallery from "@/components/TemplateGallery";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import InvoicePage from "./InvoicePage";
 
 const Index = () => {
   const [showTemplateGallery, setShowTemplateGallery] = useState(false);
@@ -13,16 +14,16 @@ const Index = () => {
 
   const handleTemplateSelected = () => {
     setShowTemplateGallery(false);
-    navigate('/editor');
+    navigate("/editor");
   };
 
   const handleViewDashboard = () => {
-    navigate('/dashboard');
+    navigate("/dashboard");
   };
 
   return (
     <>
-      <ProfessionalLandingPage
+      {/* <ProfessionalLandingPage
         onCreateInvoice={handleCreateInvoice}
         onViewDashboard={handleViewDashboard}
       />
@@ -30,7 +31,8 @@ const Index = () => {
         isOpen={showTemplateGallery}
         onClose={() => setShowTemplateGallery(false)}
         onTemplateSelect={handleTemplateSelected}
-      />
+      /> */}
+      <InvoicePage />
     </>
   );
 };
