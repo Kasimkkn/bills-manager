@@ -1,3 +1,9 @@
+interface Address {
+  city: string;
+  state: string;
+  country: string;
+  pincode: string;
+}
 export interface DynamicBillConfig {
   billType: "HOTEL" | "FREELANCER" | "SUPPLIER" | "RETAILER" | "ECOMMERCE";
 
@@ -5,26 +11,31 @@ export interface DynamicBillConfig {
   isBusinessInfoNeeded: boolean;
   businessInfo?: {
     name: string;
-    address?: string;
+    address?: Address;
     phoneNumber?: number | string;
     email?: string;
     website?: string;
-    logoUrl?: string;
-    gstin?: string;
-    invoiceNumber?: string | number;
-    invoiceDate?: string | Date;
     placeOfSupply?: string;
     logo?: string;
+    taxId?: string;
+    gstNumber?: string;
   };
 
   // 2️⃣ Customer / Client Section
   isCustomerInfoNeeded: boolean;
   customerInfo?: {
     name: string;
-    address?: string;
+    address?: Address;
     phone?: number | string;
     email?: string;
     gstin?: string;
+  };
+
+  // Invoice Info
+  invoiceInfo: {
+    invoiceNumber?: string | number;
+    invoiceDate?: string | Date;
+    invoiceDueDate?: string | Date;
   };
 
   // 3️⃣ Product or Service List Section
@@ -37,15 +48,13 @@ export interface DynamicBillConfig {
     rate: number;
     discount?: number; // fixed or %
     tax?: number; // % or fixed
-    total: number;
   }[];
 
   // 4️⃣ Bill Summary Section
-  isBillSummaryNeeded: boolean;
   billSummary?: {
     discountType: "FIXED" | "PERCENTAGE";
     subTotal: number;
-    discount?: number;
+    discount?: string;
     shippingCharge?: number;
     packingCharge?: number;
     cgst?: number;
