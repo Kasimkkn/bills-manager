@@ -780,6 +780,47 @@ Headers: Item, HSN/SAC, Qty, Unit, Price, Tax%, Amount, Action
 - Collapsible sections
 - Sticky "Create Invoice" button at bottom
 
+## Database Schema
+```prisma
+Invoice {
+  id: string (uuid)
+  userId: string (nullable for guest)
+  businessId: string (nullable)
+  customerId: string (nullable)
+  invoiceNumber: string (unique)
+  invoiceDate: datetime
+  dueDate: datetime (optional)
+  isGst: boolean
+  subtotal: decimal
+  discount: decimal
+  taxAmount: decimal
+  roundOff: decimal
+  total: decimal
+  status: enum (DRAFT, GENERATED, PAID)
+  notes: string (optional)
+  referenceNumber: string (optional)
+  items: InvoiceItem[]
+  createdAt: datetime
+  updatedAt: datetime
+}
+
+InvoiceItem {
+  id: string (uuid)
+  invoiceId: string (foreign key)
+  itemName: string
+  hsnSacCode: string
+  quantity: decimal
+  unit: string
+  price: decimal
+  taxRate: decimal
+  amount: decimal
+  taxAmount: decimal
+  total: decimal
+}
+```
+
+Clean, professional design with good spacing and clear labels.
+
 # Prompt 8: Invoice Preview & PDF Generation
 
 Create invoice preview modal and PDF generation at `/invoice/preview/[id]`.
@@ -922,6 +963,21 @@ Table styling:
 - PDF generated temporarily (not stored)
 - Session-based access only
 
+## Database Updates
+After generating invoice:
+- Save to database with status GENERATED
+- Update customer's total invoices count
+- Update business revenue stats
+- Create PDF URL reference (if storing PDFs)
+
+## Design Requirements
+- Clean, professional invoice design
+- Good contrast for printing
+- Proper spacing and alignment
+- Mobile-responsive preview
+- Loading states during PDF generation
+- Success toast after actions
+- Error handling for failed operations
 
 ## Invoice Template Variations (Future)
 Prepare structure for:

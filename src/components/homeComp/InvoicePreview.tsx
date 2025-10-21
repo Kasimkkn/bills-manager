@@ -31,7 +31,7 @@ const InvoicePreview: React.FC = () => {
                     {/* Enhanced Company Info */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-8">
                         <div className="space-y-2 text-start">
-                            <h3 className="font-bold text-slate-900 text-xs sm:text-sm uppercase tracking-wide text-teal-600">From:</h3>
+                            <h3 className="font-bold  text-xs sm:text-sm uppercase tracking-wide text-teal-600">From:</h3>
                             <div className="bg-teal-50 rounded-lg p-3 border border-teal-100">
                                 <div className="space-y-1 text-xs sm:text-sm">
                                     <div className="font-bold text-slate-900">Design Studio Pro</div>
@@ -41,7 +41,7 @@ const InvoicePreview: React.FC = () => {
                             </div>
                         </div>
                         <div className="space-y-2 text-start">
-                            <h3 className="font-bold text-slate-900 text-xs sm:text-sm uppercase tracking-wide text-teal-600">To:</h3>
+                            <h3 className="font-bold  text-xs sm:text-sm uppercase tracking-wide text-teal-600">To:</h3>
                             <div className="bg-sky-50 rounded-lg p-3 border border-sky-100">
                                 <div className="space-y-1 text-xs sm:text-sm">
                                     <div className="font-bold text-slate-900">TechCorp Inc.</div>
@@ -87,12 +87,6 @@ const InvoicePreview: React.FC = () => {
                                 <div className="text-slate-600 text-start">$75</div>
                                 <div className="text-right font-semibold text-slate-900">$3,000</div>
                             </div>
-                            <div className="px-4 py-4 grid grid-cols-4 gap-2 sm:gap-4 text-xs sm:text-sm hover:bg-slate-50 transition-colors">
-                                <div className="font-medium text-slate-900 text-start">Consultation</div>
-                                <div className="text-slate-600 text-start">5hrs</div>
-                                <div className="text-slate-600 text-start">$150</div>
-                                <div className="text-right font-semibold text-slate-900">$750</div>
-                            </div>
                         </div>
                     </div>
 
@@ -101,11 +95,11 @@ const InvoicePreview: React.FC = () => {
                         <div className="space-y-2">
                             <div className="flex justify-between text-xs sm:text-sm">
                                 <span className="text-slate-600">Subtotal:</span>
-                                <span className="font-medium">$6,250.00</span>
+                                <span className="font-medium text-slate-900">$6,250.00</span>
                             </div>
                             <div className="flex justify-between text-xs sm:text-sm">
                                 <span className="text-slate-600">Tax (8.5%):</span>
-                                <span className="font-medium">$531.25</span>
+                                <span className="font-medium text-slate-900">$531.25</span>
                             </div>
                             <div className="border-t border-teal-200 pt-2">
                                 <div className="flex justify-between items-center">
@@ -121,14 +115,14 @@ const InvoicePreview: React.FC = () => {
             </div>
 
             {/* Enhanced Floating Elements */}
-            <div className="absolute -top-4 -right-4 sm:-top-6 sm:-right-6 bg-white rounded-xl sm:rounded-2xl shadow-xl p-3 sm:p-4 border border-green-200 animate-bounce">
+            <div className="absolute -top-4 -right-4 sm:-top-0 sm:right-32 bg-white rounded-xl sm:rounded-2xl shadow-xl p-3 sm:p-4 border border-green-200 animate-bounce">
                 <div className="flex items-center space-x-2">
                     <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                     <span className="text-xs sm:text-sm font-semibold text-green-700">PDF Ready</span>
                 </div>
             </div>
 
-            <div className="absolute -bottom-4 -left-4 sm:-bottom-6 sm:-left-6 bg-white rounded-xl sm:rounded-2xl shadow-xl p-3 sm:p-4 border border-teal-200 animate-pulse">
+            <div className="absolute -bottom-4 -right-4 sm:-bottom-6 sm:-right-6 bg-white rounded-xl sm:rounded-2xl shadow-xl p-3 sm:p-4 border border-teal-200 animate-pulse">
                 <div className="flex items-center space-x-2">
                     <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-teal-500" />
                     <span className="text-xs sm:text-sm font-semibold text-teal-700">Tax Calculated</span>

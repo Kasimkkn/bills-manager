@@ -1,12 +1,10 @@
 // types/index.ts
 export interface LandingHeroProps {
     onCreateInvoice: () => void;
-    onViewDashboard: () => void;
 }
 
 export interface NavigationProps {
     onCreateInvoice: () => void;
-    onViewDashboard?: () => void;
 }
 
 export interface Feature {

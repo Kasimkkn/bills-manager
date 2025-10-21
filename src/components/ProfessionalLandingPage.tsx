@@ -15,7 +15,7 @@ import Footer from '@/components/homeComp/Footer';
 // Import types
 import { LandingHeroProps } from '@/types';
 
-const ProfessionalLandingPage: React.FC<LandingHeroProps> = ({ onCreateInvoice, onViewDashboard }) => {
+const ProfessionalLandingPage: React.FC<LandingHeroProps> = ({ onCreateInvoice }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
@@ -47,7 +47,6 @@ const ProfessionalLandingPage: React.FC<LandingHeroProps> = ({ onCreateInvoice, 
     <div className="min-h-screen bg-slate-50 font-display">
       <Navigation
         onCreateInvoice={onCreateInvoice}
-        onViewDashboard={onViewDashboard}
       />
 
       <HeroSection

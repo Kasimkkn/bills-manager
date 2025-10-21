@@ -1,7 +1,5 @@
-import React, { useRef } from "react";
-import { Download } from "lucide-react";
-import html2pdf from "html2pdf.js";
 import { DynamicBillConfig } from "@/types/invoice";
+import React from "react";
 
 export default function Invoice2({
   invoiceData,
@@ -11,7 +9,7 @@ export default function Invoice2({
   invoiceRef: React.Ref<null>;
 }) {
   return (
-    <div className='min-h-screen bg-gray-100 flex items-center justify-center p-4'>
+    <div className='min-h-screen flex items-center justify-center p-4'>
       {/* Invoice Container - Fixed A4 Size */}
       <div
         ref={invoiceRef}
@@ -297,8 +295,8 @@ export default function Invoice2({
                     <div className='w-4 h-4 rounded-full border-2 border-gray-400 flex items-center justify-center'>
                       {invoiceData.payment.paymentOption ===
                         "BANK_TRANSFER" && (
-                        <div className='w-2 h-2 rounded-full bg-blue-600'></div>
-                      )}
+                          <div className='w-2 h-2 rounded-full bg-blue-600'></div>
+                        )}
                     </div>
                     <span className='text-gray-700'>Bank Transfer</span>
                   </label>

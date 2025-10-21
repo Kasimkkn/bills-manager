@@ -1,11 +1,10 @@
-import Invoice2 from "@/components/invoiceUI/Invoice2";
 import DynamicInvoiceForm from "@/components/DynamicInvoiceForm";
+import Invoice2 from "@/components/invoiceUI/Invoice2";
 import { Button } from "@/components/ui/button";
 import { DynamicBillConfig } from "@/types/invoice";
+import html2pdf from "html2pdf.js";
 import { Download, Eye, EyeOff } from "lucide-react";
 import { useRef, useState } from "react";
-import Invoice1 from "@/components/invoiceUI/Invoice1";
-import html2pdf from "html2pdf.js";
 
 const InvoicePage = () => {
   const [showPreview, setShowPreview] = useState(false);
@@ -183,15 +182,10 @@ const InvoicePage = () => {
         <div className='px-6 py-4'>
           <div className='flex items-center justify-between'>
             <div className='flex items-center space-x-4'>
-              <div className='h-6 w-px bg-border' />
               <h1 className='text-lg font-semibold'>Invoice Creator</h1>
             </div>
 
             <div className='flex items-center space-x-4'>
-              <div className='text-sm text-muted-foreground'>
-                Real-time preview enabled
-              </div>
-
               <Button
                 disabled={isGeneratingPDF}
                 onClick={handleDownloadPDF}
@@ -209,9 +203,8 @@ const InvoicePage = () => {
       <div className='lg:grid lg:grid-cols-12 h-screen relative'>
         {/* Form Panel (scrollable) */}
         <div
-          className={`${
-            showPreview ? "hidden lg:block" : "block"
-          } bg-background border-r border-border/50 overflow-y-auto h-screen lg:col-span-5`}
+          className={`${showPreview ? "hidden lg:block" : "block"
+            } bg-background border-r border-border/50 overflow-y-auto h-screen lg:col-span-5`}
         >
           <DynamicInvoiceForm
             formData={formData}
@@ -221,9 +214,8 @@ const InvoicePage = () => {
 
         {/* Preview Panel (fixed on right, same height) */}
         <div
-          className={`${
-            !showPreview ? "hidden lg:block" : "block"
-          } bg-transparent h-screen overflow-y-auto lg:fixed lg:right-0 lg:top-0 lg:w-[60%]`}
+          className={`${!showPreview ? "hidden lg:block" : "block"
+            } bg-transparent h-screen py-10 overflow-y-auto lg:fixed lg:right-0 lg:top-0 lg:w-[60%]`}
         >
           <div className='p-4 lg:py-12 lg:px-8'>
             {/* <Invoice1 formData={formData} invoiceRef={invoiceRef} /> */}
