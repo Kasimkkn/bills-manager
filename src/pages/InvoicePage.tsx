@@ -1,16 +1,12 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, Download, Eye, EyeOff } from "lucide-react";
 import Invoice1 from "@/components/invoiceUI/Invoice1";
 import Invoice2 from "@/components/invoiceUI/Invoice2";
-import Invoice3 from "@/components/invoiceUI/Invoice3";
+import { Button } from "@/components/ui/button";
 import { DynamicBillConfig } from "@/types/invoice";
+import { Download, Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
 
-interface InvoicePageProps {
-  onBack: () => void;
-}
 
-const InvoicePage = ({ onBack }: InvoicePageProps) => {
+const InvoicePage = () => {
   const [showPreview, setShowPreview] = useState(false);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [formData, setFormData] = useState<DynamicBillConfig | null>({
@@ -30,7 +26,7 @@ const InvoicePage = ({ onBack }: InvoicePageProps) => {
       phoneNumber: "9823456789",
       email: "support@shopease.in",
       placeOfSupply: "Maharashtra",
-      logo: "url",
+      logo: "https://raw.githubusercontent.com/mkronix/mkronix_web/refs/heads/main/public/favicon.ico?token=GHSAT0AAAAAADMXOXIQ5YYVLWJX2H4M7ID62HWK44A",
     },
     invoiceInfo: {
       invoiceNumber: "#AB2324-01",
@@ -100,15 +96,6 @@ const InvoicePage = ({ onBack }: InvoicePageProps) => {
       {/* Mobile Header */}
       <div className='lg:hidden sticky top-0 z-40 bg-surface-elevated/95 backdrop-blur-lg border-b border-border/50'>
         <div className='flex items-center justify-between p-4'>
-          <Button
-            variant='ghost'
-            size='sm'
-            onClick={onBack}
-            className='text-muted-foreground hover:text-foreground'
-          >
-            <ArrowLeft className='w-4 h-4 mr-2' />
-            Back
-          </Button>
 
           <div className='flex items-center space-x-2'>
             <Button
@@ -141,14 +128,6 @@ const InvoicePage = ({ onBack }: InvoicePageProps) => {
         <div className='px-6 py-4'>
           <div className='flex items-center justify-between'>
             <div className='flex items-center space-x-4'>
-              <Button
-                variant='ghost'
-                onClick={onBack}
-                className='text-muted-foreground hover:text-foreground'
-              >
-                <ArrowLeft className='w-4 h-4 mr-2' />
-                Back to Home
-              </Button>
               <div className='h-6 w-px bg-border' />
               <h1 className='text-lg font-semibold'>Invoice Creator</h1>
             </div>
@@ -174,9 +153,8 @@ const InvoicePage = ({ onBack }: InvoicePageProps) => {
       <div className='lg:grid lg:grid-cols-2 lg:gap-0 min-h-[calc(100vh-80px)]'>
         {/* Form Panel */}
         <div
-          className={`${
-            showPreview ? "hidden lg:block" : "block"
-          } bg-background border-r border-border/50`}
+          className={`${showPreview ? "hidden lg:block" : "block"
+            } bg-background border-r border-border/50`}
         >
           <div className='h-full overflow-y-auto'>{/* <InvoiceForm /> */}</div>
         </div>
@@ -187,8 +165,8 @@ const InvoicePage = ({ onBack }: InvoicePageProps) => {
         >
           <div className='h-full overflow-y-auto'>
             {/* <InvoicePreview /> */}
-            <Invoice1 formData={formData} />
-            {/* <Invoice2 /> */}
+            {/* <Invoice1 formData={formData} /> */}
+            <Invoice2 invoiceData={formData} />
             {/* <Invoice3 /> */}
           </div>
         </div>

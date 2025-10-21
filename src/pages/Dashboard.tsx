@@ -1,17 +1,14 @@
 
-import { useState } from 'react';
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Plus, FileText, Download, Edit, TrendingUp, Users, DollarSign } from "lucide-react";
+import { ArrowLeft, DollarSign, Download, Edit, FileText, Plus, TrendingUp, Users } from "lucide-react";
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import TemplateGallery from '@/components/TemplateGallery';
-import { useUsageTracking } from '@/hooks/useUsageTracking';
 
 const Dashboard = () => {
   const [showTemplateGallery, setShowTemplateGallery] = useState(false);
   const navigate = useNavigate();
-  const { remainingDownloads } = useUsageTracking();
 
   const handleBackHome = () => {
     navigate('/');
@@ -70,11 +67,6 @@ const Dashboard = () => {
             </div>
 
             <div className="flex items-center space-x-4">
-              {remainingDownloads > 0 && (
-                <div className="text-sm text-muted-foreground">
-                  {remainingDownloads} download{remainingDownloads !== 1 ? 's' : ''} remaining
-                </div>
-              )}
 
               <Button
                 onClick={handleCreateInvoice}
@@ -195,13 +187,6 @@ const Dashboard = () => {
           </CardContent>
         </Card>
       </div>
-
-      {/* Template Gallery Modal */}
-      <TemplateGallery
-        isOpen={showTemplateGallery}
-        onClose={() => setShowTemplateGallery(false)}
-        onTemplateSelect={handleTemplateSelected}
-      />
     </div>
   );
 };
