@@ -5,41 +5,13 @@ import { DynamicBillConfig } from "@/types/invoice";
 
 export default function Invoice1({
   formData,
+  invoiceRef,
 }: {
   formData: DynamicBillConfig;
+  invoiceRef: React.Ref<null>;
 }) {
-  const invoiceRef = useRef();
-
-  const handleDownloadPDF = () => {
-    const element = invoiceRef.current;
-    const opt = {
-      margin: 0,
-      filename: "invoice_#AB2324-01.pdf",
-      image: { type: "jpeg" as const, quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: {
-        orientation: "portrait" as const,
-        unit: "mm" as const,
-        format: "a4",
-      },
-    };
-
-    html2pdf().set(opt).from(element).save();
-  };
-
   return (
-    <div className='min-h-screen bg-gray-100 flex items-center justify-center p-4'>
-      {/* Download Button */}
-      <div className='absolute top-6 right-6'>
-        <button
-          onClick={handleDownloadPDF}
-          className='flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-medium transition'
-        >
-          <Download size={18} />
-          Download PDF
-        </button>
-      </div>
-
+    <div className='min-h-screen flex items-center justify-center'>
       {/* Invoice Container - Fixed A4 Size */}
       <div
         ref={invoiceRef}

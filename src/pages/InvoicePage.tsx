@@ -3,11 +3,16 @@ import DynamicInvoiceForm from "@/components/DynamicInvoiceForm";
 import { Button } from "@/components/ui/button";
 import { DynamicBillConfig } from "@/types/invoice";
 import { Download, Eye, EyeOff } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import Invoice1 from "@/components/invoiceUI/Invoice1";
+import html2pdf from "html2pdf.js";
 
 const InvoicePage = () => {
   const [showPreview, setShowPreview] = useState(false);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+
+  const invoiceRef = useRef();
+
   const [formData, setFormData] = useState<DynamicBillConfig>({
     billType: "ECOMMERCE",
 
@@ -96,20 +101,44 @@ const InvoicePage = () => {
   };
 
   // Handler for PDF generation (you can implement your PDF logic here)
-  const handleGeneratePDF = async () => {
+  // const handleGeneratePDF = async () => {
+  //   setIsGeneratingPDF(true);
+  //   try {
+  //     // Add your PDF generation logic here
+  //     // For example, using html2pdf or jsPDF
+  //     console.log("Generating PDF with data:", formData);
+
+  //     // Simulate PDF generation
+  //     await new Promise((resolve) => setTimeout(resolve, 2000));
+
+  //     alert("PDF Generated Successfully!");
+  //   } catch (error) {
+  //     console.error("Error generating PDF:", error);
+  //     alert("Failed to generate PDF");
+  //   } finally {
+  //     setIsGeneratingPDF(false);
+  //   }
+  // };
+
+  const handleDownloadPDF = () => {
     setIsGeneratingPDF(true);
     try {
-      // Add your PDF generation logic here
-      // For example, using html2pdf or jsPDF
-      console.log("Generating PDF with data:", formData);
+      const element = invoiceRef.current;
+      const opt = {
+        margin: 0,
+        filename: "invoice_#AB2324-01.pdf",
+        image: { type: "jpeg" as const, quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: {
+          orientation: "portrait" as const,
+          unit: "mm" as const,
+          format: "a4",
+        },
+      };
 
-      // Simulate PDF generation
-      await new Promise(resolve => setTimeout(resolve, 2000));
-
-      alert("PDF Generated Successfully!");
+      html2pdf().set(opt).from(element).save();
     } catch (error) {
       console.error("Error generating PDF:", error);
-      alert("Failed to generate PDF");
     } finally {
       setIsGeneratingPDF(false);
     }
@@ -139,7 +168,7 @@ const InvoicePage = () => {
             <Button
               size='sm'
               disabled={isGeneratingPDF}
-              onClick={handleGeneratePDF}
+              onClick={handleDownloadPDF}
               className='bg-black text-white hover:bg-black/90'
             >
               <Download className='w-4 h-4 mr-2' />
@@ -165,7 +194,7 @@ const InvoicePage = () => {
 
               <Button
                 disabled={isGeneratingPDF}
-                onClick={handleGeneratePDF}
+                onClick={handleDownloadPDF}
                 className='bg-black text-white hover:bg-black/90'
               >
                 <Download className='w-4 h-4 mr-2' />
@@ -177,11 +206,12 @@ const InvoicePage = () => {
       </div>
 
       {/* Main Content */}
-      <div className='lg:grid lg:grid-cols-2 lg:gap-0 min-h-[calc(100vh-80px)]'>
-        {/* Form Panel */}
+      <div className='lg:grid lg:grid-cols-12 h-screen relative'>
+        {/* Form Panel (scrollable) */}
         <div
-          className={`${showPreview ? "hidden lg:block" : "block"
-            } bg-background border-r border-border/50 overflow-y-auto`}
+          className={`${
+            showPreview ? "hidden lg:block" : "block"
+          } bg-background border-r border-border/50 overflow-y-auto h-screen lg:col-span-5`}
         >
           <DynamicInvoiceForm
             formData={formData}
@@ -189,12 +219,15 @@ const InvoicePage = () => {
           />
         </div>
 
-        {/* Preview Panel */}
+        {/* Preview Panel (fixed on right, same height) */}
         <div
-          className={`${!showPreview ? "hidden lg:block" : "block"} bg-surface overflow-y-auto`}
+          className={`${
+            !showPreview ? "hidden lg:block" : "block"
+          } bg-transparent h-screen overflow-y-auto lg:fixed lg:right-0 lg:top-0 lg:w-[60%]`}
         >
-          <div className='p-4 lg:p-8'>
-            <Invoice2 invoiceData={formData} />
+          <div className='p-4 lg:py-12 lg:px-8'>
+            {/* <Invoice1 formData={formData} invoiceRef={invoiceRef} /> */}
+            <Invoice2 invoiceData={formData} invoiceRef={invoiceRef} />
           </div>
         </div>
       </div>
@@ -202,4 +235,4 @@ const InvoicePage = () => {
   );
 };
 
-export default InvoicePage
+export default InvoicePage;
