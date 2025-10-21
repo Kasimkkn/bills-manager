@@ -15,20 +15,33 @@ const InvoicePage = () => {
     isBusinessInfoNeeded: true,
     businessInfo: {
       name: "ShopEase Online Store",
-      address: "123 Market Street, Mumbai",
+      address: {
+        city: "Mumbai",
+        state: "Maharashtra",
+        country: "India",
+        pincode: "000123",
+      },
+      taxId: "",
+      gstNumber: "GST IN: 12434 44285 34595",
       phoneNumber: "9823456789",
       email: "support@shopease.in",
-      gstin: "27ABCDE1234F1Z5",
-      invoiceNumber: "INV-2025-1020",
-      invoiceDate: "2025-10-20",
       placeOfSupply: "Maharashtra",
       logo: "https://raw.githubusercontent.com/mkronix/mkronix_web/refs/heads/main/public/favicon.ico?token=GHSAT0AAAAAADMXOXIQ5YYVLWJX2H4M7ID62HWK44A",
     },
-
+    invoiceInfo: {
+      invoiceNumber: "#AB2324-01",
+      invoiceDate: "01 Aug, 2023",
+      invoiceDueDate: "15 Aug, 2023",
+    },
     isCustomerInfoNeeded: true,
     customerInfo: {
       name: "Amit Kumar",
-      address: "Delhi, India",
+      address: {
+        city: "Mumbai",
+        state: "Maharashtra",
+        country: "India",
+        pincode: "000123",
+      },
       phone: "9898989898",
       email: "amit@example.com",
     },
@@ -41,7 +54,6 @@ const InvoicePage = () => {
         quantity: 1,
         rate: 499,
         tax: 18,
-        total: 589,
       },
       {
         itemName: "Keyboard",
@@ -49,18 +61,17 @@ const InvoicePage = () => {
         quantity: 1,
         rate: 899,
         tax: 18,
-        total: 1061,
       },
     ],
 
-    isBillSummaryNeeded: true,
     billSummary: {
       subTotal: 1398,
       cgst: 9,
       sgst: 9,
       totalDue: 1650,
       totalInWords: "One Thousand Six Hundred Fifty Rupees Only",
-      discountType: "FIXED",
+      discountType: "PERCENTAGE",
+      discount: "10%",
     },
 
     isPaymentSectionNeeded: true,

@@ -48,17 +48,17 @@ export default function Invoice2({ invoiceData }: { invoiceData: DynamicBillConf
                 <div className="text-black">
                     {/* Invoice Number Header */}
                     <div className='relative'>
-                        {(invoiceData.businessInfo.logoUrl || invoiceData.businessInfo.logo) && (
+                        {(invoiceData.businessInfo.logo) && (
                             <div className="mb-6">
-                                <img src={invoiceData.businessInfo.logoUrl || invoiceData.businessInfo.logo} alt="Logo" className="w-12 h-12 absolute top-0 left-0" />
+                                <img src={invoiceData.businessInfo.logo} alt="Logo" className="w-12 h-12 absolute top-0 left-0" />
                             </div>
                         )}
-                        {invoiceData.businessInfo?.invoiceNumber && (
+                        {invoiceData.invoiceInfo?.invoiceNumber && (
                             <div className="text-right mb-6">
                                 <div className="inline-block">
                                     <div className="text-xs text-gray-500 uppercase tracking-wider mb-1">Invoice Number</div>
                                     <div className="text-2xl font-bold text-gray-900">
-                                        {invoiceData.businessInfo.invoiceNumber}
+                                        {invoiceData.invoiceInfo.invoiceNumber}
                                     </div>
                                 </div>
                             </div>
@@ -74,7 +74,7 @@ export default function Invoice2({ invoiceData }: { invoiceData: DynamicBillConf
                                 <div className="space-y-1.5 text-sm">
                                     <div className="font-bold text-lg text-gray-900">{invoiceData.businessInfo.name}</div>
                                     {invoiceData.businessInfo.address && (
-                                        <div className="text-gray-600">{invoiceData.businessInfo.address}</div>
+                                        <div className="text-gray-600">{invoiceData.businessInfo.address.city}, {invoiceData.businessInfo.address.state} , {invoiceData.businessInfo.address.country} - {invoiceData.businessInfo.address.pincode}</div>
                                     )}
                                     {invoiceData.businessInfo.email && (
                                         <div className="text-gray-600">{invoiceData.businessInfo.email}</div>
@@ -93,7 +93,7 @@ export default function Invoice2({ invoiceData }: { invoiceData: DynamicBillConf
                                 <div className="space-y-1.5 text-sm">
                                     <div className="font-bold text-lg text-gray-900">{invoiceData.customerInfo.name}</div>
                                     {invoiceData.customerInfo.address && (
-                                        <div className="text-gray-600">{invoiceData.customerInfo.address}</div>
+                                        <div className="text-gray-600">{invoiceData.customerInfo.address.city} , {invoiceData.customerInfo.address.state} , {invoiceData.customerInfo.address.country} - {invoiceData.customerInfo.address.pincode}</div>
                                     )}
                                     {invoiceData.customerInfo.email && (
                                         <div className="text-gray-600">{invoiceData.customerInfo.email}</div>
@@ -109,11 +109,11 @@ export default function Invoice2({ invoiceData }: { invoiceData: DynamicBillConf
                             <div className='flex gap-5 flex-col items-end'>
                                 <div>
                                     <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Date</h2>
-                                    <div className="font-bold text-sm text-gray-900">{new Date(invoiceData.businessInfo.invoiceDate).toLocaleDateString()}</div>
+                                    <div className="font-bold text-sm text-gray-900">{new Date(invoiceData.invoiceInfo.invoiceDate).toLocaleDateString()}</div>
                                 </div>
                                 <div>
                                     <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Due</h2>
-                                    <div className="font-bold text-sm text-gray-900">{new Date(invoiceData.businessInfo.invoiceDate).toLocaleDateString()}</div>
+                                    <div className="font-bold text-sm text-gray-900">{new Date(invoiceData.invoiceInfo.invoiceDate).toLocaleDateString()}</div>
                                 </div>
                             </div>
                         )}
@@ -127,6 +127,7 @@ export default function Invoice2({ invoiceData }: { invoiceData: DynamicBillConf
                                     <tr className="border-b-2 border-gray-900">
                                         <th className="py-3 px-2 text-left font-semibold text-gray-900 w-12">#</th>
                                         <th className="py-3 px-2 text-left font-semibold text-gray-900">Description</th>
+                                        <th className="py-3 px-2 text-right font-semibold text-gray-900 w-32">Qty</th>
                                         <th className="py-3 px-2 text-right font-semibold text-gray-900 w-32">Rate</th>
                                         <th className="py-3 px-2 text-right font-semibold text-gray-900 w-32">Amount</th>
                                     </tr>
@@ -136,8 +137,9 @@ export default function Invoice2({ invoiceData }: { invoiceData: DynamicBillConf
                                         <tr key={index} className="border-b border-gray-200">
                                             <td className="py-4 px-2 text-gray-600">{index + 1}</td>
                                             <td className="py-4 px-2 text-gray-900">{item.itemName}</td>
-                                            <td className="py-4 px-2 text-right text-gray-600">${item.rate.toFixed(2)}/hour</td>
-                                            <td className="py-4 px-2 text-right font-semibold text-gray-900">${item.total.toFixed(2)}</td>
+                                            <td className="py-4 px-2 text-right text-gray-600">{item.quantity}</td>
+                                            <td className="py-4 px-2 text-right text-gray-600">${item.rate?.toFixed(2)}</td>
+                                            <td className="py-4 px-2 text-right text-gray-600">${(item.rate * item.quantity).toFixed(2)}</td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -158,7 +160,7 @@ export default function Invoice2({ invoiceData }: { invoiceData: DynamicBillConf
                         </div>
 
                         {/* Bill Summary */}
-                        {invoiceData.isBillSummaryNeeded && invoiceData.billSummary && (
+                        {invoiceData.billSummary && (
                             <div>
                                 <div className="bg-gray-50 p-5 rounded-lg">
                                     <div className="space-y-3 text-sm">
@@ -166,10 +168,40 @@ export default function Invoice2({ invoiceData }: { invoiceData: DynamicBillConf
                                             <span>Subtotal</span>
                                             <span className="font-medium">${invoiceData.billSummary.subTotal.toFixed(2)}</span>
                                         </div>
+                                        {invoiceData.billSummary.discount && (
+                                            <div className="flex justify-between text-gray-700">
+                                                <span>Discount</span>
+                                                <span className="font-medium">{invoiceData.billSummary.discount}</span>
+                                            </div>
+                                        )}
                                         {invoiceData.billSummary.cgst !== undefined && (
                                             <div className="flex justify-between text-gray-700">
-                                                <span>Tax (7%)</span>
+                                                <span>Cgst</span>
                                                 <span className="font-medium">${invoiceData.billSummary.cgst.toFixed(2)}</span>
+                                            </div>
+                                        )}
+                                        {invoiceData.billSummary.sgst !== undefined && (
+                                            <div className="flex justify-between text-gray-700">
+                                                <span>Sgst</span>
+                                                <span className="font-medium">${invoiceData.billSummary.sgst.toFixed(2)}</span>
+                                            </div>
+                                        )}
+                                        {invoiceData.billSummary.igst !== undefined && (
+                                            <div className="flex justify-between text-gray-700">
+                                                <span>Igst</span>
+                                                <span className="font-medium">${invoiceData.billSummary.igst.toFixed(2)}</span>
+                                            </div>
+                                        )}
+                                        {invoiceData.billSummary.shippingCharge !== undefined && (
+                                            <div className="flex justify-between text-gray-700">
+                                                <span>Shipping</span>
+                                                <span className="font-medium">${invoiceData.billSummary.shippingCharge.toFixed(2)}</span>
+                                            </div>
+                                        )}
+                                        {invoiceData.billSummary.packingCharge !== undefined && (
+                                            <div className="flex justify-between text-gray-700">
+                                                <span>Packing</span>
+                                                <span className="font-medium">${invoiceData.billSummary.packingCharge.toFixed(2)}</span>
                                             </div>
                                         )}
                                         <div className="flex justify-between pt-3 border-t-2 border-gray-300 text-base font-bold text-gray-900">
@@ -227,10 +259,10 @@ export default function Invoice2({ invoiceData }: { invoiceData: DynamicBillConf
 
                         {/* Date and Signature */}
                         <div className="text-right">
-                            {invoiceData.businessInfo?.invoiceDate && (
+                            {invoiceData.invoiceInfo?.invoiceDate && (
                                 <div className="text-sm text-gray-600 mb-8">
                                     <span className="font-medium">Date: </span>
-                                    {new Date(invoiceData.businessInfo.invoiceDate).toLocaleDateString()}
+                                    {new Date(invoiceData.invoiceInfo.invoiceDate).toLocaleDateString()}
                                 </div>
                             )}
 
