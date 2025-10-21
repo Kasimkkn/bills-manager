@@ -106,9 +106,9 @@ export default function Invoice2({
                       {invoiceData.customerInfo.email}
                     </div>
                   )}
-                  {invoiceData.customerInfo.phone && (
+                  {invoiceData.customerInfo.phoneNumber && (
                     <div className='text-gray-600'>
-                      {invoiceData.customerInfo.phone}
+                      {invoiceData.customerInfo.phoneNumber}
                     </div>
                   )}
                 </div>
