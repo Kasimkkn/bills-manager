@@ -64,7 +64,15 @@ interface Item {
 }
 
 interface Payment {
-  paymentOption: "CASH" | "UPI" | "CARD" | "BANK_TRANSFER" | "CHEQUE" | "COD" | "INSURANCE" | string;
+  paymentOption:
+    | "CASH"
+    | "UPI"
+    | "CARD"
+    | "BANK_TRANSFER"
+    | "CHEQUE"
+    | "COD"
+    | "INSURANCE"
+    | string;
   transactionId?: string;
   amountPaid?: number;
   balanceDue?: number;
@@ -254,8 +262,7 @@ type TemplateStyleConfig = {
 };
 
 // ===== MAIN DYNAMIC BILL CONFIG =====
-interface DynamicBillConfig {
-  billType:
+export type billType =
   | "HOTEL"
   | "FREELANCER"
   | "SUPPLIER"
@@ -268,6 +275,9 @@ interface DynamicBillConfig {
   | "EDUCATION"
   | "GYM"
   | "LEGAL";
+
+interface DynamicBillConfig {
+  billType: billType;
 
   templateStyle?: string; // This will hold values like "ELEGANT", "MINIMAL", etc.
   templateVersion?: number; // Optional: for versioning like v1, v2, v3

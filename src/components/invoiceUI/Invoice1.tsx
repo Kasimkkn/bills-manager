@@ -4,10 +4,10 @@ import html2pdf from "html2pdf.js";
 import { DynamicBillConfig } from "@/types/invoice";
 
 export default function Invoice1({
-  formData,
+  invoiceData,
   invoiceRef,
 }: {
-  formData: DynamicBillConfig;
+  invoiceData: DynamicBillConfig;
   invoiceRef: React.Ref<null>;
 }) {
   return (
@@ -25,38 +25,38 @@ export default function Invoice1({
         }}
       >
         {/* Header */}
-        {formData?.isBusinessInfoNeeded && (
+        {invoiceData?.isBusinessInfoNeeded && (
           <div className='flex justify-between items-start mb-8 pb-6 border-b border-gray-200'>
             <div>
               <h1 className='text-xl font-bold text-gray-900'>
-                {formData.businessInfo?.name}
+                {invoiceData.businessInfo?.name}
               </h1>
               <p className='text-sm text-gray-600 mb-1'>
-                {formData.businessInfo?.website}
+                {invoiceData.businessInfo?.website}
               </p>
               <p className='text-sm text-gray-600 mb-1'>
-                {formData.businessInfo?.email}
+                {invoiceData.businessInfo?.email}
               </p>
               <p className='text-sm text-gray-600'>
-                {formData.businessInfo?.phoneNumber}
+                {invoiceData.businessInfo?.phoneNumber}
               </p>
             </div>
             <div className='text-right'>
               <p className='text-sm text-gray-600 mb-1'>
-                {`${formData.businessInfo?.address.city}
-                ${formData.businessInfo?.address.state}
-                ${formData.businessInfo?.address.country}
-                ${formData.businessInfo?.address.pincode}
+                {`${invoiceData.businessInfo?.address.city}
+                ${invoiceData.businessInfo?.address.state}
+                ${invoiceData.businessInfo?.address.country}
+                ${invoiceData.businessInfo?.address.pincode}
                 `}
               </p>
               <p className='text-sm text-gray-600'>
-                {formData.businessInfo?.taxId
-                  ? `${formData.businessInfo?.taxId}`
-                  : `${formData.businessInfo?.gstNumber}`}
+                {invoiceData.businessInfo?.taxId
+                  ? `${invoiceData.businessInfo?.taxId}`
+                  : `${invoiceData.businessInfo?.gstNumber}`}
               </p>
               <div className='mt-3'>
                 <p className='font-bold text-gray-900'>
-                  {formData?.invoiceInfo?.invoiceNumber}
+                  {invoiceData?.invoiceInfo?.invoiceNumber}
                 </p>
               </div>
             </div>
@@ -65,27 +65,27 @@ export default function Invoice1({
         {/* Main Content */}
         <div
           className={`grid grid-cols-${
-            formData?.isCustomerInfoNeeded ? "2" : "1"
+            invoiceData?.isCustomerInfoNeeded ? "2" : "1"
           } gap-8 mb-8`}
         >
           {/* Left Column */}
-          {formData?.isCustomerInfoNeeded && (
+          {invoiceData?.isCustomerInfoNeeded && (
             <div>
               <p className='text-xs font-semibold text-gray-600 mb-1'>
                 Billed to
               </p>
               <p className='font-bold text-gray-900 mb-1'>
-                {formData?.customerInfo?.name}
+                {invoiceData?.customerInfo?.name}
               </p>
               <p className='text-sm text-gray-600 mb-2'>
-                {`${formData.customerInfo?.address.city}
-                ${formData.customerInfo?.address.state}
-                ${formData.customerInfo?.address.country}
-                ${formData.customerInfo?.address.pincode}
+                {`${invoiceData.customerInfo?.address.city}
+                ${invoiceData.customerInfo?.address.state}
+                ${invoiceData.customerInfo?.address.country}
+                ${invoiceData.customerInfo?.address.pincode}
                 `}
               </p>
               <p className='text-sm text-gray-600'>
-                {formData.customerInfo?.phone}
+                {invoiceData.customerInfo?.phone}
               </p>
             </div>
           )}
@@ -96,7 +96,7 @@ export default function Invoice1({
               </p>
               <p className='font-bold text-gray-900'>
                 {new Date(
-                  formData?.invoiceInfo?.invoiceDate
+                  invoiceData?.invoiceInfo?.invoiceDate
                 ).toLocaleDateString()}
               </p>
             </div>
@@ -106,14 +106,14 @@ export default function Invoice1({
               </p>
               <p className='font-bold text-gray-900'>
                 {new Date(
-                  formData?.invoiceInfo?.invoiceDate
+                  invoiceData?.invoiceInfo?.invoiceDueDate
                 ).toLocaleDateString()}
               </p>
             </div>
           </div>
         </div>
         {/* Items Table */}
-        {formData?.isItemListNeeded && (
+        {invoiceData?.isItemListNeeded && (
           <div className='mb-8'>
             <table className='w-full text-sm border-collapse'>
               <thead>
@@ -133,7 +133,7 @@ export default function Invoice1({
                 </tr>
               </thead>
               <tbody>
-                {formData?.itemList?.map((item) => {
+                {invoiceData?.itemList?.map((item) => {
                   return (
                     <tr className='border-b border-gray-200'>
                       <td className='py-4 px-3'>
@@ -163,13 +163,13 @@ export default function Invoice1({
             <div className='flex justify-between py-2 border-b border-gray-300'>
               <p className='text-gray-700'>Subtotal</p>
               <p className='text-gray-900 font-semibold'>
-                ${formData?.billSummary?.subTotal}
+                ${invoiceData?.billSummary?.subTotal}
               </p>
             </div>
             <div className='flex justify-between py-2 border-b border-gray-300 mb-2'>
               <p className='text-gray-700'>Discount</p>
               <p className='text-gray-900 font-semibold'>
-                {formData.billSummary.discount}
+                {invoiceData.billSummary.discount}
               </p>
             </div>
             <div className='flex justify-between py-2 border-b border-gray-300 mb-2'>
@@ -179,21 +179,23 @@ export default function Invoice1({
             <div className='flex justify-between py-3'>
               <p className='text-gray-900 font-bold text-base'>Total</p>
               <p className='text-gray-900 font-bold text-base'>
-                ${formData.billSummary.totalDue}
+                ${invoiceData.billSummary.totalDue}
               </p>
             </div>
           </div>
         </div>
-        <div className='text-center pt-4 border-t border-gray-300 mb-4'>
-          <h3 className='font-bold text-gray-900 text-sm mb-2'>
-            Terms & Conditions
-          </h3>
-          <p className='text-sm text-gray-700 mb-2'>
-            Please pay within 15 days of receiving this invoice.
-          </p>
-          <p className='font-bold text-gray-900'>Thanks for the business.</p>
-        </div>
-        ={/* Terms & Conditions */}
+        {/* Terms & Conditions */}
+        {invoiceData?.isFooterNeeded && (
+          <div className='text-center pt-4 border-t border-gray-300 mb-4'>
+            <h3 className='font-bold text-gray-900 text-sm mb-2'>
+              Terms & Conditions
+            </h3>
+            <p className='text-sm text-gray-700 mb-2'>
+              Please pay within 15 days of receiving this invoice.
+            </p>
+            <p className='font-bold text-gray-900'>Thanks for the business.</p>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -28,10 +28,10 @@ const DynamicInvoiceForm: React.FC<DynamicInvoiceFormProps> = ({
     open: false,
     title: "",
     description: "",
-    onConfirm: () => { },
+    onConfirm: () => {},
   });
 
-  const updateFormData = (path: string, value: any) => {
+  const updateFormData = (path: string, value: string) => {
     const keys = path.split(".");
     const newData = JSON.parse(JSON.stringify(formData));
     let current = newData;
@@ -59,7 +59,7 @@ const DynamicInvoiceForm: React.FC<DynamicInvoiceFormProps> = ({
   };
 
   return (
-    <div className="space-y-4 p-4 md:p-6 max-w-7xl mx-auto">
+    <div className='space-y-4 p-4 md:p-6 max-w-7xl mx-auto'>
       <DeleteConfirmDialog
         open={deleteDialog.open}
         onOpenChange={(open) => setDeleteDialog({ ...deleteDialog, open })}
@@ -68,13 +68,19 @@ const DynamicInvoiceForm: React.FC<DynamicInvoiceFormProps> = ({
         description={deleteDialog.description}
       />
 
-      <BillTypeSection formData={formData} updateFormData={updateFormData} />
-
-      <BusinessInfoSection formData={formData} updateFormData={updateFormData} />
-
       <InvoiceInfoSection formData={formData} updateFormData={updateFormData} />
 
-      <CustomerInfoSection formData={formData} updateFormData={updateFormData} />
+      <BillTypeSection formData={formData} updateFormData={updateFormData} />
+
+      <BusinessInfoSection
+        formData={formData}
+        updateFormData={updateFormData}
+      />
+
+      <CustomerInfoSection
+        formData={formData}
+        updateFormData={updateFormData}
+      />
 
       <ItemListSection
         formData={formData}
@@ -84,7 +90,10 @@ const DynamicInvoiceForm: React.FC<DynamicInvoiceFormProps> = ({
 
       <PaymentSection formData={formData} updateFormData={updateFormData} />
       {formData.isBankDetailsNeeded && (
-        <BankDetailsSection formData={formData} updateFormData={updateFormData} />
+        <BankDetailsSection
+          formData={formData}
+          updateFormData={updateFormData}
+        />
       )}
 
       <FooterSection formData={formData} updateFormData={updateFormData} />

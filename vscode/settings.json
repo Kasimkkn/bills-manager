@@ -1,0 +1,79 @@
+{
+  // 🔹 Editor Behavior
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": false,
+  "editor.formatOnType": false,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+  "editor.wordWrap": "on",
+  "editor.cursorBlinking": "smooth",
+  "editor.minimap.enabled": false,
+  "editor.renderWhitespace": "selection",
+
+  // 🔹 Auto Save
+  "files.autoSave": "onFocusChange",
+
+  // 🔹 Code Actions & Linting
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.organizeImports": true
+  },
+  "eslint.alwaysShowStatus": true,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "json"
+  ],
+
+  // 🔹 Files
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/.next": true
+  },
+  "files.eol": "\n",
+
+  // 🔹 Terminal
+  "terminal.integrated.fontSize": 14,
+  "terminal.integrated.cursorBlinking": true,
+
+  // 🔹 Prettier Formatting Rules
+  "prettier.singleQuote": true,
+  "prettier.trailingComma": "es5",
+  "prettier.semi": true,
+  "prettier.tabWidth": 2,
+  "prettier.printWidth": 100,
+  "prettier.endOfLine": "auto",
+
+  // 🔹 Explorer & UI
+  "workbench.startupEditor": "newUntitledFile",
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.colorTheme": "Default Dark Modern",
+  "breadcrumbs.enabled": true,
+
+  // 🔹 Emmet
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact",
+    "typescript": "typescriptreact"
+  },
+
+  // 🔹 Git
+  "git.autofetch": true,
+  "git.confirmSync": false,
+
+  // 🔹 Suggestions
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "editor.suggestSelection": "first",
+
+  // 🔹 Telemetry
+  "telemetry.telemetryLevel": "off"
+}
