@@ -1,15 +1,14 @@
-import Invoice1 from "@/components/invoiceUI/Invoice1";
 import Invoice2 from "@/components/invoiceUI/Invoice2";
+import DynamicInvoiceForm from "@/components/DynamicInvoiceForm";
 import { Button } from "@/components/ui/button";
 import { DynamicBillConfig } from "@/types/invoice";
 import { Download, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 
-
 const InvoicePage = () => {
   const [showPreview, setShowPreview] = useState(false);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
-  const [formData, setFormData] = useState<DynamicBillConfig | null>({
+  const [formData, setFormData] = useState<DynamicBillConfig>({
     billType: "ECOMMERCE",
 
     isBusinessInfoNeeded: true,
@@ -91,11 +90,37 @@ const InvoicePage = () => {
     },
   });
 
+  // Handler to update form data - this provides real-time preview
+  const handleFormDataChange = (newData: DynamicBillConfig) => {
+    setFormData(newData);
+  };
+
+  // Handler for PDF generation (you can implement your PDF logic here)
+  const handleGeneratePDF = async () => {
+    setIsGeneratingPDF(true);
+    try {
+      // Add your PDF generation logic here
+      // For example, using html2pdf or jsPDF
+      console.log("Generating PDF with data:", formData);
+
+      // Simulate PDF generation
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      alert("PDF Generated Successfully!");
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+      alert("Failed to generate PDF");
+    } finally {
+      setIsGeneratingPDF(false);
+    }
+  };
+
   return (
     <div className='min-h-screen bg-background'>
       {/* Mobile Header */}
       <div className='lg:hidden sticky top-0 z-40 bg-surface-elevated/95 backdrop-blur-lg border-b border-border/50'>
         <div className='flex items-center justify-between p-4'>
+          <h1 className='text-lg font-semibold'>Invoice Creator</h1>
 
           <div className='flex items-center space-x-2'>
             <Button
@@ -114,7 +139,8 @@ const InvoicePage = () => {
             <Button
               size='sm'
               disabled={isGeneratingPDF}
-              className='bg-black text-white'
+              onClick={handleGeneratePDF}
+              className='bg-black text-white hover:bg-black/90'
             >
               <Download className='w-4 h-4 mr-2' />
               {isGeneratingPDF ? "Generating..." : "PDF"}
@@ -134,12 +160,13 @@ const InvoicePage = () => {
 
             <div className='flex items-center space-x-4'>
               <div className='text-sm text-muted-foreground'>
-                download1 remaining
+                Real-time preview enabled
               </div>
 
               <Button
                 disabled={isGeneratingPDF}
-                className='bg-black text-white'
+                onClick={handleGeneratePDF}
+                className='bg-black text-white hover:bg-black/90'
               >
                 <Download className='w-4 h-4 mr-2' />
                 {isGeneratingPDF ? "Generating PDF..." : "Download PDF"}
@@ -154,20 +181,20 @@ const InvoicePage = () => {
         {/* Form Panel */}
         <div
           className={`${showPreview ? "hidden lg:block" : "block"
-            } bg-background border-r border-border/50`}
+            } bg-background border-r border-border/50 overflow-y-auto`}
         >
-          <div className='h-full overflow-y-auto'>{/* <InvoiceForm /> */}</div>
+          <DynamicInvoiceForm
+            formData={formData}
+            onChange={handleFormDataChange}
+          />
         </div>
 
         {/* Preview Panel */}
         <div
-          className={`${!showPreview ? "hidden lg:block" : "block"} bg-surface`}
+          className={`${!showPreview ? "hidden lg:block" : "block"} bg-surface overflow-y-auto`}
         >
-          <div className='h-full overflow-y-auto'>
-            {/* <InvoicePreview /> */}
-            {/* <Invoice1 formData={formData} /> */}
+          <div className='p-4 lg:p-8'>
             <Invoice2 invoiceData={formData} />
-            {/* <Invoice3 /> */}
           </div>
         </div>
       </div>
@@ -175,4 +202,4 @@ const InvoicePage = () => {
   );
 };
 
-export default InvoicePage;
+export default InvoicePage
