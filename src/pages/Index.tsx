@@ -1,15 +1,28 @@
 import ProfessionalLandingPage from "@/components/ProfessionalLandingPage";
+import TemplatePickerModal from "@/components/TemplatePickerModal";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Index = () => {
   const navigate = useNavigate();
-
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedTemplate, setSelectedTemplate] = useState('');
   const handleCreateInvoice = () => {
-    navigate('/create');
+    // navigate('/create');
+    setIsOpen(true);
   };
 
+  const handleContinue = () => {
+    if (selectedTemplate) {
+      navigate(`/create?template=${selectedTemplate}`);
+      setIsOpen(false);
+    }
+  }
   return (
-    <ProfessionalLandingPage onCreateInvoice={handleCreateInvoice} />
+    <>
+      <ProfessionalLandingPage onCreateInvoice={handleCreateInvoice} />
+      <TemplatePickerModal isOpen={isOpen} setIsOpen={setIsOpen} selectedTemplate={selectedTemplate} setSelectedTemplate={setSelectedTemplate} handleContinue={handleContinue} />
+    </>
   );
 };
 

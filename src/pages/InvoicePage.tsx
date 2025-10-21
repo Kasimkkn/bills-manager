@@ -45,7 +45,7 @@ const InvoicePage = () => {
         country: "India",
         pincode: "000123",
       },
-      phone: "9898989898",
+      phoneNumber: "9898989898",
       email: "amit@example.com",
     },
 
@@ -98,26 +98,6 @@ const InvoicePage = () => {
   const handleFormDataChange = (newData: DynamicBillConfig) => {
     setFormData(newData);
   };
-
-  // Handler for PDF generation (you can implement your PDF logic here)
-  // const handleGeneratePDF = async () => {
-  //   setIsGeneratingPDF(true);
-  //   try {
-  //     // Add your PDF generation logic here
-  //     // For example, using html2pdf or jsPDF
-  //     console.log("Generating PDF with data:", formData);
-
-  //     // Simulate PDF generation
-  //     await new Promise((resolve) => setTimeout(resolve, 2000));
-
-  //     alert("PDF Generated Successfully!");
-  //   } catch (error) {
-  //     console.error("Error generating PDF:", error);
-  //     alert("Failed to generate PDF");
-  //   } finally {
-  //     setIsGeneratingPDF(false);
-  //   }
-  // };
 
   const handleDownloadPDF = () => {
     setIsGeneratingPDF(true);
@@ -211,8 +191,6 @@ const InvoicePage = () => {
             onChange={handleFormDataChange}
           />
         </div>
-
-        {/* Preview Panel (fixed on right, same height) */}
         <div
           className={`${!showPreview ? "hidden lg:block" : "block"
             } bg-transparent h-screen py-10 overflow-y-auto lg:fixed lg:right-0 lg:top-0 lg:w-[60%]`}

@@ -88,6 +88,7 @@
 }
 
 @layer components {
+
   /* Enhanced Glass Morphism Effects */
   .glass {
     @apply bg-glass backdrop-blur-xl border border-border/50 shadow-lg;
@@ -154,27 +155,21 @@
 
   /* Premium Gradients */
   .gradient-primary {
-    background: linear-gradient(
-      135deg,
-      hsl(var(--primary)) 0%,
-      hsl(var(--primary-600)) 100%
-    );
+    background: linear-gradient(135deg,
+        hsl(var(--primary)) 0%,
+        hsl(var(--primary-600)) 100%);
   }
 
   .bg-gradient-primary {
-    background: linear-gradient(
-      135deg,
-      hsl(var(--primary)) 0%,
-      hsl(var(--primary-600)) 100%
-    );
+    background: linear-gradient(135deg,
+        hsl(var(--primary)) 0%,
+        hsl(var(--primary-600)) 100%);
   }
 
   .gradient-surface {
-    background: linear-gradient(
-      135deg,
-      hsl(var(--surface)) 0%,
-      hsl(var(--surface-elevated)) 100%
-    );
+    background: linear-gradient(135deg,
+        hsl(var(--surface)) 0%,
+        hsl(var(--surface-elevated)) 100%);
   }
 
   /* Enhanced Animation Classes */
