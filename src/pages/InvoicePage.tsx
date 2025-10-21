@@ -1,5 +1,9 @@
 import DynamicInvoiceForm from "@/components/DynamicInvoiceForm";
+import Invoice1 from "@/components/invoiceUI/Invoice1";
 import Invoice2 from "@/components/invoiceUI/Invoice2";
+import Invoice3 from "@/components/invoiceUI/Invoice3";
+import Invoice4 from "@/components/invoiceUI/Invoice4";
+import Invoice5 from "@/components/invoiceUI/Invoice5";
 import { Button } from "@/components/ui/button";
 import { DynamicBillConfig } from "@/types/invoice";
 import html2pdf from "html2pdf.js";
@@ -14,7 +18,8 @@ const InvoicePage = () => {
 
   const [formData, setFormData] = useState<DynamicBillConfig>({
     billType: "ECOMMERCE",
-
+    templateStyle: "VIBRANT", // ADD THIS LINE
+    templateVersion: 1,
     isBusinessInfoNeeded: true,
     businessInfo: {
       name: "ShopEase Online Store",
@@ -196,8 +201,56 @@ const InvoicePage = () => {
             } bg-transparent h-screen py-10 overflow-y-auto lg:fixed lg:right-0 lg:top-0 lg:w-[60%]`}
         >
           <div className='p-4 lg:py-12 lg:px-8'>
-            {/* <Invoice1 formData={formData} invoiceRef={invoiceRef} /> */}
-            <Invoice2 invoiceData={formData} invoiceRef={invoiceRef} />
+            {/* ECOMMERCE Templates */}
+            {formData.billType === "ECOMMERCE" && formData.templateStyle === "VIBRANT" && <Invoice1 formData={formData} invoiceRef={invoiceRef} />}
+            {formData.billType === "ECOMMERCE" && formData.templateStyle === "CLEAN" && <Invoice1_Clean formData={formData} invoiceRef={invoiceRef} />}
+            {formData.billType === "ECOMMERCE" && formData.templateStyle === "MARKETPLACE" && <Invoice1_Marketplace formData={formData} invoiceRef={invoiceRef} />}
+
+            {/* FREELANCER Templates */}
+            {formData.billType === "FREELANCER" && formData.templateStyle === "CREATIVE" && <Invoice2 invoiceData={formData} invoiceRef={invoiceRef} />}
+            {formData.billType === "FREELANCER" && formData.templateStyle === "PROFESSIONAL" && <Invoice2_Professional invoiceData={formData} invoiceRef={invoiceRef} />}
+            {formData.billType === "FREELANCER" && formData.templateStyle === "CORPORATE" && <Invoice2_Corporate invoiceData={formData} invoiceRef={invoiceRef} />}
+
+            {/* HOTEL Templates */}
+            {formData.billType === "HOTEL" && formData.templateStyle === "ELEGANT" && <Invoice3 invoiceData={formData} invoiceRef={invoiceRef} />}
+            {formData.billType === "HOTEL" && formData.templateStyle === "MINIMAL" && <Invoice3_Minimal invoiceData={formData} invoiceRef={invoiceRef} />}
+            {formData.billType === "HOTEL" && formData.templateStyle === "MODERN" && <Invoice3_Modern invoiceData={formData} invoiceRef={invoiceRef} />}
+
+            {/* SUPPLIER Templates */}
+            {formData.billType === "SUPPLIER" && formData.templateStyle === "FORMAL" && <Invoice4 invoiceData={formData} invoiceRef={invoiceRef} />}
+            {formData.billType === "SUPPLIER" && formData.templateStyle === "DETAILED" && <Invoice4_Detailed invoiceData={formData} invoiceRef={invoiceRef} />}
+
+            {/* RETAILER Templates */}
+            {formData.billType === "RETAILER" && formData.templateStyle === "MODERN" && <Invoice5 invoiceData={formData} invoiceRef={invoiceRef} />}
+            {formData.billType === "RETAILER" && formData.templateStyle === "CLASSIC" && <Invoice5_Classic invoiceData={formData} invoiceRef={invoiceRef} />}
+
+            {/* RENTAL Templates */}
+            {formData.billType === "RENTAL" && formData.templateStyle === "PROFESSIONAL" && <RentalInvoice_Professional invoiceData={formData} invoiceRef={invoiceRef} />}
+            {formData.billType === "RENTAL" && formData.templateStyle === "FRIENDLY" && <RentalInvoice_Friendly invoiceData={formData} invoiceRef={invoiceRef} />}
+
+            {/* MEDICAL Templates */}
+            {formData.billType === "MEDICAL" && formData.templateStyle === "CLINICAL" && <MedicalInvoice_Clinical invoiceData={formData} invoiceRef={invoiceRef} />}
+            {formData.billType === "MEDICAL" && formData.templateStyle === "MODERN" && <MedicalInvoice_Modern invoiceData={formData} invoiceRef={invoiceRef} />}
+
+            {/* SALON Templates */}
+            {formData.billType === "SALON" && formData.templateStyle === "LUXURY" && <SalonInvoice_Luxury invoiceData={formData} invoiceRef={invoiceRef} />}
+            {formData.billType === "SALON" && formData.templateStyle === "MINIMAL" && <SalonInvoice_Minimal invoiceData={formData} invoiceRef={invoiceRef} />}
+
+            {/* TRANSPORTATION Templates */}
+            {formData.billType === "TRANSPORTATION" && formData.templateStyle === "LOGISTICS" && <TransportInvoice_Logistics invoiceData={formData} invoiceRef={invoiceRef} />}
+            {formData.billType === "TRANSPORTATION" && formData.templateStyle === "COURIER" && <TransportInvoice_Courier invoiceData={formData} invoiceRef={invoiceRef} />}
+
+            {/* EDUCATION Templates */}
+            {formData.billType === "EDUCATION" && formData.templateStyle === "ACADEMIC" && <EducationInvoice_Academic invoiceData={formData} invoiceRef={invoiceRef} />}
+            {formData.billType === "EDUCATION" && formData.templateStyle === "MODERN" && <EducationInvoice_Modern invoiceData={formData} invoiceRef={invoiceRef} />}
+
+            {/* GYM Templates */}
+            {formData.billType === "GYM" && formData.templateStyle === "ENERGETIC" && <GymInvoice_Energetic invoiceData={formData} invoiceRef={invoiceRef} />}
+            {formData.billType === "GYM" && formData.templateStyle === "PROFESSIONAL" && <GymInvoice_Professional invoiceData={formData} invoiceRef={invoiceRef} />}
+
+            {/* LEGAL Templates */}
+            {formData.billType === "LEGAL" && formData.templateStyle === "FORMAL" && <LegalInvoice_Formal invoiceData={formData} invoiceRef={invoiceRef} />}
+            {formData.billType === "LEGAL" && formData.templateStyle === "MODERN" && <LegalInvoice_Modern invoiceData={formData} invoiceRef={invoiceRef} />}
           </div>
         </div>
       </div>
