@@ -2,6 +2,8 @@ export interface Service {
   description: string;
   rate?: string;
   hours: number;
+  serviceProvider?: string;
+  duration?: string;
 }
 
 interface Address {

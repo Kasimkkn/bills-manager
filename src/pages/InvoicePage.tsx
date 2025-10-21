@@ -9,6 +9,8 @@ import { DynamicBillConfig } from "@/types/invoice";
 import html2pdf from "html2pdf.js";
 import { Download, Eye, EyeOff } from "lucide-react";
 import { useRef, useState } from "react";
+import { getTemplate, ECOMMERCE_VIBRANT } from "@/constant/templateJson"; // Adjust path as needed
+
 
 const InvoicePage = () => {
   const [showPreview, setShowPreview] = useState(false);
@@ -16,87 +18,8 @@ const InvoicePage = () => {
 
   const invoiceRef = useRef();
 
-  const [formData, setFormData] = useState<DynamicBillConfig>({
-    billType: "ECOMMERCE",
-    templateStyle: "VIBRANT", // ADD THIS LINE
-    templateVersion: 1,
-    isBusinessInfoNeeded: true,
-    businessInfo: {
-      name: "ShopEase Online Store",
-      address: {
-        city: "Mumbai",
-        state: "Maharashtra",
-        country: "India",
-        pincode: "000123",
-      },
-      taxId: "",
-      gstNumber: "GST IN: 12434 44285 34595",
-      phoneNumber: "9823456789",
-      email: "support@shopease.in",
-      placeOfSupply: "Maharashtra",
-      logo: "https://raw.githubusercontent.com/mkronix/mkronix_web/refs/heads/main/public/favicon.ico?token=GHSAT0AAAAAADMXOXIQ5YYVLWJX2H4M7ID62HWK44A",
-    },
-    invoiceInfo: {
-      invoiceNumber: "#AB2324-01",
-      invoiceDate: "01 Aug, 2023",
-      invoiceDueDate: "15 Aug, 2023",
-    },
-    isCustomerInfoNeeded: true,
-    customerInfo: {
-      name: "Amit Kumar",
-      address: {
-        city: "Mumbai",
-        state: "Maharashtra",
-        country: "India",
-        pincode: "000123",
-      },
-      phoneNumber: "9898989898",
-      email: "amit@example.com",
-    },
-
-    isItemListNeeded: true,
-    itemList: [
-      {
-        itemName: "Wireless Mouse",
-        hsnCode: "8471",
-        quantity: 1,
-        rate: 499,
-        tax: 18,
-      },
-      {
-        itemName: "Keyboard",
-        hsnCode: "8471",
-        quantity: 1,
-        rate: 899,
-        tax: 18,
-      },
-    ],
-
-    billSummary: {
-      subTotal: 1398,
-      cgst: 9,
-      sgst: 9,
-      totalDue: 1650,
-      totalInWords: "One Thousand Six Hundred Fifty Rupees Only",
-      discountType: "PERCENTAGE",
-      discount: "10%",
-    },
-
-    isPaymentSectionNeeded: true,
-    payment: {
-      paymentOption: "UPI",
-      transactionId: "TXN12345",
-      amountPaid: 1650,
-    },
-
-    isBankDetailsNeeded: false,
-
-    isFooterNeeded: true,
-    footer: {
-      exitMessage: "Thank you for shopping with ShopEase!",
-      returnPolicy: "7-day return policy on electronics.",
-      paymentTerms: "Prepaid orders only.",
-    },
+  const [formData, setFormData] = useState<DynamicBillConfig>(() => {
+    return getTemplate("ECOMMERCE", "VIBRANT") || ECOMMERCE_VIBRANT;
   });
 
   // Handler to update form data - this provides real-time preview
@@ -110,7 +33,7 @@ const InvoicePage = () => {
       const element = invoiceRef.current;
       const opt = {
         margin: 0,
-        filename: "invoice_#AB2324-01.pdf",
+        filename: `invoice_${formData.invoiceInfo?.invoiceNumber || 'document'}.pdf`,
         image: { type: "jpeg" as const, quality: 0.98 },
         html2canvas: { scale: 2 },
         jsPDF: {
