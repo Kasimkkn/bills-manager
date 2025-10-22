@@ -41,10 +41,11 @@ const InvoicePage = () => {
 
   const [searchParams] = useSearchParams();
   const template = searchParams.get("template");
+  const styles = searchParams.get("style")
 
   const invoiceRef = useRef();
   const [formData, setFormData] = useState<DynamicBillConfig>(() => {
-    return getTemplate(template as billType, "VIBRANT") || ECOMMERCE_VIBRANT;
+    return getTemplate(template as billType, styles) || ECOMMERCE_VIBRANT;
   });
 
   // Handler to update form data - this provides real-time preview
