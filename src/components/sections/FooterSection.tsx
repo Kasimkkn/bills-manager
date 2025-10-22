@@ -21,7 +21,7 @@ const FooterSection: React.FC<FooterSectionProps> = ({
   updateFormData,
 }) => {
   return (
-    <Card>
+    <Card className='border-border'>
       <Accordion type='single' collapsible className='w-full'>
         <AccordionItem value='footer' className='border-none'>
           <AccordionTrigger className='px-6 hover:no-underline'>

@@ -17,9 +17,18 @@ import {
   Truck,
   Scale,
 } from "lucide-react";
-import React, { Dispatch } from "react";
+import React, { Dispatch, useState, useMemo } from "react";
 import ResponsiveModal from "./ui/responsive-modal";
 import { ALL_TEMPLATES } from "@/constant/templateJson";
+import { useNavigate } from "react-router-dom";
+import { Input } from "./ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const TemplatePickerModal = ({
   isOpen,
@@ -38,7 +47,8 @@ const TemplatePickerModal = ({
   setSelectedTemplateStyles: Dispatch<React.SetStateAction<string>>;
   selectedTeStyles: string;
 }) => {
-  // Icon mapping
+  const navigate = useNavigate();
+
   const iconMap = {
     Hotel,
     Briefcase,
@@ -54,13 +64,11 @@ const TemplatePickerModal = ({
     Scale,
   };
 
-  // Generate templates from ALL_TEMPLATES using uiMetadata
+  // Generate template data from constant
   const templates = Object.keys(ALL_TEMPLATES).map((billType) => {
     const templateKey = billType as keyof typeof ALL_TEMPLATES;
     const firstStyleKey = Object.keys(ALL_TEMPLATES[templateKey])[0];
     const templateData = ALL_TEMPLATES[templateKey][firstStyleKey];
-
-    // Use uiMetadata from template if available
     const uiMeta = templateData.uiMetadata || {
       displayName: billType,
       description: `${billType} billing template`,
@@ -71,9 +79,7 @@ const TemplatePickerModal = ({
       accentColor: "border-gray-200 bg-gray-50",
       textColor: "text-gray-700",
     };
-
     const IconComponent = iconMap[uiMeta.icon] || Package;
-
     return {
       billType: templateData.billType,
       name: uiMeta.displayName,
@@ -87,38 +93,84 @@ const TemplatePickerModal = ({
         accentColor: uiMeta.accentColor,
         textColor: uiMeta.textColor,
       },
-      templateData: templateData,
     };
   });
 
-  const handleSelectTemplate = (billType, styles) => {
-    console.log("styles", styles);
-    setSelectedTemplate(billType);
-    setSelectedTemplateStyles(styles);
+  // 🔍 State for search & filter
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedFilter, setSelectedFilter] = useState("all");
+
+  // 🔎 Filter templates
+  const filteredTemplates = useMemo(() => {
+    return templates.filter((template) => {
+      const matchesSearch =
+        template.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        template.description.toLowerCase().includes(searchTerm.toLowerCase());
+
+      const matchesFilter =
+        selectedFilter === "all" || template.billType === selectedFilter;
+
+      return matchesSearch && matchesFilter;
+    });
+  }, [templates, searchTerm, selectedFilter]);
+
+  const handleSelectTemplate = (billType: string, styles: string) => {
+    if (billType) {
+      navigate(`/create?template=${billType}&style=${styles}`);
+      setIsOpen(false);
+    }
   };
 
-  return (
-    <div className='min-h-screen bg-slate-50 p-8'>
-      <ResponsiveModal
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        title='Pick Your Bill Template'
-      >
-        <div className='p-6'>
-          {/* Description */}
-          <div className='text-center mb-8'>
-            <p className='text-lg text-slate-600 max-w-2xl mx-auto'>
-              Choose the template that best fits your business type. Each
-              template is customized with relevant fields and features.
-            </p>
-          </div>
+  // Unique bill types for dropdown filter
+  const billTypes = Array.from(new Set(templates.map((t) => t.billType)));
 
-          {/* Templates Grid */}
-          <div className='grid sm:grid-cols-2 grid-cols-1 gap-6 mb-8'>
-            {templates.map((template, index) => (
+  return (
+    <ResponsiveModal
+      isOpen={isOpen}
+      onClose={() => setIsOpen(false)}
+      title='Pick Your Bill Template'
+    >
+      <div className='py-2'>
+        {/* Search + Filter */}
+        <div className='flex flex-col sm:flex-row gap-3 justify-between items-center mb-6'>
+          <Input
+            placeholder='Search templates here...'
+            className='bg-white sm:w-2/3 w-full text-black'
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+
+          <Select value={selectedFilter} onValueChange={setSelectedFilter}>
+            <SelectTrigger className='w-full sm:w-1/3 bg-white text-black'>
+              <SelectValue placeholder='Filter by Bill Type' />
+            </SelectTrigger>
+            <SelectContent className='bg-white text-black '>
+              <SelectItem
+                value='all'
+                className='focus:text-white focus:bg-black'
+              >
+                All Bill Types
+              </SelectItem>
+              {billTypes.map((type) => (
+                <SelectItem
+                  className='focus:text-white focus:bg-black'
+                  key={type}
+                  value={type}
+                >
+                  {type.charAt(0).toUpperCase() + type.slice(1)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Templates Grid */}
+        <div className='grid sm:grid-cols-3 grid-cols-1 gap-6 mb-8'>
+          {filteredTemplates.length > 0 ? (
+            filteredTemplates.map((template, index) => (
               <Card
                 key={index}
-                className={`group border-white/80 cursor-pointer hover:shadow-xl transition-shadow`}
+                className={`group cursor-pointer bg-white h-72 hover:shadow-lg transition-shadow`}
                 onClick={() =>
                   handleSelectTemplate(
                     template.billType,
@@ -127,17 +179,13 @@ const TemplatePickerModal = ({
                 }
               >
                 <CardContent className='p-0'>
-                  {/* Template Preview */}
-                  <div className='bg-white p-6 relative'>
-                    {/* Selected Indicator */}
+                  <div className='bg-white relative'>
                     {selectedTemplate === template.billType && (
                       <div className='absolute -top-2 -right-2 w-8 h-8 bg-teal-500 rounded-full flex items-center justify-center shadow-lg z-10'>
                         <Check className='w-5 h-5 text-white' />
                       </div>
                     )}
-
-                    {/* Mini Bill Preview */}
-                    <div className='bg-white border-2 border-slate-200 rounded-lg overflow-hidden transform group-hover:scale-105 transition-transform duration-300'>
+                    <div className='bg-white rounded-lg overflow-hidden'>
                       {/* Header */}
                       <div className={`${template.preview.headerColor} p-3`}>
                         <div className='flex justify-between items-center'>
@@ -155,29 +203,25 @@ const TemplatePickerModal = ({
                       <div className='p-3 space-y-2'>
                         <div className='grid grid-cols-2 gap-2'>
                           <div
-                            className={`${template.preview.accentColor} border rounded p-2`}
+                            className={`${template.preview.accentColor} rounded p-2`}
                           >
                             <div className='h-1.5 bg-slate-300 rounded mb-1'></div>
                             <div className='h-1 bg-slate-200 rounded w-3/4'></div>
                           </div>
                           <div
-                            className={`${template.preview.accentColor} border rounded p-2`}
+                            className={`${template.preview.accentColor} rounded p-2`}
                           >
                             <div className='h-1.5 bg-slate-300 rounded mb-1'></div>
                             <div className='h-1 bg-slate-200 rounded w-2/3'></div>
                           </div>
                         </div>
-
-                        {/* Items */}
                         <div className='space-y-1'>
                           <div className='h-1 bg-slate-200 rounded'></div>
                           <div className='h-1 bg-slate-200 rounded w-5/6'></div>
                           <div className='h-1 bg-slate-200 rounded w-4/5'></div>
                         </div>
-
-                        {/* Total */}
                         <div
-                          className={`${template.preview.accentColor} border rounded p-2 flex justify-between items-center`}
+                          className={`${template.preview.accentColor} rounded p-2 flex justify-between items-center`}
                         >
                           <div className='h-1.5 bg-slate-300 rounded w-1/4'></div>
                           <div
@@ -188,79 +232,27 @@ const TemplatePickerModal = ({
                     </div>
                   </div>
 
-                  {/* Template Info */}
-                  <div className='p-6 border-t border-slate-100 bg-white'>
+                  <div className='p-2 bg-white'>
                     <div className='mb-4'>
-                      <div className='flex items-center justify-between mb-2'>
-                        <h3 className='font-bold text-slate-900 text-lg'>
-                          {template.name}
-                        </h3>
-                        <Badge
-                          variant='outline'
-                          className={`${template.preview.textColor} border-current`}
-                        >
-                          {template.billType}
-                        </Badge>
-                      </div>
+                      <h3 className='font-bold text-slate-900 text-lg'>
+                        {template.name}
+                      </h3>
                       <p className='text-sm text-slate-600'>
                         {template.description}
                       </p>
                     </div>
-
-                    {/* Features */}
-                    <div className='space-y-2 mb-4'>
-                      {template.features.slice(0, 3).map((feature, idx) => (
-                        <div
-                          key={idx}
-                          className='flex items-center text-xs text-slate-600'
-                        >
-                          <div
-                            className={`w-1.5 h-1.5 ${template.preview.headerColor} rounded-full mr-2`}
-                          ></div>
-                          {feature}
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Select Button */}
-                    <Button
-                      className={`w-full bg-gradient-to-r ${template.color} hover:shadow-lg text-white transition-all duration-300`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleSelectTemplate(
-                          template.billType,
-                          template.templateStyle
-                        );
-                      }}
-                    >
-                      {selectedTemplate === template.billType ? (
-                        <>
-                          <Check className='w-4 h-4 mr-2' />
-                          Selected
-                        </>
-                      ) : (
-                        "Select Template"
-                      )}
-                    </Button>
                   </div>
                 </CardContent>
               </Card>
-            ))}
-          </div>
-
-          <div className='flex justify-end items-center'>
-            <Button
-              onClick={handleContinue}
-              disabled={!selectedTemplate}
-              className='bg-gradient-to-r from-teal-500 to-sky-500 hover:from-teal-600 hover:to-sky-600 text-white px-8 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed'
-            >
-              Continue with {selectedTemplate || "Template"}
-              <ArrowRight className='ml-2 w-4 h-4' />
-            </Button>
-          </div>
+            ))
+          ) : (
+            <p className='text-center text-slate-500 col-span-full'>
+              No templates found.
+            </p>
+          )}
         </div>
-      </ResponsiveModal>
-    </div>
+      </div>
+    </ResponsiveModal>
   );
 };
 

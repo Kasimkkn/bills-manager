@@ -28,7 +28,7 @@ const PaymentSection: React.FC<PaymentSectionProps> = ({
   updateFormData,
 }) => {
   return (
-    <Card>
+    <Card className='border-border'>
       <Accordion type='single' collapsible className='w-full'>
         <AccordionItem value='payment' className='border-none'>
           <AccordionTrigger className='px-6 hover:no-underline'>

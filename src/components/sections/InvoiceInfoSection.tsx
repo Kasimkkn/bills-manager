@@ -15,7 +15,7 @@ const InvoiceInfoSection: React.FC<InvoiceInfoSectionProps> = ({
   updateFormData,
 }) => {
   return (
-    <Card>
+    <Card className='border-border'>
       <CardHeader>
         <CardTitle className='text-lg md:text-xl'>
           Invoice Information

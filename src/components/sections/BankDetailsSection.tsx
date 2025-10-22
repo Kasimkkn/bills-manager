@@ -21,7 +21,7 @@ const BankDetailsSection: React.FC<BankDetailsSectionProps> = ({
   updateFormData,
 }) => {
   return (
-    <Card>
+    <Card className='border-border'>
       <Accordion type='single' collapsible className='w-full'>
         <AccordionItem value='bank-details' className='border-none'>
           <AccordionTrigger className='px-6 hover:no-underline'>

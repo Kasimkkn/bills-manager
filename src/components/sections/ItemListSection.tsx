@@ -72,7 +72,7 @@ const ItemListSection: React.FC<ItemListSectionProps> = ({
   };
 
   return (
-    <Card>
+    <Card className='border-border'>
       <Accordion type='single' collapsible className='w-full'>
         <AccordionItem value='item-list' className='border-none'>
           <AccordionTrigger className='px-6 hover:no-underline'>
