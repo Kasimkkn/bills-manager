@@ -1,4 +1,3 @@
-
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -9,88 +8,98 @@ import {
     Hotel,
     Package,
     ShoppingCart,
-    Store
+    Store,
+    Stethoscope,
+    Scissors,
+    Home,
+    GraduationCap,
+    Dumbbell,
+    Truck,
+    Scale
 } from "lucide-react";
 import React, { Dispatch } from 'react';
 import ResponsiveModal from './ui/responsive-modal';
-const TemplatePickerModal = ({ isOpen, setIsOpen, selectedTemplate, setSelectedTemplate, handleContinue }: { isOpen: boolean, setIsOpen: Dispatch<React.SetStateAction<boolean>>, selectedTemplate: string, setSelectedTemplate: Dispatch<React.SetStateAction<string>>, handleContinue: () => void }) => {
+import { ALL_TEMPLATES } from '@/constant/templateJson';
 
-    const templates = [
-        {
-            billType: "HOTEL",
-            name: "Hotel & Hospitality",
-            description: "Perfect for hotels, resorts, and restaurants",
-            icon: Hotel,
-            color: "from-blue-500 to-cyan-500",
-            features: ["Room charges", "Food & beverage", "Guest details", "Check-in/out dates"],
-            preview: {
-                headerColor: "bg-gradient-to-r from-blue-500 to-cyan-500",
-                accentColor: "border-blue-200 bg-blue-50",
-                textColor: "text-blue-700"
-            }
-        },
-        {
-            billType: "FREELANCER",
-            name: "Freelancer & Services",
-            description: "Ideal for consultants and service providers",
-            icon: Briefcase,
-            color: "from-purple-500 to-pink-500",
-            features: ["Hourly billing", "Service description", "Payment terms", "Project details"],
-            preview: {
-                headerColor: "bg-gradient-to-r from-purple-500 to-pink-500",
-                accentColor: "border-purple-200 bg-purple-50",
-                textColor: "text-purple-700"
-            }
-        },
-        {
-            billType: "SUPPLIER",
-            name: "Supplier & Wholesale",
-            description: "Designed for B2B and bulk transactions",
-            icon: Package,
-            color: "from-orange-500 to-red-500",
-            features: ["Bulk pricing", "GST details", "Credit terms", "Purchase orders"],
-            preview: {
-                headerColor: "bg-gradient-to-r from-orange-500 to-red-500",
-                accentColor: "border-orange-200 bg-orange-50",
-                textColor: "text-orange-700"
-            }
-        },
-        {
-            billType: "RETAILER",
-            name: "Retail & POS",
-            description: "Great for shops and retail businesses",
-            icon: Store,
-            color: "from-green-500 to-emerald-500",
-            features: ["Item-wise billing", "Discounts", "Cash/Card payment", "Quick checkout"],
-            preview: {
-                headerColor: "bg-gradient-to-r from-green-500 to-emerald-500",
-                accentColor: "border-green-200 bg-green-50",
-                textColor: "text-green-700"
-            }
-        },
-        {
-            billType: "ECOMMERCE",
-            name: "E-commerce & Online",
-            description: "Optimized for online stores and delivery",
-            icon: ShoppingCart,
-            color: "from-teal-500 to-sky-500",
-            features: ["Shipping charges", "Order tracking", "Multiple items", "Online payment"],
-            preview: {
-                headerColor: "bg-gradient-to-r from-teal-500 to-sky-500",
-                accentColor: "border-teal-200 bg-teal-50",
-                textColor: "text-teal-700"
-            }
-        }
-    ];
+const TemplatePickerModal = ({
+    isOpen,
+    setIsOpen,
+    selectedTemplate,
+    setSelectedTemplate,
+    handleContinue,
+    setSelectedTemplateStyles,
+    selectedTeStyles
+}: {
+    isOpen: boolean,
+    setIsOpen: Dispatch<React.SetStateAction<boolean>>,
+    selectedTemplate: string,
+    setSelectedTemplate: Dispatch<React.SetStateAction<string>>,
+    handleContinue: () => void,
+    setSelectedTemplateStyles: Dispatch<React.SetStateAction<string>>,
+    selectedTeStyles: string
+}) => {
 
-    const handleSelectTemplate = (billType) => {
-        setSelectedTemplate(billType);
+    // Icon mapping
+    const iconMap = {
+        Hotel,
+        Briefcase,
+        Package,
+        Store,
+        ShoppingCart,
+        Stethoscope,
+        Scissors,
+        Home,
+        GraduationCap,
+        Dumbbell,
+        Truck,
+        Scale
     };
 
+    // Generate templates from ALL_TEMPLATES using uiMetadata
+    const templates = Object.keys(ALL_TEMPLATES).map(billType => {
+        const templateKey = billType as keyof typeof ALL_TEMPLATES;
+        const firstStyleKey = Object.keys(ALL_TEMPLATES[templateKey])[0];
+        const templateData = ALL_TEMPLATES[templateKey][firstStyleKey];
+
+        // Use uiMetadata from template if available
+        const uiMeta = templateData.uiMetadata || {
+            displayName: billType,
+            description: `${billType} billing template`,
+            icon: "Package",
+            colorGradient: "from-gray-500 to-slate-500",
+            features: ["Standard billing", "Customer details", "Payment tracking"],
+            headerColor: "bg-gradient-to-r from-gray-500 to-slate-500",
+            accentColor: "border-gray-200 bg-gray-50",
+            textColor: "text-gray-700"
+        };
+
+        const IconComponent = iconMap[uiMeta.icon] || Package;
+
+        return {
+            billType: templateData.billType,
+            name: uiMeta.displayName,
+            templateStyle: templateData.templateStyle,
+            description: uiMeta.description,
+            icon: IconComponent,
+            color: uiMeta.colorGradient,
+            features: uiMeta.features,
+            preview: {
+                headerColor: uiMeta.headerColor,
+                accentColor: uiMeta.accentColor,
+                textColor: uiMeta.textColor
+            },
+            templateData: templateData
+        };
+    });
+
+    const handleSelectTemplate = (billType, styles) => {
+        console.log("styles", styles)
+        setSelectedTemplate(billType);
+        setSelectedTemplateStyles(styles);
+    };
 
     return (
         <div className="min-h-screen bg-slate-50 p-8">
-
             <ResponsiveModal
                 isOpen={isOpen}
                 onClose={() => setIsOpen(false)}
@@ -109,8 +118,8 @@ const TemplatePickerModal = ({ isOpen, setIsOpen, selectedTemplate, setSelectedT
                         {templates.map((template, index) => (
                             <Card
                                 key={index}
-                                className={`group border-white/80`}
-                                onClick={() => handleSelectTemplate(template.billType)}
+                                className={`group border-white/80 cursor-pointer hover:shadow-xl transition-shadow`}
+                                onClick={() => handleSelectTemplate(template.billType, template.templateStyle)}
                             >
                                 <CardContent className="p-0">
                                     {/* Template Preview */}
@@ -191,7 +200,7 @@ const TemplatePickerModal = ({ isOpen, setIsOpen, selectedTemplate, setSelectedT
                                             className={`w-full bg-gradient-to-r ${template.color} hover:shadow-lg text-white transition-all duration-300`}
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                handleSelectTemplate(template.billType);
+                                                handleSelectTemplate(template.billType, template.templateStyle);
                                             }}
                                         >
                                             {selectedTemplate === template.billType ? (

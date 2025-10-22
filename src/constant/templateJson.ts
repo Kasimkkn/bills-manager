@@ -92,6 +92,16 @@ export const ECOMMERCE_VIBRANT: DynamicBillConfig = {
     courierPartner: "BlueDart",
     returnDeadline: "2024-01-25",
   },
+  uiMetadata: {
+    displayName: "E-commerce & Online",
+    description: "Optimized for online stores and delivery",
+    icon: "ShoppingCart",
+    colorGradient: "from-teal-500 to-sky-500",
+    features: ["Shipping charges", "Order tracking", "Multiple items", "Online payment"],
+    headerColor: "bg-gradient-to-r from-teal-500 to-sky-500",
+    accentColor: "border-teal-200 bg-teal-50",
+    textColor: "text-teal-700"
+  }
 };
 
 // ===== HOTEL/RESTAURANT TEMPLATES =====
@@ -100,6 +110,16 @@ export const HOTEL_ELEGANT: DynamicBillConfig = {
   templateStyle: "ELEGANT",
   templateVersion: 1,
   isBusinessInfoNeeded: true,
+  uiMetadata: {
+    displayName: "Hotel & Hospitality",
+    description: "Perfect for hotels, resorts, and restaurants",
+    icon: "Hotel",
+    colorGradient: "from-blue-500 to-cyan-500",
+    features: ["Room charges", "Food & beverage", "Guest details", "Check-in/out dates"],
+    headerColor: "bg-gradient-to-r from-blue-500 to-cyan-500",
+    accentColor: "border-blue-200 bg-blue-50",
+    textColor: "text-blue-700"
+  },
   businessInfo: {
     name: "Grand Palace Restaurant",
     address: {
@@ -206,6 +226,16 @@ export const MEDICAL_CLINICAL: DynamicBillConfig = {
     patientId: "PAT-1234",
   },
   isServiceListNeeded: true,
+  uiMetadata: {
+    displayName: "Medical & Clinic",
+    description: "Healthcare and medical services",
+    icon: "Stethoscope",
+    colorGradient: "from-red-500 to-pink-500",
+    features: ["Patient records", "Consultation fees", "Prescription tracking", "Insurance details"],
+    headerColor: "bg-gradient-to-r from-red-500 to-pink-500",
+    accentColor: "border-red-200 bg-red-50",
+    textColor: "text-red-700"
+  },
   serviceList: [
     {
       description: "General Consultation",
@@ -256,6 +286,16 @@ export const SALON_LUXURY: DynamicBillConfig = {
   billType: "SALON",
   templateStyle: "LUXURY",
   templateVersion: 1,
+  uiMetadata: {
+    displayName: "Salon & Spa",
+    description: "Beauty and wellness services",
+    icon: "Scissors",
+    colorGradient: "from-pink-500 to-rose-500",
+    features: ["Service packages", "Stylist details", "Appointment tracking", "Membership benefits"],
+    headerColor: "bg-gradient-to-r from-pink-500 to-rose-500",
+    accentColor: "border-pink-200 bg-pink-50",
+    textColor: "text-pink-700"
+  },
   isBusinessInfoNeeded: true,
   businessInfo: {
     name: "Glamour Studio & Spa",
@@ -335,6 +375,16 @@ export const FREELANCER_PROFESSIONAL: DynamicBillConfig = {
   templateStyle: "PROFESSIONAL",
   templateVersion: 1,
   isBusinessInfoNeeded: true,
+  uiMetadata: {
+    displayName: "Freelancer & Services",
+    description: "Ideal for consultants and service providers",
+    icon: "Briefcase",
+    colorGradient: "from-purple-500 to-pink-500",
+    features: ["Hourly billing", "Service description", "Payment terms", "Project details"],
+    headerColor: "bg-gradient-to-r from-purple-500 to-pink-500",
+    accentColor: "border-purple-200 bg-purple-50",
+    textColor: "text-purple-700"
+  },
   businessInfo: {
     name: "Digital Solutions by Rahul",
     address: {
@@ -430,6 +480,16 @@ export const RENTAL_PROFESSIONAL: DynamicBillConfig = {
   billType: "RENTAL",
   templateStyle: "PROFESSIONAL",
   templateVersion: 1,
+  uiMetadata: {
+    displayName: "Rental & Property",
+    description: "Property rentals and leasing",
+    icon: "Home",
+    colorGradient: "from-indigo-500 to-purple-500",
+    features: ["Monthly rent", "Security deposit", "Maintenance charges", "Lease terms"],
+    headerColor: "bg-gradient-to-r from-indigo-500 to-purple-500",
+    accentColor: "border-indigo-200 bg-indigo-50",
+    textColor: "text-indigo-700"
+  },
   isBusinessInfoNeeded: true,
   businessInfo: {
     name: "Prime Properties Rentals",
@@ -512,6 +572,16 @@ export const EDUCATION_ACADEMIC: DynamicBillConfig = {
   billType: "EDUCATION",
   templateStyle: "ACADEMIC",
   templateVersion: 1,
+  uiMetadata: {
+    displayName: "Education & Training",
+    description: "Schools, colleges, and training centers",
+    icon: "GraduationCap",
+    colorGradient: "from-blue-500 to-indigo-500",
+    features: ["Tuition fees", "Course details", "Student information", "Installment plans"],
+    headerColor: "bg-gradient-to-r from-blue-500 to-indigo-500",
+    accentColor: "border-blue-200 bg-blue-50",
+    textColor: "text-blue-700"
+  },
   isBusinessInfoNeeded: true,
   businessInfo: {
     name: "Bright Future Academy",
@@ -597,6 +667,16 @@ export const EDUCATION_ACADEMIC: DynamicBillConfig = {
 export const GYM_ENERGETIC: DynamicBillConfig = {
   billType: "GYM",
   templateStyle: "ENERGETIC",
+  uiMetadata: {
+    displayName: "Gym & Fitness",
+    description: "Fitness centers and training studios",
+    icon: "Dumbbell",
+    colorGradient: "from-orange-500 to-amber-500",
+    features: ["Membership plans", "Personal training", "Class schedules", "Locker facilities"],
+    headerColor: "bg-gradient-to-r from-orange-500 to-amber-500",
+    accentColor: "border-orange-200 bg-orange-50",
+    textColor: "text-orange-700"
+  },
   templateVersion: 1,
   isBusinessInfoNeeded: true,
   businessInfo: {
@@ -677,6 +757,16 @@ export const GYM_ENERGETIC: DynamicBillConfig = {
 export const TRANSPORTATION_LOGISTICS: DynamicBillConfig = {
   billType: "TRANSPORTATION",
   templateStyle: "LOGISTICS",
+  uiMetadata: {
+    displayName: "Transportation & Logistics",
+    description: "Shipping and delivery services",
+    icon: "Truck",
+    colorGradient: "from-cyan-500 to-blue-500",
+    features: ["Weight-based pricing", "Distance tracking", "Vehicle details", "Delivery proof"],
+    headerColor: "bg-gradient-to-r from-cyan-500 to-blue-500",
+    accentColor: "border-cyan-200 bg-cyan-50",
+    textColor: "text-cyan-700"
+  },
   templateVersion: 1,
   isBusinessInfoNeeded: true,
   businessInfo: {
@@ -771,6 +861,16 @@ export const LEGAL_FORMAL: DynamicBillConfig = {
   billType: "LEGAL",
   templateStyle: "FORMAL",
   templateVersion: 1,
+  uiMetadata: {
+    displayName: "Legal & Professional",
+    description: "Law firms and legal services",
+    icon: "Scale",
+    colorGradient: "from-slate-600 to-gray-700",
+    features: ["Hourly consultation", "Case tracking", "Document preparation", "Court fees"],
+    headerColor: "bg-gradient-to-r from-slate-600 to-gray-700",
+    accentColor: "border-slate-200 bg-slate-50",
+    textColor: "text-slate-700"
+  },
   isBusinessInfoNeeded: true,
   businessInfo: {
     name: "Sharma & Associates Law Firm",
@@ -865,6 +965,16 @@ export const SUPPLIER_FORMAL: DynamicBillConfig = {
   templateStyle: "FORMAL",
   templateVersion: 1,
   isBusinessInfoNeeded: true,
+  uiMetadata: {
+    displayName: "Supplier & Wholesale",
+    description: "Designed for B2B and bulk transactions",
+    icon: "Package",
+    colorGradient: "from-orange-500 to-red-500",
+    features: ["Bulk pricing", "GST details", "Credit terms", "Purchase orders"],
+    headerColor: "bg-gradient-to-r from-orange-500 to-red-500",
+    accentColor: "border-orange-200 bg-orange-50",
+    textColor: "text-orange-700"
+  },
   businessInfo: {
     name: "Industrial Supplies Co.",
     address: {
@@ -958,6 +1068,16 @@ export const RETAILER_MODERN: DynamicBillConfig = {
   templateStyle: "MODERN",
   templateVersion: 1,
   isBusinessInfoNeeded: true,
+  uiMetadata: {
+    displayName: "Retail & POS",
+    description: "Great for shops and retail businesses",
+    icon: "Store",
+    colorGradient: "from-green-500 to-emerald-500",
+    features: ["Item-wise billing", "Discounts", "Cash/Card payment", "Quick checkout"],
+    headerColor: "bg-gradient-to-r from-green-500 to-emerald-500",
+    accentColor: "border-green-200 bg-green-50",
+    textColor: "text-green-700"
+  },
   businessInfo: {
     name: "QuickMart Retail Store",
     address: {

@@ -30,6 +30,8 @@ const Index = () => {
         selectedTemplate={selectedTemplate}
         setSelectedTemplate={setSelectedTemplate}
         handleContinue={handleContinue}
+        setSelectedTemplateStyles={setSelectedTemplateStyles}
+        selectedTeStyles={selectedTeStyles}
       />
     </>
   );

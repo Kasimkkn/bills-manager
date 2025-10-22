@@ -65,14 +65,14 @@ interface Item {
 
 interface Payment {
   paymentOption:
-    | "CASH"
-    | "UPI"
-    | "CARD"
-    | "BANK_TRANSFER"
-    | "CHEQUE"
-    | "COD"
-    | "INSURANCE"
-    | string;
+  | "CASH"
+  | "UPI"
+  | "CARD"
+  | "BANK_TRANSFER"
+  | "CHEQUE"
+  | "COD"
+  | "INSURANCE"
+  | string;
   transactionId?: string;
   amountPaid?: number;
   balanceDue?: number;
@@ -312,6 +312,16 @@ interface DynamicBillConfig {
   freelancerInfo?: FreelancerInfo;
   ecommerceInfo?: EcommerceInfo;
   supplierInfo?: SupplierInfo;
+  uiMetadata?: {
+    displayName: string,
+    description: string,
+    icon: string,
+    colorGradient: string,
+    features: string[],
+    headerColor: string,
+    accentColor: string,
+    textColor: string
+  }
 }
 
 // ===== EXPORT =====

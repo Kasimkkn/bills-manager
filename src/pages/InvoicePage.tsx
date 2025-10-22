@@ -58,9 +58,8 @@ const InvoicePage = () => {
       const element = invoiceRef.current;
       const opt = {
         margin: 0,
-        filename: `invoice_${
-          formData.invoiceInfo?.invoiceNumber || "document"
-        }.pdf`,
+        filename: `invoice_${formData.invoiceInfo?.invoiceNumber || "document"
+          }.pdf`,
         image: { type: "jpeg" as const, quality: 0.98 },
         html2canvas: { scale: 2 },
         jsPDF: {
@@ -75,16 +74,6 @@ const InvoicePage = () => {
       console.error("Error generating PDF:", error);
     } finally {
       setIsGeneratingPDF(false);
-    }
-  };
-
-  const renderTemplates = (template) => {
-    switch (template) {
-      case "ECOMMERCE":
-        return <Invoice1 invoiceData={formData} invoiceRef={invoiceRef} />;
-
-      case "HOTEL":
-        return <Invoice2 invoiceData={formData} invoiceRef={invoiceRef} />;
     }
   };
 
@@ -148,9 +137,8 @@ const InvoicePage = () => {
       <div className='lg:grid lg:grid-cols-12 h-screen relative'>
         {/* Form Panel (scrollable) */}
         <div
-          className={`${
-            showPreview ? "hidden lg:block" : "block"
-          } bg-background border-r border-border/50 overflow-y-auto h-screen lg:col-span-5`}
+          className={`${showPreview ? "hidden lg:block" : "block"
+            } bg-background border-r border-border/50 overflow-y-auto h-screen lg:col-span-5`}
         >
           <DynamicInvoiceForm
             formData={formData}
@@ -158,9 +146,8 @@ const InvoicePage = () => {
           />
         </div>
         <div
-          className={`${
-            !showPreview ? "hidden lg:block" : "block"
-          } bg-transparent h-screen py-10 overflow-y-auto lg:fixed lg:right-0 lg:top-0 lg:w-[60%]`}
+          className={`${!showPreview ? "hidden lg:block" : "block"
+            } bg-transparent h-screen py-10 overflow-y-auto lg:fixed lg:right-0 lg:top-0 lg:w-[60%]`}
         >
           <div className='p-4 lg:py-12 lg:px-8'>
             {/* ECOMMERCE Templates */}
