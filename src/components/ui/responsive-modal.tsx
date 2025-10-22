@@ -41,8 +41,8 @@ const ResponsiveModal: React.FC<ResponsiveModalProps> = ({
     }
 
     return (
-        <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-            <DialogContent className="bg-white border-white/20 max-w-4xl max-h-[90vh] overflow-y-auto">
+        <Dialog open={isOpen} onOpenChange={handleOpenChange} >
+            <DialogContent hideCloseButton={true} className="bg-white border-white/20 max-w-4xl max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle className="text-black font-bricola">{title}</DialogTitle>
                 </DialogHeader>

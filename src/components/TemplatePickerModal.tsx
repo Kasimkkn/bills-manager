@@ -107,8 +107,8 @@ const TemplatePickerModal = ({
             >
                 <div className="p-6">
                     {/* Description */}
-                    <div className="text-center mb-8">
-                        <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+                    <div className="mb-8">
+                        <p className="text-lg text-slate-600">
                             Choose the template that best fits your business type. Each template is customized with relevant fields and features.
                         </p>
                     </div>
@@ -218,7 +218,7 @@ const TemplatePickerModal = ({
                         ))}
                     </div>
 
-                    <div className="flex justify-end items-center">
+                    <div className="absolute top-4 right-4">
                         <Button
                             onClick={handleContinue}
                             disabled={!selectedTemplate}

@@ -70,41 +70,30 @@ const DynamicInvoiceForm: React.FC<DynamicInvoiceFormProps> = ({
 
       <InvoiceInfoSection formData={formData} updateFormData={updateFormData} />
 
-      {/* <BillTypeSection formData={formData} updateFormData={updateFormData} /> */}
-      {
-        formData.isBusinessInfoNeeded &&
-        <BusinessInfoSection
-          formData={formData}
-          updateFormData={updateFormData}
-        />
-      }
+      <BillTypeSection formData={formData} updateFormData={updateFormData} />
 
-      {formData.isCustomerInfoNeeded && (
-        <CustomerInfoSection
-          formData={formData}
-          updateFormData={updateFormData}
-        />
-      )}
+      <BusinessInfoSection
+        formData={formData}
+        updateFormData={updateFormData}
+      />
+
+      <CustomerInfoSection
+        formData={formData}
+        updateFormData={updateFormData}
+      />
 
       <ItemListSection
         formData={formData}
         updateFormData={updateFormData}
         showDeleteDialog={showDeleteDialog}
       />
+      <PaymentSection formData={formData} updateFormData={updateFormData} />
 
-      {formData.isPaymentSectionNeeded && (
-        <PaymentSection formData={formData} updateFormData={updateFormData} />
-      )}
-      {formData.isBankDetailsNeeded && (
-        <BankDetailsSection
-          formData={formData}
-          updateFormData={updateFormData}
-        />
-      )}
-
-      {formData.isFooterNeeded && (
-        <FooterSection formData={formData} updateFormData={updateFormData} />
-      )}
+      <BankDetailsSection
+        formData={formData}
+        updateFormData={updateFormData}
+      />
+      <FooterSection formData={formData} updateFormData={updateFormData} />
     </div>
   );
 };
