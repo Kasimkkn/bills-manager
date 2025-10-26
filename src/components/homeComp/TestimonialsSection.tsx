@@ -10,7 +10,7 @@ const TestimonialsSection: React.FC = () => {
             role: "Freelance Designer",
             company: "Creative Studios",
             rating: 5,
-            text: "InvoiceGen has revolutionized my billing process. What used to take me hours now takes minutes. The professional templates make my business look more established."
+            text: "BillWise has revolutionized my billing process. What used to take me hours now takes minutes. The professional templates make my business look more established."
         },
         {
             name: "Michael Chen",
@@ -36,7 +36,7 @@ const TestimonialsSection: React.FC = () => {
                         What Our Users Say
                     </h2>
                     <p className="text-lg sm:text-xl text-slate-600">
-                        Join thousands of satisfied businesses who trust InvoiceGen
+                        Join thousands of satisfied businesses who trust BillWise
                     </p>
                 </div>
 

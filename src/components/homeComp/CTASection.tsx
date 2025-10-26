@@ -12,7 +12,7 @@ const CTASection: React.FC<CTASectionProps> = ({ onCreateInvoice }) => {
                         Ready to Create Professional Invoices?
                     </h2>
                     <p className="text-lg sm:text-xl text-teal-100 mb-8">
-                        Join 25,000+ businesses who trust InvoiceGen for their invoicing needs.
+                        Join 25,000+ businesses who trust BillWise for their invoicing needs.
                         Start creating beautiful invoices today - no credit card required.
                     </p>
 

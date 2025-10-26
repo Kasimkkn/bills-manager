@@ -2,9 +2,10 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, DollarSign, Download, Edit, FileText, Plus, TrendingUp, Users } from "lucide-react";
+import { DollarSign, Download, Edit, FileText, Plus, TrendingUp, Users } from "lucide-react";
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import DashboardLayout from "@/components/layout/DashboardLayout";
 
 const Dashboard = () => {
   const [showTemplateGallery, setShowTemplateGallery] = useState(false);
@@ -48,40 +49,18 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="sticky top-0 z-40 bg-surface-elevated/95 backdrop-blur-lg border-b border-border/50">
-        <div className="container mx-auto px-4 lg:px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <Button
-                variant="ghost"
-                onClick={handleBackHome}
-                className="text-muted-foreground hover:text-foreground"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back to Home
-              </Button>
-              <div className="h-6 w-px bg-border" />
-              <h1 className="text-xl font-semibold">Dashboard</h1>
-            </div>
-
-            <div className="flex items-center space-x-4">
-
-              <Button
-                onClick={handleCreateInvoice}
-                className="bg-black text-white"
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Create Invoice
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="container mx-auto px-4 lg:px-6 py-8">
+    <DashboardLayout
+      title="Dashboard"
+      action={
+        <Button
+          onClick={handleCreateInvoice}
+          className="bg-foreground text-background hover:bg-foreground/90"
+        >
+          <Plus className="w-4 h-4 mr-2" />
+          Create Invoice
+        </Button>
+      }
+    >
         {/* Welcome Section */}
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-foreground mb-2">Welcome back!</h2>
@@ -186,8 +165,7 @@ const Dashboard = () => {
             </div>
           </CardContent>
         </Card>
-      </div>
-    </div>
+    </DashboardLayout>
   );
 };
 

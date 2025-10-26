@@ -14,29 +14,23 @@ import {
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ResponsiveModalProps {
-  isOpen: boolean;
-  onClose: () => void;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
   title: string;
   children: React.ReactNode;
 }
 
-const ResponsiveModal: React.FC<ResponsiveModalProps> = ({
-  isOpen,
-  onClose,
+export const ResponsiveModal: React.FC<ResponsiveModalProps> = ({
+  open,
+  onOpenChange,
   title,
   children,
 }) => {
   const isMobile = useIsMobile();
 
-  const handleOpenChange = (open: boolean) => {
-    if (!open) {
-      onClose();
-    }
-  };
-
   if (isMobile) {
     return (
-      <Drawer open={isOpen} onOpenChange={handleOpenChange}>
+      <Drawer open={open} onOpenChange={onOpenChange}>
         <DrawerContent className='bg-white border-white/20 max-h-[90vh]'>
           <DrawerHeader>
             <DrawerTitle className='text-black font-bricola'>
@@ -50,7 +44,7 @@ const ResponsiveModal: React.FC<ResponsiveModalProps> = ({
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         hideCloseButton={true}
         className='bg-white border-white/20 max-w-4xl max-h-[90vh] overflow-y-auto'

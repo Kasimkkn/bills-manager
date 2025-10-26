@@ -38,7 +38,7 @@ const InvoiceInfoSection: React.FC<InvoiceInfoSectionProps> = ({
             <div className='space-y-2'>
               <Label>Invoice Date</Label>
               <DatePicker
-                value={formData.invoiceInfo?.invoiceDate || ""}
+                value={typeof formData.invoiceInfo?.invoiceDate === 'string' ? formData.invoiceInfo.invoiceDate : formData.invoiceInfo?.invoiceDate?.toString() || ""}
                 onChange={(date) =>
                   updateFormData("invoiceInfo.invoiceDate", date)
                 }
@@ -48,7 +48,7 @@ const InvoiceInfoSection: React.FC<InvoiceInfoSectionProps> = ({
             <div className='space-y-2'>
               <Label>Due Date</Label>
               <DatePicker
-                value={formData.invoiceInfo?.invoiceDueDate || ""}
+                value={typeof formData.invoiceInfo?.invoiceDueDate === 'string' ? formData.invoiceInfo.invoiceDueDate : formData.invoiceInfo?.invoiceDueDate?.toString() || ""}
                 onChange={(date) =>
                   updateFormData("invoiceInfo.invoiceDueDate", date)
                 }

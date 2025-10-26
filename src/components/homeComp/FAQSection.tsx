@@ -104,7 +104,7 @@ const FAQSection: React.FC<FAQSectionProps> = ({ openFaq, setOpenFaq }) => {
                             </div>
                             <h3 className="text-xl sm:text-2xl font-bold mb-3">Still Have Questions?</h3>
                             <p className="text-teal-100 mb-6 text-base sm:text-lg">
-                                Our support team is here to help you get the most out of InvoiceGen
+                                Our support team is here to help you get the most out of BillWise
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4 justify-center">
                                 <Button

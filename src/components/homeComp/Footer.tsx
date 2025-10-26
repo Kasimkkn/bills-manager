@@ -19,7 +19,7 @@ const Footer: React.FC = () => {
                             <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-sky-500 rounded-xl flex items-center justify-center">
                                 <FileText className="w-6 h-6 text-white" />
                             </div>
-                            <span className="text-xl font-bold">InvoiceGen</span>
+                            <span className="text-xl font-bold">BillWise</span>
                         </div>
                         <p className="text-slate-400 leading-relaxed">
                             The professional way to create, send, and track invoices.
@@ -68,7 +68,7 @@ const Footer: React.FC = () => {
                         <div className="space-y-3">
                             <div className="flex items-center space-x-3 text-slate-400">
                                 <Mail className="w-4 h-4" />
-                                <span className="text-sm">support@invoicegen.com</span>
+                                <span className="text-sm">support@BillWise.com</span>
                             </div>
                             <div className="flex items-center space-x-3 text-slate-400">
                                 <Phone className="w-4 h-4" />
@@ -100,7 +100,7 @@ const Footer: React.FC = () => {
                 {/* Bottom Bar */}
                 <div className="border-t border-slate-800 mt-12 pt-8 flex flex-col lg:flex-row justify-between items-center text-center lg:text-left">
                     <div className="text-slate-400 text-sm">
-                        © 2024 InvoiceGen. All rights reserved.
+                        © 2024 BillWise. All rights reserved.
                     </div>
                     <div className="flex flex-wrap justify-center lg:justify-end space-x-6 text-sm text-slate-400 mt-4 lg:mt-0">
                         <a href="#privacy" className="hover:text-white transition-colors">Privacy Policy</a>

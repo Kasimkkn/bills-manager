@@ -26,34 +26,35 @@ export default function Invoice4({
                 {/* Header with Blue Background */}
                 <div className='bg-blue-600 text-white px-12 py-8'>
                     <div className='flex justify-between items-start'>
+                        <div className="text-center">
+                            <h1 className='text-xl text-black font-bold mb-1'>PURCHASE ORDER</h1>
+                            {invoiceData.invoiceInfo?.invoiceNumber && (
+                                <p className='text-gray-700 text-sm'>
+                                    PO #{invoiceData.invoiceInfo.invoiceNumber}
+                                </p>
+                            )}
+                        </div>
                         <div className='flex items-center gap-4'>
                             {invoiceData.isBusinessInfoNeeded && invoiceData.businessInfo?.logo && (
                                 <div className='w-14 h-14 bg-white rounded-lg flex items-center justify-center overflow-hidden'>
                                     <img src={invoiceData.businessInfo.logo} alt="Logo" className="w-full h-full object-cover" />
                                 </div>
                             )}
-                            <div>
-                                <h1 className='text-3xl font-bold mb-1'>PURCHASE ORDER</h1>
-                                {invoiceData.invoiceInfo?.invoiceNumber && (
-                                    <p className='text-blue-100 text-sm'>
-                                        PO #{invoiceData.invoiceInfo.invoiceNumber}
-                                    </p>
-                                )}
-                            </div>
+                            {invoiceData.isBusinessInfoNeeded && invoiceData.businessInfo && (
+                                <div className=''>
+                                    <p className='font-bold text-lg'>{invoiceData.businessInfo.name}</p>
+                                    {invoiceData.businessInfo.address && (
+                                        <p className='text-blue-100 text-sm mt-1'>
+                                            {invoiceData.businessInfo.address.city}, {invoiceData.businessInfo.address.state}
+                                        </p>
+                                    )}
+                                    {invoiceData.businessInfo.gstNumber && (
+                                        <p className='text-blue-100 text-sm'>GST: {invoiceData.businessInfo.gstNumber}</p>
+                                    )}
+                                </div>
+                            )}
                         </div>
-                        {invoiceData.isBusinessInfoNeeded && invoiceData.businessInfo && (
-                            <div className='text-right'>
-                                <p className='font-bold text-lg'>{invoiceData.businessInfo.name}</p>
-                                {invoiceData.businessInfo.address && (
-                                    <p className='text-blue-100 text-sm mt-1'>
-                                        {invoiceData.businessInfo.address.city}, {invoiceData.businessInfo.address.state}
-                                    </p>
-                                )}
-                                {invoiceData.businessInfo.gstNumber && (
-                                    <p className='text-blue-100 text-sm'>GST: {invoiceData.businessInfo.gstNumber}</p>
-                                )}
-                            </div>
-                        )}
+
                     </div>
                 </div>
 

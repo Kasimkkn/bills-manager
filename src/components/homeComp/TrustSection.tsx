@@ -45,7 +45,7 @@ const TrustSection: React.FC = () => {
                     <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">
                         Join 25,000+ Happy Businesses
                     </h2>
-                    <p className="text-slate-600">From startups to enterprises, businesses trust InvoiceGen</p>
+                    <p className="text-slate-600">From startups to enterprises, businesses trust BillWise</p>
                 </div>
 
                 {/* Company Types Grid */}

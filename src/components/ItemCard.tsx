@@ -4,18 +4,18 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Trash2 } from "lucide-react";
 
-interface Item {
+interface ItemCardItem {
   itemName: string;
   hsnCode?: string;
-  quantity: number;
-  unit: string;
+  quantity?: number;
+  unit?: string;
   rate: number;
   discount?: number;
   tax?: number;
 }
 
 interface ItemCardProps {
-  item: Item;
+  item: ItemCardItem;
   index: number;
   onUpdate: (index: number, field: string, value: any) => void;
   onDelete: () => void;
@@ -23,7 +23,7 @@ interface ItemCardProps {
 
 const ItemCard: React.FC<ItemCardProps> = ({ item, index, onUpdate, onDelete }) => {
   return (
-    <div className="rounded-lg border p-4 space-y-4 bg-card">
+    <div className="rounded-lg p-4 space-y-4 bg-card">
       <div className="flex items-center justify-between">
         <h4 className="font-medium text-sm md:text-base">Item {index + 1}</h4>
         <Button

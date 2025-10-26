@@ -1,27 +1,4 @@
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  ArrowRight,
-  Briefcase,
-  Check,
-  Hotel,
-  Package,
-  ShoppingCart,
-  Store,
-  Stethoscope,
-  Scissors,
-  Home,
-  GraduationCap,
-  Dumbbell,
-  Truck,
-  Scale,
-} from "lucide-react";
-import React, { Dispatch, useState, useMemo } from "react";
-import ResponsiveModal from "./ui/responsive-modal";
-import { ALL_TEMPLATES } from "@/constant/templateJson";
-import { useNavigate } from "react-router-dom";
-import { Input } from "./ui/input";
 import {
   Select,
   SelectContent,
@@ -29,23 +6,32 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ALL_TEMPLATES } from "@/constant/templateJson";
+import {
+  Briefcase,
+  Dumbbell,
+  GraduationCap,
+  Home,
+  Hotel,
+  Package,
+  Scale,
+  Scissors,
+  ShoppingCart,
+  Stethoscope,
+  Store,
+  Truck
+} from "lucide-react";
+import React, { Dispatch, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Input } from "./ui/input";
+import ResponsiveModal from "./ui/responsive-modal";
 
 const TemplatePickerModal = ({
   isOpen,
   setIsOpen,
-  selectedTemplate,
-  setSelectedTemplate,
-  handleContinue,
-  setSelectedTemplateStyles,
-  selectedTeStyles,
 }: {
   isOpen: boolean;
   setIsOpen: Dispatch<React.SetStateAction<boolean>>;
-  selectedTemplate: string;
-  setSelectedTemplate: Dispatch<React.SetStateAction<string>>;
-  handleContinue: () => void;
-  setSelectedTemplateStyles: Dispatch<React.SetStateAction<string>>;
-  selectedTeStyles: string;
 }) => {
   const navigate = useNavigate();
 
@@ -126,8 +112,8 @@ const TemplatePickerModal = ({
 
   return (
     <ResponsiveModal
-      isOpen={isOpen}
-      onClose={() => setIsOpen(false)}
+      open={isOpen}
+      onOpenChange={setIsOpen}
       title='Pick Your Bill Template'
     >
       <div className='py-2'>
@@ -180,11 +166,6 @@ const TemplatePickerModal = ({
               >
                 <CardContent className='p-0'>
                   <div className='bg-white relative'>
-                    {selectedTemplate === template.billType && (
-                      <div className='absolute -top-2 -right-2 w-8 h-8 bg-teal-500 rounded-full flex items-center justify-center shadow-lg z-10'>
-                        <Check className='w-5 h-5 text-white' />
-                      </div>
-                    )}
                     <div className='bg-white rounded-lg overflow-hidden'>
                       {/* Header */}
                       <div className={`${template.preview.headerColor} p-3`}>
