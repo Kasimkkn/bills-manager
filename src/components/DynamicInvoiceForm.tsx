@@ -70,8 +70,6 @@ const DynamicInvoiceForm: React.FC<DynamicInvoiceFormProps> = ({
 
       <InvoiceInfoSection formData={formData} updateFormData={updateFormData} />
 
-      <BillTypeSection formData={formData} updateFormData={updateFormData} />
-
       <BusinessInfoSection
         formData={formData}
         updateFormData={updateFormData}

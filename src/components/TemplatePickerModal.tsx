@@ -21,7 +21,7 @@ import {
   Store,
   Truck
 } from "lucide-react";
-import React, { Dispatch, useMemo, useState } from "react";
+import React, { Dispatch, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input } from "./ui/input";
 import ResponsiveModal from "./ui/responsive-modal";
@@ -101,6 +101,7 @@ const TemplatePickerModal = ({
   }, [templates, searchTerm, selectedFilter]);
 
   const handleSelectTemplate = (billType: string, styles: string) => {
+    console.log("styles", styles)
     if (billType) {
       navigate(`/create?template=${billType}&style=${styles}`);
       setIsOpen(false);
@@ -110,6 +111,10 @@ const TemplatePickerModal = ({
   // Unique bill types for dropdown filter
   const billTypes = Array.from(new Set(templates.map((t) => t.billType)));
 
+
+  useEffect(() => {
+    console.log("filteredTemplates", filteredTemplates)
+  }, [])
   return (
     <ResponsiveModal
       open={isOpen}

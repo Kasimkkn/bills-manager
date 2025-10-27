@@ -6,6 +6,7 @@ import { DollarSign, Download, Edit, FileText, Plus, TrendingUp, Users } from "l
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DashboardLayout from "@/components/layout/DashboardLayout";
+import RecentInvoices from "@/components/RecentInvoices";
 
 const Dashboard = () => {
   const [showTemplateGallery, setShowTemplateGallery] = useState(false);
@@ -61,110 +62,52 @@ const Dashboard = () => {
         </Button>
       }
     >
-        {/* Welcome Section */}
-        <div className="mb-8">
-          <h2 className="text-3xl font-bold text-foreground mb-2">Welcome back!</h2>
-          <p className="text-muted-foreground">Manage your invoices and track your business growth.</p>
-        </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <Card className="surface border-border/50">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Invoices</CardTitle>
-              <FileText className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.totalInvoices}</div>
-              <p className="text-xs text-muted-foreground">
-                <TrendingUp className="inline h-3 w-3 mr-1" />
-                +12% from last month
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card className="surface border-border/50">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-              <DollarSign className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">${stats.totalAmount.toLocaleString()}</div>
-              <p className="text-xs text-muted-foreground">
-                <TrendingUp className="inline h-3 w-3 mr-1" />
-                +8% from last month
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card className="surface border-border/50">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Paid Invoices</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.paidInvoices}</div>
-              <p className="text-xs text-muted-foreground">
-                {Math.round((stats.paidInvoices / stats.totalInvoices) * 100)}% payment rate
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Recent Invoices */}
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <Card className="surface border-border/50">
-          <CardHeader className="pb-4">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-lg">Recent Invoices</CardTitle>
-              <Button
-                onClick={handleCreateInvoice}
-                size="sm"
-                variant="outline"
-                className="border-black/20 text-white hover:bg-black/10"
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                New Invoice
-              </Button>
-            </div>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Invoices</CardTitle>
+            <FileText className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              {recentInvoices.map((invoice) => (
-                <div key={invoice.id} className="flex items-center justify-between p-4 glass rounded-lg">
-                  <div className="flex items-center space-x-4">
-                    <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-                      <FileText className="w-5 h-5 text-black" />
-                    </div>
-                    <div>
-                      <p className="font-medium text-foreground">{invoice.id}</p>
-                      <p className="text-sm text-muted-foreground">{invoice.client}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center space-x-4">
-                    <div className="text-right">
-                      <p className="font-medium text-foreground">${invoice.amount.toLocaleString()}</p>
-                      <p className="text-sm text-muted-foreground">{invoice.date}</p>
-                    </div>
-
-                    <Badge className={getStatusColor(invoice.status)}>
-                      {invoice.status}
-                    </Badge>
-
-                    <div className="flex space-x-2">
-                      <Button size="sm" variant="ghost" className="text-muted-foreground hover:text-foreground">
-                        <Edit className="w-4 h-4" />
-                      </Button>
-                      <Button size="sm" variant="ghost" className="text-muted-foreground hover:text-foreground">
-                        <Download className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <div className="text-2xl font-bold">{stats.totalInvoices}</div>
+            <p className="text-xs text-muted-foreground">
+              <TrendingUp className="inline h-3 w-3 mr-1" />
+              +12% from last month
+            </p>
           </CardContent>
         </Card>
+
+        <Card className="surface border-border/50">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+            <DollarSign className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">${stats.totalAmount.toLocaleString()}</div>
+            <p className="text-xs text-muted-foreground">
+              <TrendingUp className="inline h-3 w-3 mr-1" />
+              +8% from last month
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="surface border-border/50">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Paid Invoices</CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.paidInvoices}</div>
+            <p className="text-xs text-muted-foreground">
+              {Math.round((stats.paidInvoices / stats.totalInvoices) * 100)}% payment rate
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      <RecentInvoices recentInvoices={recentInvoices} getStatusColor={getStatusColor} />
     </DashboardLayout>
   );
 };

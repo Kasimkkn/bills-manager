@@ -15,6 +15,7 @@ import BusinessProfileSetup from "./pages/BusinessProfileSetup";
 import Customers from "./pages/Customers";
 import MyInvoices from "./pages/MyInvoices";
 import Settings from "./pages/Settings";
+import Create from "./pages/Create";
 
 const queryClient = new QueryClient();
 
@@ -26,15 +27,16 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/create" element={<InvoicePage />} />
+          <Route path="/invoice" element={<InvoicePage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/business-profile-setup" element={<BusinessProfileSetup />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/customers" element={<Customers />} />
-          <Route path="/my-invoices" element={<MyInvoices />} />
-          <Route path="/settings" element={<Settings />} />
+        <Route path="/customers" element={<Customers />} />
+        <Route path="/my-invoices" element={<MyInvoices />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/create" element={<Create />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

@@ -51,26 +51,26 @@ const FeaturesSection: React.FC = () => {
     ];
 
     return (
-        <section id="features" className="py-20 bg-slate-50">
+        <section id="features" className="py-20 bg-muted">
             <div className="container mx-auto px-4">
                 <div className="md:text-center mb-16">
-                    <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
+                    <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
                         Everything You Need to Invoice Like a Pro
                     </h2>
-                    <p className="text-lg sm:text-xl text-slate-600 max-w-3xl mx-auto">
+                    <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto">
                         Our comprehensive invoice generator comes packed with features designed to streamline your billing process and get you paid faster.
                     </p>
                 </div>
 
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
                     {features.map((feature, index) => (
-                        <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 bg-white">
+                        <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 bg-card">
                             <CardContent className="p-6 lg:p-8 text-start">
                                 <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br ${feature.color} flex items-center justify-center mb-4 lg:mb-6`}>
-                                    <feature.icon className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
+                                    <feature.icon className="w-6 h-6 sm:w-8 sm:h-8 text-primary-foreground" />
                                 </div>
-                                <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-3">{feature.title}</h3>
-                                <p className="text-slate-600 leading-relaxed">{feature.description}</p>
+                                <h3 className="text-lg sm:text-xl font-bold text-foreground mb-3">{feature.title}</h3>
+                                <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
                             </CardContent>
                         </Card>
                     ))}

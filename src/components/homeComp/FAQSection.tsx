@@ -38,17 +38,17 @@ const FAQSection: React.FC<FAQSectionProps> = ({ openFaq, setOpenFaq }) => {
     ];
 
     return (
-        <section className="py-20 bg-gradient-to-br from-slate-50 via-white to-teal-50">
+        <section className="py-20 bg-gradient-to-br from-muted via-background to-secondary/10">
             <div className="container mx-auto px-4 max-w-5xl">
                 <div className="md:text-center mb-16">
-                    <div className="inline-flex items-center space-x-2 bg-teal-100 text-teal-700 rounded-full px-6 py-2 text-sm font-medium mb-6">
+                    <div className="inline-flex items-center space-x-2 bg-secondary/10 text-secondary rounded-full px-6 py-2 text-sm font-medium mb-6">
                         <Award className="w-4 h-4" />
                         <span>Got Questions? We've Got Answers</span>
                     </div>
-                    <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
+                    <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
                         Frequently Asked Questions
                     </h2>
-                    <p className="text-lg sm:text-xl text-slate-600">
+                    <p className="text-lg sm:text-xl text-muted-foreground">
                         Everything you need to know about creating professional invoices
                     </p>
                 </div>
@@ -58,8 +58,8 @@ const FAQSection: React.FC<FAQSectionProps> = ({ openFaq, setOpenFaq }) => {
                         <div
                             key={index}
                             className={`group ${openFaq === index
-                                ? 'bg-gradient-to-br from-teal-50 to-sky-50 border-teal-200 shadow-lg'
-                                : 'bg-white border-slate-200 hover:border-teal-200 hover:shadow-md'
+                                ? 'bg-gradient-to-br from-secondary/10 to-primary/10 border-secondary shadow-lg'
+                                : 'bg-card border-border hover:border-secondary hover:shadow-md'
                                 } border-2 rounded-2xl overflow-hidden transition-all duration-300`}
                         >
                             <button
@@ -67,13 +67,13 @@ const FAQSection: React.FC<FAQSectionProps> = ({ openFaq, setOpenFaq }) => {
                                 onClick={() => setOpenFaq(openFaq === index ? null : index)}
                             >
                                 <div className="flex justify-between items-start gap-4">
-                                    <h3 className={`font-bold text-base sm:text-lg leading-tight text-start ${openFaq === index ? 'text-teal-700' : 'text-slate-900 group-hover:text-teal-600'
+                                    <h3 className={`font-bold text-base sm:text-lg leading-tight text-start ${openFaq === index ? 'text-secondary' : 'text-foreground group-hover:text-secondary'
                                         } transition-colors`}>
                                         {faq.question}
                                     </h3>
                                     <div className={`flex-shrink-0 w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all duration-300 ${openFaq === index
-                                        ? 'bg-teal-500 text-white rotate-180'
-                                        : 'bg-slate-100 text-slate-400 group-hover:bg-teal-100 group-hover:text-teal-500'
+                                        ? 'bg-secondary text-secondary-foreground rotate-180'
+                                        : 'bg-muted text-muted-foreground group-hover:bg-secondary/10 group-hover:text-secondary'
                                         }`}>
                                         <ChevronDown className="w-3 h-3 sm:w-4 sm:h-4" />
                                     </div>
@@ -83,8 +83,8 @@ const FAQSection: React.FC<FAQSectionProps> = ({ openFaq, setOpenFaq }) => {
                             <div className={`overflow-hidden transition-all duration-500 ease-in-out ${openFaq === index ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
                                 }`}>
                                 <div className="px-4 sm:px-6 pb-4 sm:pb-6">
-                                    <div className="w-full h-px bg-gradient-to-r from-teal-200 to-sky-200 mb-4"></div>
-                                    <p className="text-slate-600 leading-relaxed text-sm sm:text-base text-start">
+                                    <div className="w-full h-px bg-gradient-to-r from-secondary to-primary mb-4"></div>
+                                    <p className="text-muted-foreground leading-relaxed text-sm sm:text-base text-start">
                                         {faq.answer}
                                     </p>
                                 </div>
@@ -95,20 +95,20 @@ const FAQSection: React.FC<FAQSectionProps> = ({ openFaq, setOpenFaq }) => {
 
                 {/* Additional Help Section */}
                 <div className="mt-16 text-center">
-                    <Card className="bg-gradient-to-r from-teal-500 to-sky-500 border-0 shadow-xl text-white max-w-2xl mx-auto">
+                    <Card className="bg-gradient-to-r from-secondary to-primary border-0 shadow-xl text-primary-foreground max-w-2xl mx-auto">
                         <CardContent className="p-6 sm:p-8">
                             <div className="flex items-center justify-center mb-4">
-                                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white/20 rounded-full flex items-center justify-center">
+                                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-primary-foreground/20 rounded-full flex items-center justify-center">
                                     <Mail className="w-6 h-6 sm:w-8 sm:h-8" />
                                 </div>
                             </div>
                             <h3 className="text-xl sm:text-2xl font-bold mb-3">Still Have Questions?</h3>
-                            <p className="text-teal-100 mb-6 text-base sm:text-lg">
+                            <p className="text-primary-foreground/90 mb-6 text-base sm:text-lg">
                                 Our support team is here to help you get the most out of BillWise
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4 justify-center">
                                 <Button
-                                    className="bg-white text-teal-600 hover:bg-slate-50 font-semibold"
+                                    className="bg-background text-primary hover:bg-background/90 font-semibold"
                                     size="lg"
                                 >
                                     <Mail className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
@@ -116,7 +116,7 @@ const FAQSection: React.FC<FAQSectionProps> = ({ openFaq, setOpenFaq }) => {
                                 </Button>
                                 <Button
                                     variant="outline"
-                                    className="border-white text-white hover:bg-white hover:text-teal-600 font-semibold"
+                                    className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary font-semibold"
                                     size="lg"
                                 >
                                     <FileText className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />

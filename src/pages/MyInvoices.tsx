@@ -100,10 +100,6 @@ export default function MyInvoices() {
       title="My Invoices"
       action={
         <div className="flex gap-2">
-          <Button variant="outline">
-            <Download className="h-4 w-4 mr-2" />
-            Export
-          </Button>
           <Button onClick={() => navigate("/create")} className="bg-foreground text-background hover:bg-foreground/90">
             <Plus className="h-4 w-4 mr-2" />
             Create Invoice
@@ -159,7 +155,7 @@ export default function MyInvoices() {
       </div>
 
       {/* Search and Filter */}
-      <div className="flex flex-col md:flex-row gap-4">
+      <div className="flex flex-col md:flex-row gap-4 my-2">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input

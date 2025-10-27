@@ -22,11 +22,8 @@ const AuthLayout = ({ children, isFormRightSide = false, rightContent }: AuthLay
 
             {/* Brand/Feature Section */}
             <div
-                className={`max-md:hidden flex-1 flex items-center justify-center p-6 md:p-12 relative overflow-hidden ${isFormRightSide ? 'lg:order-1' : 'lg:order-2'
+                className={`max-md:hidden flex-1 flex items-center justify-center p-6 md:p-12 relative overflow-hidden bg-gradient-to-br from-primary via-primary-600 to-secondary ${isFormRightSide ? 'lg:order-1' : 'lg:order-2'
                     }`}
-                style={{
-                    background: 'linear-gradient(135deg, hsl(var(--primary-700)) 0%, hsl(var(--primary-600)) 50%, hsl(var(--primary)) 100%)'
-                }}
             >
                 {/* Animated background elements */}
                 <div className="absolute inset-0 overflow-hidden opacity-20">
@@ -34,7 +31,7 @@ const AuthLayout = ({ children, isFormRightSide = false, rightContent }: AuthLay
                     <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-white rounded-full blur-3xl" style={{ animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite', animationDelay: '1s' }} />
                 </div>
 
-                <div className="relative z-10 max-w-xl text-foreground">
+                <div className="relative z-10 max-w-xl text-primary-foreground">
                     {rightContent || (
                         <div className="space-y-8">
                             {/* Logo & Tagline */}
@@ -46,7 +43,7 @@ const AuthLayout = ({ children, isFormRightSide = false, rightContent }: AuthLay
                                 <h1 className="text-4xl md:text-5xl font-bold leading-tight">
                                     Bill Banayein,<br />Business Badhaayein
                                 </h1>
-                                <p className="text-xl text-foreground">
+                                <p className="text-xl text-primary-foreground/90">
                                     India's simplest invoice generator for small businesses
                                 </p>
                             </div>
@@ -68,9 +65,9 @@ const AuthLayout = ({ children, isFormRightSide = false, rightContent }: AuthLay
                             </div>
 
                             {/* Trust indicator */}
-                            <div className="pt-6 border-t border-foreground/60">
-                                <p className="text-sm text-foreground">
-                                    Trusted by <span className="font-bold text-foreground">10,000+</span> Indian businesses
+                            <div className="pt-6 border-t border-primary-foreground/20">
+                                <p className="text-sm text-primary-foreground/90">
+                                    Trusted by <span className="font-bold text-primary-foreground">10,000+</span> Indian businesses
                                 </p>
                             </div>
                         </div>

@@ -6,52 +6,62 @@
 /* Modern Invoice Generator Design System */
 @layer base {
   :root {
-    /* Core Colors - Deep Charcoal & Amber Theme */
+    /* Core Colors - Clean White & Sky/Teal Theme */
     --background: 0 0% 100%;
-    /* Deep charcoal #1a1a1a */
+    /* Pure white */
     --foreground: 0 0% 0%;
-    /* Light gray #e4e4e7 */
+    /* Pure black */
 
-    --card: 0 0% 95%;
-    /* Slightly lighter charcoal */
+    --card: 0 0% 100%;
+    /* White cards */
     --card-foreground: 0 0% 0%;
+    /* Black text on cards */
 
-    --popover: 0 0% 90%;
+    --popover: 0 0% 100%;
     --popover-foreground: 0 0% 0%;
 
-    /* Primary - Bright Amber System */
-    --primary: 0, 0%, 0%;
-    /* Bright amber #f59e0b */
-    --primary-foreground: 0 0% 10%;
-    /* Dark text on amber */
-    --primary-50: 0 0% 95%;
-    --primary-100: 0 0% 90%;
-    --primary-500: 0 0% 85%;
-    --primary-600: 0 0% 80%;
-    --primary-700: 0 0% 75%;
+    /* Primary - Sky-500 System */
+    --primary: 199 89% 48%;
+    /* Sky-500 #0ea5e9 */
+    --primary-foreground: 0 0% 100%;
+    /* White text on sky */
+    --primary-50: 204 100% 97%;
+    --primary-100: 204 94% 94%;
+    --primary-500: 199 89% 48%;
+    --primary-600: 200 98% 39%;
+    --primary-700: 201 96% 32%;
 
-    /* Secondary - Dark Gray System */
-    --secondary: 0 0% 15%;
-    /* Dark gray #262626 */
-    --secondary-foreground: 240 5% 90%;
+    /* Secondary - Teal-500 System */
+    --secondary: 180, 100%, 25%;
+    /* Teal-500 #14b8a6 */
+    --secondary-foreground: 0 0% 100%;
+    /* White text on teal */
 
-    --muted: 0 0% 20%;
-    --muted-foreground: 240 4% 64%;
+    --muted: 210 40% 96%;
+    /* Light gray for muted areas */
+    --muted-foreground: 215 16% 47%;
+    /* Dark gray text */
 
-    --accent: 173, 80%, 40%, 0;
-    --accent-foreground: 0 0% 100%;
+    --accent: 180, 50%, 83%;
+    /* Teal accent */
+    --accent-foreground: 0 0% 0%;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 25%;
-    --input: 0 0% 18%;
-    --ring: 43 96% 56%;
+    --border: 214 32% 91%;
+    /* Light border */
+    --input: 214 32% 91%;
+    /* Light input border */
+    --ring: 199 89% 48%;
+    /* Sky ring for focus */
 
     /* Glass Morphism & Surfaces */
-    --glass: 0 0% 15% / 0.8;
-    --surface: 0 0% 12%;
-    --surface-elevated: 0 0% 90%;
+    --glass: 0 0% 100% / 0.8;
+    --surface: 210 40% 98%;
+    /* Very light gray surface */
+    --surface-elevated: 0 0% 100%;
+    /* White elevated surface */
 
     --radius: 0.75rem;
   }
