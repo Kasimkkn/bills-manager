@@ -9,7 +9,7 @@ export default function Invoice5({
     invoiceRef: React.Ref<null>;
 }) {
     return (
-        <div className='min-h-screen flex items-center justify-center p-4 bg-gray-100'>
+        <div className='min-h-screen flex items-center justify-center '>
             <div
                 ref={invoiceRef}
                 className='bg-white shadow-xl'

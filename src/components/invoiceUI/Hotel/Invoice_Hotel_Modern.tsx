@@ -15,7 +15,7 @@ export default function Invoice_Hotel_Modern({ invoiceData, invoiceRef }: Invoic
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50">
+    <div className="min-h-screen flex items-center justify-center ">
       <div
         ref={invoiceRef}
         className="bg-white shadow-lg"

@@ -26,6 +26,7 @@ interface BusinessInfo {
   gstNumber?: string;
   licenseNumber?: string; // For medical, salon, etc.
   registrationNumber?: string; // For education, legal, etc.
+  currency?: string;
 }
 
 interface CustomerInfo {

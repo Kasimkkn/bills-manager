@@ -11,7 +11,7 @@ export default function Invoice_Ecommerce_Vibrant({
   invoiceRef,
 }: InvoiceProps) {
   return (
-    <div className='min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 py-8'>
+    <div className='min-h-screen flex items-center justify-center'>
       <div
         ref={invoiceRef}
         className='bg-white shadow-2xl'
@@ -194,11 +194,10 @@ export default function Invoice_Ecommerce_Vibrant({
                   {invoiceData?.itemList?.map((item, index) => (
                     <tr
                       key={index}
-                      className={`border-b border-teal-100 ${
-                        index % 2 === 0
+                      className={`border-b border-teal-100 ${index % 2 === 0
                           ? "bg-white"
                           : "bg-teal-50 bg-opacity-30"
-                      }`}
+                        }`}
                     >
                       <td className='py-4 px-4'>
                         <p className='font-bold text-gray-900'>

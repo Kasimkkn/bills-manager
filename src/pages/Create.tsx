@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { DynamicBillConfig, billType } from "@/types/invoice";
 import { getTemplate, ECOMMERCE_VIBRANT, ALL_TEMPLATES } from "@/constant/templateJson";
 import { Button } from "@/components/ui/button";
-import { Download } from "lucide-react";
+import { Download, Eye, EyeOff } from "lucide-react";
 import html2pdf from "html2pdf.js";
 import DynamicInvoiceForm from "@/components/DynamicInvoiceForm";
 
@@ -46,12 +46,13 @@ import Invoice_Gym_Sporty from "@/components/invoiceUI/Gym/Invoice_Gym_Sporty";
 import Invoice_Legal_Formal from "@/components/invoiceUI/Legal/Invoice_Legal_Formal";
 import Invoice_Legal_Modern from "@/components/invoiceUI/Legal/Invoice_Legal_Modern";
 import Invoice_Legal_Letterhead from "@/components/invoiceUI/Legal/Invoice_Legal_Letterhead";
+import { Card } from "@/components/ui/card";
 
 const Create = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const template = searchParams.get("template") as billType;
   const styleParam = searchParams.get("style");
-
+  const [showPreview, setShowPreview] = useState(false);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const invoiceRef = useRef<HTMLDivElement>(null);
 
@@ -180,61 +181,77 @@ const Create = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="sticky top-0 z-40 bg-background/95 backdrop-blur-lg border-b border-border">
-        <div className="px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-lg font-semibold">Create Invoice</h1>
-              <p className="text-sm text-muted-foreground">
-                {formData.uiMetadata?.displayName || template}
-              </p>
-            </div>
+      {/* Mobile Header */}
+      <div className='lg:hidden sticky top-0 z-40 bg-surface-elevated/95 backdrop-blur-lg border-b border-border/50'>
+        <div className='flex items-center justify-between p-4'>
+          <h1 className='text-lg font-semibold'>Invoice Creator</h1>
+
+          <div className='flex items-center space-x-2'>
+            <Button
+              variant='ghost'
+              size='sm'
+              onClick={() => setShowPreview(!showPreview)}
+              className='text-muted-foreground hover:text-foreground hover:bg-transparent'
+            >
+              {showPreview ? (
+                <EyeOff className='w-4 h-4' />
+              ) : (
+                <Eye className='w-4 h-4' />
+              )}
+            </Button>
 
             <Button
+              size='sm'
               disabled={isGeneratingPDF}
               onClick={handleDownloadPDF}
-              className="bg-black text-white hover:bg-black/90"
+              className='bg-black text-white hover:bg-black/90'
             >
-              <Download className="w-4 h-4 mr-2" />
-              {isGeneratingPDF ? "Generating..." : "Download PDF"}
+              <Download className='w-4 h-4 mr-2' />
+              {isGeneratingPDF ? "Generating..." : "PDF"}
             </Button>
           </div>
         </div>
+      </div>
 
-        {/* Style Switcher */}
-        {availableStyles.length > 1 && (
-          <div className="px-6 pb-4">
-            <div className="flex gap-2 overflow-x-auto">
-              {availableStyles.map((style) => (
-                <Button
-                  key={style}
-                  size="sm"
-                  variant={currentStyle === style ? "default" : "outline"}
-                  onClick={() => handleStyleChange(style)}
-                  className={currentStyle === style ? "bg-black text-white" : ""}
-                >
-                  {style}
-                </Button>
-              ))}
+      {/* Desktop Header */}
+      <div className='hidden lg:block sticky top-0 z-40 bg-surface-elevated/95 backdrop-blur-lg border-b border-border/50'>
+        <div className='px-6 py-4'>
+          <div className='flex items-center justify-between'>
+            <div className='flex items-center space-x-4'>
+              <h1 className='text-lg font-semibold'>Invoice Creator</h1>
+            </div>
+
+            <div className='flex items-center space-x-4'>
+              <Button
+                disabled={isGeneratingPDF}
+                onClick={handleDownloadPDF}
+                className='bg-black text-white hover:bg-black/90'
+              >
+                <Download className='w-4 h-4 mr-2' />
+                {isGeneratingPDF ? "Generating PDF..." : "Download PDF"}
+              </Button>
             </div>
           </div>
-        )}
+        </div>
       </div>
 
       {/* Main Content */}
-      <div className="lg:grid lg:grid-cols-12 h-[calc(100vh-90px)]">
-        {/* Form Panel */}
-        <div className="bg-background border-r border-border overflow-y-auto h-full lg:col-span-5">
+      <div className='lg:grid lg:grid-cols-12 h-screen relative'>
+        {/* Form Panel (scrollable) */}
+        <div
+          className={`${showPreview ? "hidden lg:block" : "block"
+            } bg-transparent border-r border-border/50 overflow-y-auto lg:col-span-5`}
+        >
           <DynamicInvoiceForm
             formData={formData}
             onChange={handleFormDataChange}
           />
         </div>
-
-        {/* Preview Panel */}
-        <div className="bg-muted/30 h-full overflow-y-auto lg:col-span-7">
-          <div className="p-4 lg:p-8">
+        <div
+          className={`${!showPreview ? "hidden lg:block" : "block"
+            } bg-transparent h-full md:pt-20 overflow-y-auto lg:fixed lg:right-0 lg:top-0 lg:w-[60%]`}
+        >
+          <div className="">
             {renderTemplate()}
           </div>
         </div>

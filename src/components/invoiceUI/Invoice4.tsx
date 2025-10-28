@@ -9,7 +9,7 @@ export default function Invoice4({
     invoiceRef: React.Ref<null>;
 }) {
     return (
-        <div className='min-h-screen flex items-center justify-center p-4 bg-gray-50'>
+        <div className='min-h-screen flex items-center justify-center '>
             {/* Invoice Container - Fixed A4 Size */}
             <div
                 ref={invoiceRef}
